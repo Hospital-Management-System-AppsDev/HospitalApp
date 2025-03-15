@@ -15,6 +15,32 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <SplitView IsPaneOpen= "{Binding IsPaneOpen}"
+             OpenPaneLength="300"
+             CompactPaneLength="48"
+             DisplayMode="CompactInline"
+             Background="#FFFFFF"
+             PaneBackground="#EAF2F8">
+      <SplitView.Pane>
+          <StackPanel Spacing="5"
+                      Margin="5"
+                      >
+              <Button Command = "{Binding TriggerPaneCommand}"
+                        Background = "blue"
+                    >
+                  -
+              </Button>
+              <ListBox Background = >
+                  <ListBoxItem>Item1</ListBoxItem>
+                  <ListBoxItem>Item2</ListBoxItem>
+                  <ListBoxItem>Item3</ListBoxItem>
+                  
+              </ListBox>
+          </StackPanel>
+      </SplitView.Pane>
+      <SplitView.Content>
+          <TextBlock>CONTENT</TextBlock>
+      </SplitView.Content>
+  </SplitView>
 
 </Window>

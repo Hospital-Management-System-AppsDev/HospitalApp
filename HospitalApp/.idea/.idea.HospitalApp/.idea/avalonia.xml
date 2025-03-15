@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="HospitalApp/App.axaml" value="HospitalApp/HospitalApp.csproj" />
+        <entry key="HospitalApp/Views/MainWindow.axaml" value="HospitalApp/HospitalApp.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

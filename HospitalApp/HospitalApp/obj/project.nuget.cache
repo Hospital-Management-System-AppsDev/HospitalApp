@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6Hs0wJvO+cU=",
+  "dgSpecHash": "LY4gf0FUCdM=",
   "success": true,
-  "projectFilePath": "/Users/jcatillo/HospitalApp/HospitalApp/HospitalApp/HospitalApp.csproj",
+  "projectFilePath": "/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/HospitalApp.csproj",
   "expectedPackageFiles": [
     "/Users/jcatillo/.nuget/packages/avalonia/11.2.1/avalonia.11.2.1.nupkg.sha512",
     "/Users/jcatillo/.nuget/packages/avalonia.angle.windows.natives/2.1.22045.20230930/avalonia.angle.windows.natives.2.1.22045.20230930.nupkg.sha512",
