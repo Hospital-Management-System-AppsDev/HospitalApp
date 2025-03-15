@@ -1,6 +1,6 @@
 namespace HospitalApp.ViewModels;
 
-public class HomePageViewModel : ViewModelBase
+public class DashboardPageViewModel : ViewModelBase
 {
     
 }

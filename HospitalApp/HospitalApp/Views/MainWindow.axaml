@@ -3,44 +3,122 @@
         xmlns:vm="using:HospitalApp.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
         x:Class="HospitalApp.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="HospitalApp">
-
+    
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
+    
 
-  <SplitView IsPaneOpen= "{Binding IsPaneOpen}"
+    <!-- TODO: optimize the hover effecct -->
+    <Window.Styles> 
+        <Styles>
+            <!-- Default ListBoxItem Style -->
+            <Style Selector="ListBox > ListBoxItem">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Padding" Value="20 25"/>
+                <Setter Property="Margin" Value="0 20"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Foreground" Value="Black"/>  <!-- Fix Foreground -->
+                <Setter Property="FocusAdorner" Value="{x:Null}"/>
+            </Style>
+
+            <!-- Hover Effect -->
+            <Style Selector="ListBox > ListBoxItem:pointerover">
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Foreground" Value="White"/> <!-- Change Foreground on Hover -->
+            </Style>
+
+            <!-- Selected Item Style -->
+            <Style Selector="ListBox > ListBoxItem:selected">
+                <Setter Property="Background" Value="Orange"/>
+                <Setter Property="Foreground" Value="White"/>  <!-- Ensure Foreground is White when Selected -->
+            </Style>
+        </Styles>
+    </Window.Styles>
+
+
+    
+  <SplitView IsPaneOpen="{Binding IsPaneOpen}"
              OpenPaneLength="300"
-             CompactPaneLength="48"
+             CompactPaneLength="101"
              DisplayMode="CompactInline"
              Background="#FFFFFF"
              PaneBackground="#EAF2F8">
+      
+      <!-- Left Pane -->
       <SplitView.Pane>
-          <StackPanel Spacing="5"
-                      Margin="5"
-                      >
-              <Button Command = "{Binding TriggerPaneCommand}"
-                        Background = "blue"
-                    >
-                  -
-              </Button>
-              <ListBox Background = >
-                  <ListBoxItem>Item1</ListBoxItem>
-                  <ListBoxItem>Item2</ListBoxItem>
-                  <ListBoxItem>Item3</ListBoxItem>
+          <Border Background="#EAF2F8" CornerRadius="12 0 0 12" ClipToBounds="True">
+              <!-- Using a Grid to position elements -->
+              <Grid RowDefinitions="Auto,*,Auto" Margin="5">
                   
-              </ListBox>
-          </StackPanel>
+                  <!-- Toggle Button (Row 0) -->
+                  <Button Grid.Row="0"
+                          Command="{Binding TriggerPaneCommand}"
+                          Background="#009BFF"
+                          Margin="20"
+                          Width="50"
+                          Height="50"
+                          HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          
+                          >
+                      =
+                  </Button>
+
+                    <!-- NOTE: to be continued -->
+                  
+                  <!-- ListBox with first three items (Row 1) -->
+                  <ListBox ItemsSource= "{Binding Items}" SelectionMode="Single" Grid.Row="1" VerticalAlignment="Center" Background="Transparent">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType = "{x:Type vm:ListItemTemplate}">
+                                <StackPanel Spacing = "15" Orientation = "Horizontal">
+                                    <TextBlock Text="{Binding Label}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                      
+                      
+                      <!-- <ListBoxItem Margin="0 20"
+                                   Padding="20 25"
+                                   Background="#A5D3F1"
+                                   CornerRadius="20"
+                                   Foreground="white"
+                                   >Item1</ListBoxItem>
+                      <ListBoxItem Margin="0 20"
+                                   Padding="20 25"
+                                   Background="#A5D3F1"
+                                   CornerRadius="20"
+                                   Foreground="white"
+                                   >Item2</ListBoxItem>
+                      <ListBoxItem Margin="0 20"
+                                   Padding="20 25"
+                                   Background="#A5D3F1"
+                                   CornerRadius="20"
+                                   Foreground="white"
+                                   >Item3</ListBoxItem> -->
+                  </ListBox>
+
+                  <!-- Last Item pushed to the bottom (Row 2) -->
+                  
+                  <Button Grid.Row="2" Margin="10">Logout</Button>
+                  
+              </Grid>
+          </Border>
       </SplitView.Pane>
+      
+      <!-- Main Content Area -->
       <SplitView.Content>
-          <TextBlock>CONTENT</TextBlock>
+          <Border>
+              <TransitioningContentControl Content="{Binding CurrentPage}"/>
+          </Border>
       </SplitView.Content>
+
   </SplitView>
 
 </Window>

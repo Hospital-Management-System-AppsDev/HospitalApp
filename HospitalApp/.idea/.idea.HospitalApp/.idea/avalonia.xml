@@ -4,6 +4,9 @@
     <option name="projectPerEditor">
       <map>
         <entry key="HospitalApp/App.axaml" value="HospitalApp/HospitalApp.csproj" />
+        <entry key="HospitalApp/Views/AppointmentsPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
+        <entry key="HospitalApp/Views/DashboardPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
+        <entry key="HospitalApp/Views/HomePageView.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/MainWindow.axaml" value="HospitalApp/HospitalApp.csproj" />
       </map>
     </option>
