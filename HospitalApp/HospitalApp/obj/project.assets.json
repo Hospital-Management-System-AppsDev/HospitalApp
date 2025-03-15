@@ -1479,11 +1479,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jcatillo/HospitalApp/HospitalApp/HospitalApp/HospitalApp.csproj",
+      "projectUniqueName": "/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/HospitalApp.csproj",
       "projectName": "HospitalApp",
-      "projectPath": "/Users/jcatillo/HospitalApp/HospitalApp/HospitalApp/HospitalApp.csproj",
+      "projectPath": "/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/HospitalApp.csproj",
       "packagesPath": "/Users/jcatillo/.nuget/packages/",
-      "outputPath": "/Users/jcatillo/HospitalApp/HospitalApp/HospitalApp/obj/",
+      "outputPath": "/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/jcatillo/.nuget/NuGet/NuGet.Config"
