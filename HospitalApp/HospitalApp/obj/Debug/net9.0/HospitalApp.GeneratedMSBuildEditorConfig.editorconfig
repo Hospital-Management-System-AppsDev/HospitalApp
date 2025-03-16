@@ -24,6 +24,9 @@ build_property.EnableCodeStyleSeverity =
 [/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/Assets/Icons.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/Views/AppointmentsPageView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
@@ -31,4 +34,10 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/Views/MainWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/Views/PharmacyPageView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/Views/SettingsPageView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

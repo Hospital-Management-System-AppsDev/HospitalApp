@@ -133,3 +133,10 @@
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/obj/Debug/net9.0/Hospital.58D4885F.Up2Date
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/obj/Debug/net9.0/HospitalApp.genruntimeconfig.cache
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/obj/Debug/net9.0/ref/HospitalApp.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Avalonia.Svg.Skia.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/ExCSS.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/ShimSkiaSharp.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/SkiaSharp.HarfBuzz.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Svg.Custom.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Svg.Model.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Svg.Skia.dll
