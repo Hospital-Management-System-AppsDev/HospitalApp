@@ -140,3 +140,8 @@
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Svg.Custom.dll
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Svg.Model.dll
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Svg.Skia.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/DynamicData.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/ReactiveUI.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Splat.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/System.Reactive.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/System.Text.Json.dll

@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.2.1" />
+        <PackageReference Include="Avalonia" Version="11.2.5" />
         <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
         <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
@@ -27,5 +27,6 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+        <PackageReference Include="ReactiveUI" Version="20.2.45" />
     </ItemGroup>
 </Project>
