@@ -46,7 +46,7 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.2.1, )"
+              "version": "[11.2.5, )"
             },
             "Avalonia.Desktop": {
               "target": "Package",
@@ -71,6 +71,10 @@
             "CommunityToolkit.Mvvm": {
               "target": "Package",
               "version": "[8.2.1, )"
+            },
+            "ReactiveUI": {
+              "target": "Package",
+              "version": "[20.2.45, )"
             }
           },
           "imports": [
