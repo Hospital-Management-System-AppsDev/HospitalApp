@@ -1,13 +1,21 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using HospitalApp.ViewModels;
 
-namespace HospitalApp.Views;
-
-public partial class MainContentPageView : UserControl
+namespace HospitalApp.Views
 {
-    public MainContentPageView()
+    public partial class MainMenuControl : UserControl
     {
-        InitializeComponent();
+        public MainMenuControl()
+        {
+            InitializeComponent();
+            DataContext = new MainMenuViewModel();
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
     }
 }

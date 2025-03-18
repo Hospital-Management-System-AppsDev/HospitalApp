@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:HospitalApp.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
-             x:Class="HospitalApp.Views.MainMenuControl">
+             x:Class="HospitalApp.Views.MainMenuControl"
+             x:DataType="vm:MainMenuViewModel"
+             x:Name="mainMenuControl">
     
     <UserControl.Styles>
         <Styles>
@@ -52,15 +54,16 @@
                 <Setter Property="Background" Value="#48b9ff"/>
             </Style>
             
-            <Style Selector="PathIcon">
+            <!-- Scope the PathIcon styles to this control using the parent selector -->
+            <Style Selector="#mainMenuControl PathIcon">
                 <Setter Property="Foreground" Value="Black"/>
             </Style>
 
-            <Style Selector="ListBoxItem:pointerover PathIcon">
+            <Style Selector="#mainMenuControl ListBoxItem:pointerover PathIcon">
                 <Setter Property="Foreground" Value="LightGray"/>
             </Style>
 
-            <Style Selector="ListBoxItem:selected PathIcon">
+            <Style Selector="#mainMenuControl ListBoxItem:selected PathIcon">
                 <Setter Property="Foreground" Value="White"/>
             </Style>
         </Styles>
@@ -91,12 +94,17 @@
                       <PathIcon Data="{StaticResource HamburgerMenu}"></PathIcon>
                   </Button>
                   
-                  <!-- ListBox with first three items (Row 1) -->
-                  <ListBox ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedListItem}" SelectionMode="Single" Grid.Row="1" VerticalAlignment="Center" Background="Transparent">
+                  <!-- ListBox with menu items (Row 1) -->
+                  <ListBox ItemsSource="{Binding Items}" 
+                           SelectedItem="{Binding SelectedListItem}" 
+                           SelectionMode="Single" 
+                           Grid.Row="1" 
+                           VerticalAlignment="Center" 
+                           Background="Transparent">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <PathIcon Data="{Binding ListItemIcon}" Width="25" Height="25" Margin=" 5 0 10 0"></PathIcon>
+                                <PathIcon Data="{Binding ListItemIcon}" Width="25" Height="25" Margin="5 0 10 0"></PathIcon>
                                 <TextBlock Text="{Binding Label}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
