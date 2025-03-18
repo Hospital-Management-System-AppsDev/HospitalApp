@@ -4,5 +4,422 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="HospitalApp.Views.SettingsPageView">
-    Settings
+    <Grid>
+        <!-- Settings Title placed outside and above the background -->
+        <TextBlock Text="Dashboard" Foreground="#3E8DC0" FontWeight="Bold" FontSize="30" Margin="20, 10, 10, 10"/>
+            
+        <!-- Background Border -->
+        <Border Background="#D4E6F1" Margin="50, 60, 50, 50" CornerRadius="20">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Header Row -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Navigation Buttons in the top-left inside the background -->
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="4" 
+                                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,10">
+                        <Button Content="General" Margin="0,0,10,0" Padding="12,8" 
+                                Background="#3498DB" Foreground="White" CornerRadius="5"/>
+                        <Button Content="Preferences" Margin="0,0,10,0" Padding="12,8" 
+                                Background="#3498DB" Foreground="White" CornerRadius="5"/>
+                        <Button Content="Notification" Margin="0,0,10,0" Padding="12,8" 
+                                Background="#3498DB" Foreground="White" CornerRadius="5"/>
+                        <Button Content="Medical Admin Panel" Padding="12,8" 
+                                Background="#2980B9" Foreground="White" CornerRadius="5"/>
+                    </StackPanel>
+                </Grid>
+                
+                <!-- Content Area -->
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Patients List Section -->
+                    <Border Grid.Row="0" Background="White" CornerRadius="10" Margin="0,0,0,20">
+                        <Grid Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Patients List Header -->
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                                <TextBlock Text="Patients Lists" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                                <Button Content="⋮⋮" Margin="10,0,0,0" Background="Transparent" Foreground="#3E8DC0"/>
+                            </StackPanel>
+                            
+                            <!-- Patient Cards -->
+                            <ItemsControl Grid.Row="1">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.Items>
+                                    <!-- Patient Card 1 -->
+                                    <Border Width="100" Height="120" Background="White" BorderBrush="#EEEEEE" BorderThickness="1" 
+                                            CornerRadius="8" Margin="0,0,10,0">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="11:04 PM" FontSize="10" HorizontalAlignment="Right" Margin="0,5,5,0"/>
+                                                <Ellipse Width="40" Height="40" Fill="#BBBBBB" Margin="0,5,0,5" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Juan Dela Cruz" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Abdominal Pain" FontSize="10" Foreground="#666666" HorizontalAlignment="Center"/>
+                                                <Grid Margin="0,10,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="Visited: 1" FontSize="10" Foreground="#666666" Margin="5,0,0,0"/>
+                                                    <TextBlock Grid.Column="1" Text="New" FontSize="10" Foreground="#3E8DC0" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    
+                                    <!-- Patient Card 2 -->
+                                    <Border Width="100" Height="120" Background="White" BorderBrush="#EEEEEE" BorderThickness="1" 
+                                            CornerRadius="8" Margin="0,0,10,0">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="11:04 PM" FontSize="10" HorizontalAlignment="Right" Margin="0,5,5,0"/>
+                                                <Ellipse Width="40" Height="40" Fill="#BBBBBB" Margin="0,5,0,5" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Juan Dela Cruz" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Hypertension" FontSize="10" Foreground="#666666" HorizontalAlignment="Center"/>
+                                                <Grid Margin="0,10,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="Visited: 2" FontSize="10" Foreground="#666666" Margin="5,0,0,0"/>
+                                                    <TextBlock Grid.Column="1" Text="" FontSize="10" Foreground="#3E8DC0" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    
+                                    <!-- Patient Card 3 -->
+                                    <Border Width="100" Height="120" Background="White" BorderBrush="#EEEEEE" BorderThickness="1" 
+                                            CornerRadius="8" Margin="0,0,10,0">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="11:04 PM" FontSize="10" HorizontalAlignment="Right" Margin="0,5,5,0"/>
+                                                <Ellipse Width="40" Height="40" Fill="#BBBBBB" Margin="0,5,0,5" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Juan Dela Cruz" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Hypertension" FontSize="10" Foreground="#666666" HorizontalAlignment="Center"/>
+                                                <Grid Margin="0,10,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="Visited: 0" FontSize="10" Foreground="#666666" Margin="5,0,0,0"/>
+                                                    <TextBlock Grid.Column="1" Text="New" FontSize="10" Foreground="#3E8DC0" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    
+                                    <!-- Patient Card 4 -->
+                                    <Border Width="100" Height="120" Background="White" BorderBrush="#EEEEEE" BorderThickness="1" 
+                                            CornerRadius="8" Margin="0,0,10,0">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="11:04 PM" FontSize="10" HorizontalAlignment="Right" Margin="0,5,5,0"/>
+                                                <Ellipse Width="40" Height="40" Fill="#BBBBBB" Margin="0,5,0,5" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Juan Dela Cruz" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Hypertension" FontSize="10" Foreground="#666666" HorizontalAlignment="Center"/>
+                                                <Grid Margin="0,10,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="Visited: 4" FontSize="10" Foreground="#666666" Margin="5,0,0,0"/>
+                                                    <TextBlock Grid.Column="1" Text="New" FontSize="10" Foreground="#3E8DC0" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    
+                                    <!-- Patient Card 5 -->
+                                    <Border Width="100" Height="120" Background="White" BorderBrush="#EEEEEE" BorderThickness="1" 
+                                            CornerRadius="8" Margin="0,0,10,0">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="11:04 PM" FontSize="10" HorizontalAlignment="Right" Margin="0,5,5,0"/>
+                                                <Ellipse Width="40" Height="40" Fill="#BBBBBB" Margin="0,5,0,5" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Juan Dela Cruz" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Hypertension" FontSize="10" Foreground="#666666" HorizontalAlignment="Center"/>
+                                                <Grid Margin="0,10,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="Visited: 3" FontSize="10" Foreground="#666666" Margin="5,0,0,0"/>
+                                                    <TextBlock Grid.Column="1" Text="" FontSize="10" Foreground="#3E8DC0" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </ItemsControl.Items>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Bottom Section with Chart and Calendar -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Patients/Month Chart -->
+                        <Border Grid.Column="0" Background="White" CornerRadius="10" Margin="0,0,10,0">
+                            <Grid Margin="15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Chart Header -->
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Patients / Month" FontWeight="Bold" FontSize="16"/>
+                                    <ComboBox Grid.Column="1" Width="120" PlaceholderText="Jan 2025" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="Jan 2025"/>
+                                        <ComboBoxItem Content="Feb 2025"/>
+                                        <ComboBoxItem Content="Mar 2025"/>
+                                    </ComboBox>
+                                </Grid>
+                                
+                                <!-- Chart Area (Placeholder) -->
+                                <Border Grid.Row="1" Margin="0,15,0,10" Height="150">
+                                    <!-- This would be a chart control in practice, this is just a visual representation -->
+                                    <Canvas>
+                                        <!-- Bars representing data -->
+                                        <Rectangle Canvas.Left="20" Canvas.Bottom="10" Width="15" Height="60" Fill="#D35400"/>
+                                        <Rectangle Canvas.Left="40" Canvas.Bottom="10" Width="15" Height="80" Fill="#FF7F50"/>
+                                        <Rectangle Canvas.Left="60" Canvas.Bottom="10" Width="15" Height="40" Fill="#3498DB"/>
+                                        
+                                        <Rectangle Canvas.Left="90" Canvas.Bottom="10" Width="15" Height="70" Fill="#D35400"/>
+                                        <Rectangle Canvas.Left="110" Canvas.Bottom="10" Width="15" Height="50" Fill="#FF7F50"/>
+                                        <Rectangle Canvas.Left="130" Canvas.Bottom="10" Width="15" Height="65" Fill="#3498DB"/>
+                                        
+                                        <Rectangle Canvas.Left="160" Canvas.Bottom="10" Width="15" Height="90" Fill="#D35400"/>
+                                        <Rectangle Canvas.Left="180" Canvas.Bottom="10" Width="15" Height="45" Fill="#FF7F50"/>
+                                        <Rectangle Canvas.Left="200" Canvas.Bottom="10" Width="15" Height="55" Fill="#3498DB"/>
+                                        
+                                        <Rectangle Canvas.Left="230" Canvas.Bottom="10" Width="15" Height="75" Fill="#D35400"/>
+                                        <Rectangle Canvas.Left="250" Canvas.Bottom="10" Width="15" Height="55" Fill="#FF7F50"/>
+                                        <Rectangle Canvas.Left="270" Canvas.Bottom="10" Width="15" Height="45" Fill="#3498DB"/>
+                                        
+                                        <Rectangle Canvas.Left="300" Canvas.Bottom="10" Width="15" Height="80" Fill="#D35400"/>
+                                        <Rectangle Canvas.Left="320" Canvas.Bottom="10" Width="15" Height="60" Fill="#FF7F50"/>
+                                        <Rectangle Canvas.Left="340" Canvas.Bottom="10" Width="15" Height="70" Fill="#3498DB"/>
+                                    </Canvas>
+                                </Border>
+                                
+                                <!-- Legend -->
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,15,0">
+                                        <Ellipse Width="10" Height="10" Fill="#D35400" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Acute" FontSize="12" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,15,0">
+                                        <Ellipse Width="10" Height="10" Fill="#FF7F50" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Regular" FontSize="12" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="10" Height="10" Fill="#3498DB" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Medical Visit" FontSize="12" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Calendar -->
+                        <Border Grid.Column="1" Background="White" CornerRadius="10">
+                            <Grid Margin="15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Calendar Header -->
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0" Content="&lt;" FontWeight="Bold" Background="Transparent"/>
+                                    <TextBlock Grid.Column="1" Text="January 2025" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Button Grid.Column="2" Content="&gt;" FontWeight="Bold" Background="Transparent"/>
+                                </Grid>
+                                
+                                <!-- Calendar Grid -->
+                                <Grid Grid.Row="1" Margin="0,10,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <!-- Day Headers -->
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" Text="SUN" FontSize="10" HorizontalAlignment="Center" Foreground="#666666"/>
+                                        <TextBlock Grid.Column="1" Text="MON" FontSize="10" HorizontalAlignment="Center" Foreground="#666666"/>
+                                        <TextBlock Grid.Column="2" Text="TUE" FontSize="10" HorizontalAlignment="Center" Foreground="#666666"/>
+                                        <TextBlock Grid.Column="3" Text="WED" FontSize="10" HorizontalAlignment="Center" Foreground="#666666"/>
+                                        <TextBlock Grid.Column="4" Text="THU" FontSize="10" HorizontalAlignment="Center" Foreground="#666666"/>
+                                        <TextBlock Grid.Column="5" Text="FRI" FontSize="10" HorizontalAlignment="Center" Foreground="#666666"/>
+                                        <TextBlock Grid.Column="6" Text="SAT" FontSize="10" HorizontalAlignment="Center" Foreground="#666666"/>
+                                    </Grid>
+                                    
+                                    <!-- Week 1 -->
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" Text="" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="1" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="2" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="3" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="4" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5" Text="5" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="6" Text="6" FontSize="12" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                    
+                                    <!-- Week 2 -->
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" Text="7" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="8" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="9" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="10" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="11" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5" Text="12" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="6" Text="13" FontSize="12" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                    
+                                    <!-- Week 3 -->
+                                    <Grid Grid.Row="3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" Text="14" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="15" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="16" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="17" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="18" FontSize="12" HorizontalAlignment="Center"/>
+                                        <Border Grid.Column="5" Background="#3498DB" CornerRadius="50" Width="24" Height="24">
+                                            <TextBlock Text="19" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="6" Text="20" FontSize="12" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                    
+                                    <!-- Week 4 -->
+                                    <Grid Grid.Row="4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" Text="21" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="22" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="23" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="24" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="25" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5" Text="26" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="6" Text="27" FontSize="12" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                    
+                                    <!-- Week 5 -->
+                                    <Grid Grid.Row="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" Text="28" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="29" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="30" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="31" FontSize="12" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="" FontSize="12" HorizontalAlignment="Center" Foreground="#AAAAAA"/>
+                                        <TextBlock Grid.Column="5" Text="" FontSize="12" HorizontalAlignment="Center" Foreground="#AAAAAA"/>
+                                        <TextBlock Grid.Column="6" Text="" FontSize="12" HorizontalAlignment="Center" Foreground="#AAAAAA"/>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>
