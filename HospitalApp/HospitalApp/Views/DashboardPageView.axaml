@@ -2,7 +2,226 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
              x:Class="HospitalApp.Views.DashboardPageView">
-    Dashboard
+
+    <UserControl.Styles>
+        <Styles>
+            <!-- TextBox Styles remain the same -->
+            <Style Selector="TextBox">
+                <Setter Property="Background" Value="#a9cce3"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="#009BFF"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                            <Grid>
+                                <!-- Watermark Text -->
+                                <TextBlock Text="{TemplateBinding Watermark}"
+                                        Foreground="Black"
+                                        IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Margin="{TemplateBinding Padding}"/>
+                                        
+                                <!-- Main Text -->
+                                <TextPresenter Name="PART_TextPresenter" 
+                                            Text="{TemplateBinding Text}"
+                                            CaretIndex="{TemplateBinding CaretIndex}"
+                                            SelectionStart="{TemplateBinding SelectionStart}"
+                                            SelectionEnd="{TemplateBinding SelectionEnd}"
+                                            TextAlignment="{TemplateBinding TextAlignment}"
+                                            TextWrapping="{TemplateBinding TextWrapping}"
+                                            PasswordChar="{TemplateBinding PasswordChar}"
+                                            RevealPassword="{TemplateBinding RevealPassword}"
+                                            Margin="{TemplateBinding Padding}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter>
+            </Style>
+
+            <!-- Style for focused TextBox -->
+            <Style Selector="TextBox:focus">
+                <Setter Property="Background" Value="#009BFF"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderBrush" Value="White"/>
+            </Style>
+
+            <!-- Watermark color when TextBox is focused -->
+            <Style Selector="TextBox:focus /template/ TextBlock">
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+            
+            <!-- Explicit PathIcon style for this view -->
+            <Style Selector="PathIcon">
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+        </Styles>
+    </UserControl.Styles>
+    
+    <!-- Rest of the XAML code remains the same -->
+    <Grid Margin="50"> 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <!-- HEADER -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Hello, [Name]" FontSize="24" FontFamily="Rubik" FontWeight="Bold" Margin="0 5" Foreground="Black"/>
+            <TextBlock Text="DashBoard" FontSize="48" FontWeight="Bold" Foreground="#3E8DC0" Margin="0 5"/>
+        </StackPanel>
+
+        <!-- CONTENT GRID (Full Height) -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- SIDEBAR: Full Height Background -->
+            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="#EAF2F8"
+                    VerticalAlignment="Stretch"  Margin="0 0 5 0"
+                    Padding="20" CornerRadius="10">
+                
+                <Grid> 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Search Bar -->
+                    <TextBox Watermark="Search Doctors..." Grid.Row="0"></TextBox>
+
+                    <!-- ScrollViewer for List -->
+                    <ScrollViewer Grid.Row="1">
+                        <ListBox Background="Transparent" BorderThickness="0">
+                            <ListBox.Styles>
+                                <!-- Base Item Style -->
+                                <Style Selector="ListBoxItem">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                    <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                    <Setter Property="FontSize" Value="18"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+
+                                <!-- Hover Effect -->
+                                <Style Selector="ListBoxItem:pointerover">
+                                    <Setter Property="Background" Value="#D6EAF8"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+
+                                <!-- Selected Item -->
+                                <Style Selector="ListBoxItem:selected">
+                                    <Setter Property="Background" Value="#009BFF"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Style>
+
+                                <!-- Hover Effect for Selected Item -->
+                                <Style Selector="ListBoxItem:selected:pointerover">
+                                    <Setter Property="Background" Value="#48b9ff"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Style>
+                            </ListBox.Styles>
+
+                            <!-- List Items -->
+                            <ListBoxItem Content="Dr. Alice Johnson"/>
+                            <ListBoxItem Content="Dr. Bob Smith"/>
+                            <ListBoxItem Content="Dr. Charlie Davis"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                            <ListBoxItem Content="Dr. David Evans"/>
+                        </ListBox>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="2" Background="#006CB5" Margin="5 0 5 0" CornerRadius="10" Grid.ColumnSpan="2">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Header Section -->
+                        <RowDefinition Height="*"/>   <!-- Scrollable Content -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Header (Fixed Size) -->
+                    <StackPanel Orientation="Horizontal" Spacing="10" Grid.Row="0" Margin="20">
+                        <Border Width="50" Height="50" Background="#3E8DC0" CornerRadius="100">
+                            <PathIcon Data="{StaticResource Appointments}" 
+                                    Width="20" 
+                                    Height="20" 
+                                    Foreground="White"
+                                    Padding="20"/>
+                        </Border>
+                        <TextBlock Text="Appointments" FontSize="28" FontFamily="Rubik" FontWeight="Bold" Foreground="White" Margin="0 10 0 0"/>
+                    </StackPanel>
+
+                    <!-- Scrollable List -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ListBox Margin="10" Background="Transparent"  Foreground="White">
+                            <ListBoxItem BorderBrush="white" BorderThickness="1" CornerRadius="10" Margin="0 10">Test1</ListBoxItem>
+                            <ListBoxItem BorderBrush="white" BorderThickness="1" CornerRadius="10" Margin="0 10">Test1</ListBoxItem>
+                            <ListBoxItem BorderBrush="white" BorderThickness="1" CornerRadius="10" Margin="0 10">Test1</ListBoxItem>
+                            <ListBoxItem BorderBrush="white" BorderThickness="1" CornerRadius="10" Margin="0 10">Test1</ListBoxItem>
+                            <ListBoxItem BorderBrush="white" BorderThickness="1" CornerRadius="10" Margin="0 10">Test1</ListBoxItem>
+                            <ListBoxItem BorderBrush="white" BorderThickness="1" CornerRadius="10" Margin="0 10">Test1</ListBoxItem>
+
+                        </ListBox>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+
+            <!-- Graph Section -->
+            <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Background="#D4E6F1" Margin="5 10 5 0" CornerRadius="10">
+            </Border>
+        </Grid>
+    </Grid>
 </UserControl>

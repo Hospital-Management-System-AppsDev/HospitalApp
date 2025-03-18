@@ -5,15 +5,12 @@ using HospitalApp.ViewModels;
 
 namespace HospitalApp.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainMenuControl : UserControl
     {
-        public MainWindow()
+        public MainMenuControl()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-            // No need to set DataContext here as it will be set in the UserControl
+            DataContext = new MainMenuViewModel();
         }
 
         private void InitializeComponent()

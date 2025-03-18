@@ -33,6 +33,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/Views/DashboardPageView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/Views/MainMenuPageView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
