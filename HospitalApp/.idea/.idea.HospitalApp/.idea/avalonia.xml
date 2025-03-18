@@ -8,6 +8,8 @@
         <entry key="HospitalApp/Views/AppointmentsPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/DashboardPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/HomePageView.axaml" value="HospitalApp/HospitalApp.csproj" />
+        <entry key="HospitalApp/Views/MainContentPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
+        <entry key="HospitalApp/Views/MainMenuPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/MainWindow.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/PharmacyPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/SettingsPageView.axaml" value="HospitalApp/HospitalApp.csproj" />

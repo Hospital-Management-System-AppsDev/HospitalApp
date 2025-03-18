@@ -1,138 +1,15 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:HospitalApp.ViewModels"
+        xmlns:views="using:HospitalApp.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
+        MinWidth="1440" MinHeight="900"
+        
         x:Class="HospitalApp.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="HospitalApp">
     
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-    
-    <Window.Styles>
-        <Styles>
-            <!-- Base ListBoxItem Style -->
-            <Style Selector="ListBoxItem">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="Padding" Value="20 25"/>
-                <Setter Property="Margin" Value="10 20"/>
-                <Setter Property="CornerRadius" Value="20"/>
-                <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="Template">
-                    <ControlTemplate>
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                        Background="{TemplateBinding Background}"
-                                        CornerRadius="{TemplateBinding CornerRadius}"
-                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                        Content="{TemplateBinding Content}"
-                                        Padding="{TemplateBinding Padding}"
-                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </ControlTemplate>
-                </Setter>
-            </Style>
-
-            <!-- Hover Effect -->
-            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="#48b9ff"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:pointerover">
-                <Setter Property="Foreground" Value="Black"/>
-            </Style>
-
-            <!-- Selected Item Style -->
-            <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="#009BFF"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:selected">
-                <Setter Property="Foreground" Value="White"/>
-            </Style>
-
-            <!-- Hover Effect for Selected Item -->
-            <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="#48b9ff"/>
-            </Style>
-            
-            <Style Selector="PathIcon">
-                <Setter Property="Foreground" Value="Black"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:pointerover PathIcon">
-                <Setter Property="Foreground" Value="LightGray"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:selected PathIcon">
-                <Setter Property="Foreground" Value="White"/>
-            </Style>
-        </Styles>
-    </Window.Styles>
-
-    
-    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
-             OpenPaneLength="300"
-             CompactPaneLength="101"
-             DisplayMode="CompactInline"
-             Background="black"
-             PaneBackground="#EAF2F8">
-      
-      <!-- Left Pane -->
-      <SplitView.Pane>
-          <Border Background="Transparent" CornerRadius="12 0 0 12" ClipToBounds="True">
-              <Grid RowDefinitions="Auto,*,Auto" Margin="5">
-                  
-                  <!-- Toggle Button (Row 0) -->
-                  <Button Grid.Row="0"
-                          Command="{Binding TriggerPaneCommand}"
-                          Background="#009BFF"
-                          Margin="20"
-                          Width="50"
-                          Height="50"
-                          CornerRadius="10"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center">
-                      <PathIcon Data="{StaticResource HamburgerMenu}"></PathIcon>
-                  </Button>
-                  
-                  <!-- ListBox with first three items (Row 1) -->
-                  <ListBox ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedListItem}" SelectionMode="Single" Grid.Row="1" VerticalAlignment="Center" Background="Transparent">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <PathIcon Data="{Binding ListItemIcon}" Width="25" Height="25" Margin=" 5 0 10 0"></PathIcon>
-                                <TextBlock Text="{Binding Label}" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                  </ListBox>
-                  
-                  <!-- TODO: Change command(logout command) -->
-                  <!-- Last Item pushed to the bottom (Row 2) -->
-                  <Button Grid.Row="2" 
-                          Command="{Binding TriggerPaneCommand}"
-                          Background="Transparent"
-                          Margin="20"
-                          Height="50"
-                          CornerRadius="10"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center"
-                          >
-                      <PathIcon Data="{StaticResource Logout}" Width="25" Height="25"></PathIcon>
-                  </Button>
-              </Grid>
-          </Border>
-      </SplitView.Pane>
-      
-      <!-- Main Content Area -->
-      <SplitView.Content>
-          <Border>
-              <TransitioningContentControl Content="{Binding CurrentPage}"/>
-          </Border>
-      </SplitView.Content>
-  </SplitView>
+    <views:MainMenuControl />
 </Window>
