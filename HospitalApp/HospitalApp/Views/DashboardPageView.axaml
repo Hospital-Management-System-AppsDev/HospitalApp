@@ -1,9 +1,11 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl x:Class="HospitalApp.Views.DashboardPageView"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="HospitalApp.Views.DashboardPageView">
+             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
+             xmlns:models="clr-namespace:HospitalApp.Models"
+             x:DataType="vm:DashboardPageViewModel"> <!-- Add this -->
+
+             
 
     <UserControl.Styles>
         <Styles>
@@ -108,11 +110,11 @@
                     </Grid.RowDefinitions>
 
                     <!-- Search Bar -->
-                    <TextBox Watermark="Search Doctors..." Grid.Row="0"></TextBox>
+                    <TextBox Text="{Binding SearchText, Mode=TwoWay}" Watermark="Search Doctors..." Grid.Row="0"></TextBox>
 
                     <!-- ScrollViewer for List -->
                     <ScrollViewer Grid.Row="1">
-                        <ListBox Background="Transparent" BorderThickness="0">
+                        <ListBox ItemsSource="{Binding FilteredDoctors}" Background="Transparent" BorderThickness="0">
                             <ListBox.Styles>
                                 <!-- Base Item Style -->
                                 <Style Selector="ListBoxItem">
@@ -143,43 +145,19 @@
                                 </Style>
                             </ListBox.Styles>
 
-                            <!-- List Items -->
-                            <ListBoxItem Content="Dr. Alice Johnson"/>
-                            <ListBoxItem Content="Dr. Bob Smith"/>
-                            <ListBoxItem Content="Dr. Charlie Davis"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
-                            <ListBoxItem Content="Dr. David Evans"/>
+                            <!-- Define how each item should be displayed -->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:Doctor">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <Ellipse Width="10" Height="10" 
+                                            Fill="{Binding is_available, Converter={StaticResource AvailabilityToColorConverter}}"
+                                            VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="18"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
+
                     </ScrollViewer>
                 </Grid>
             </Border>
