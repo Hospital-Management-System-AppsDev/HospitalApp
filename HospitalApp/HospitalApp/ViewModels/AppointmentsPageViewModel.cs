@@ -1,6 +1,6 @@
 namespace HospitalApp.ViewModels;
 
-public class AppointmentsPageViewModel : ViewModelBase
+public class AppointmentsPageViewModel:ViewModelBase
 {
     
 }
