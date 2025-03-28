@@ -1,7 +1,11 @@
-public class Doctor
+namespace HospitalApp.Models
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Specialty { get; set; }
-    public string Contact { get; set; }
+    public class Doctor
+    {
+        public required int Id { get; set; }
+        public required string Name { get; set; }
+        public required string Email { get; set; }
+        public required string specialization{get; set;}
+        public required int is_available{get; set;}
+    }
 }
