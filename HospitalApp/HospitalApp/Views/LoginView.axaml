@@ -1,0 +1,13 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
+             x:Class="HospitalApp.Views.LoginView"
+             x:DataType="vm:LoginViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,Auto">
+        <TextBox Grid.Row="0" Watermark="Username" Text="{Binding Username}"/>
+        <TextBox Grid.Row="1" PasswordChar="●" Watermark="Password" Text="{Binding Password}" />
+
+        <Button Grid.Row="2" Content="Login" Command="{Binding LoginCommand}"/>
+    </Grid>
+</UserControl>
