@@ -34,4 +34,11 @@ public class ApiService
     // public async Task<Doctor> GetDoctorAsync(string name){
     //     return await _httpClient.GetFromJsonAsync<Doctor>($"doctors/{name}"); //Endpoint
     // }
+
+    public async Task<bool> UpdateDoctorAvailabilityAsync(int doctorId, int isAvailable)
+    {
+        var response = await _httpClient.PatchAsJsonAsync($"doctors/{doctorId}/availability", isAvailable);
+        return response.IsSuccessStatusCode;
+    }
+
 }

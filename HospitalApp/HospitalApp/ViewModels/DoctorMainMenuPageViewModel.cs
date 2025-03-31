@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace HospitalApp.ViewModels;
 
-public partial class MainMenuViewModel : ViewModelBase
+public partial class DoctorMainMenuPageViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainViewModel;
     private readonly ApiService _apiService = new();
@@ -24,7 +24,7 @@ public partial class MainMenuViewModel : ViewModelBase
     [ObservableProperty]
     private ListItemTemplate? _selectedListItem;
 
-    public MainMenuViewModel(MainWindowViewModel mainViewModel)
+    public DoctorMainMenuPageViewModel(MainWindowViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
 
@@ -80,18 +80,5 @@ public partial class MainMenuViewModel : ViewModelBase
     }
 }
 
-public class ListItemTemplate
-{
-    public ListItemTemplate(Type type, string iconKey)
-    {
-        ModelType = type;
-        Label = type.Name.Replace("PageViewModel", string.Empty);
-        
-        Application.Current!.TryFindResource(iconKey, out var res);
-        ListItemIcon = (StreamGeometry)res!;
-    }
 
-    public string Label { get; set; }
-    public Type ModelType { get; set; }
-    public StreamGeometry ListItemIcon { get; } // Path to SVG Icon
-}
+
