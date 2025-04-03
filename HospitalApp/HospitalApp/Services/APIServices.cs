@@ -26,14 +26,15 @@ public class ApiService
     }
 
 
-    // public async Task<Doctor> GetDoctorAsync(int id)
-    // {
-    //     return await _httpClient.GetFromJsonAsync<Doctor>($"doctors/{id}"); //Endpoint
-    // }
+    public async Task<Doctor> GetDoctorAsync(int id)
+    {
+        return await _httpClient.GetFromJsonAsync<Doctor>($"doctors/{id}"); //Endpoint
+    }
 
-    // public async Task<Doctor> GetDoctorAsync(string name){
-    //     return await _httpClient.GetFromJsonAsync<Doctor>($"doctors/{name}"); //Endpoint
-    // }
+    public async Task<User> LoginAsync(string username) {
+        return await _httpClient.GetFromJsonAsync<User>($"users/by-username/{username}");
+    }
+
 
     public async Task<bool> UpdateDoctorAvailabilityAsync(int doctorId, int isAvailable)
     {
