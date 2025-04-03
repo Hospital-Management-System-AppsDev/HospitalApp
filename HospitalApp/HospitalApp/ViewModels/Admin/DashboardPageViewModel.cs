@@ -21,6 +21,10 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private string searchText = string.Empty;
 
+        // [Observable Property]
+
+        // private Admin admin = 
+
         public DashboardPageViewModel(ApiService apiService, SignalRService signalRService)
         {
             _apiService = apiService;
