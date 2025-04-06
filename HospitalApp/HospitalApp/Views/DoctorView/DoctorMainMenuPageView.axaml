@@ -2,13 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:HospitalApp.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
-             x:Class="HospitalApp.Views.MainMenuControl"
-             x:DataType="vm:MainMenuViewModel"
-             x:Name="mainMenuControl">
-    
-    <UserControl.Styles>
+             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="HospitalApp.Views.DoctorMainMenuPageView"
+             x:DataType="vm:DoctorMainMenuPageViewModel"
+>
+
+  <UserControl.Styles>
         <Styles>
             <!-- Base ListBoxItem Style -->
             <Style Selector="ListBoxItem">
@@ -113,15 +115,15 @@
                   
                   <!-- Logout Button -->
                   <Button Grid.Row="2" 
-                          Command="{Binding LogoutCommand}"
-                          Background="Transparent"
-                          Margin="20"
-                          Height="50"
-                          CornerRadius="10"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center">
-                      <PathIcon Data="{StaticResource Logout}" Width="25" Height="25"></PathIcon>
-                  </Button>
+                        Command="{Binding LogoutCommand}"
+                        Background="Transparent"
+                        Margin="20"
+                        Height="50"
+                        CornerRadius="10"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+                    <PathIcon Data="{StaticResource Logout}" Width="25" Height="25"></PathIcon>
+                </Button>
               </Grid>
           </Border>
       </SplitView.Pane>

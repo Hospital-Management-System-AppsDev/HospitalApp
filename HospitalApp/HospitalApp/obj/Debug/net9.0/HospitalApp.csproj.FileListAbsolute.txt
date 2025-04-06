@@ -237,6 +237,7 @@ C:/Users/User/Desktop/HospitalApp/HospitalApp/HospitalApp/obj/Debug/net9.0/ref/H
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/System.Net.ServerSentEvents.dll
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/System.Threading.Channels.dll
+<<<<<<< HEAD
 C:\Users\User\Desktop\HospitalApp\hospitalapp\hospitalapp\bin\Debug\net9.0\HospitalApp.exe
 C:\Users\User\Desktop\HospitalApp\hospitalapp\hospitalapp\bin\Debug\net9.0\HospitalApp.deps.json
 C:\Users\User\Desktop\HospitalApp\hospitalapp\hospitalapp\bin\Debug\net9.0\HospitalApp.runtimeconfig.json
@@ -331,3 +332,7 @@ C:\Users\User\Desktop\HospitalApp\hospitalapp\hospitalapp\obj\Debug\net9.0\refin
 C:\Users\User\Desktop\HospitalApp\hospitalapp\hospitalapp\obj\Debug\net9.0\Hospital.58D4885F.Up2Date
 C:\Users\User\Desktop\HospitalApp\hospitalapp\hospitalapp\obj\Debug\net9.0\HospitalApp.genruntimeconfig.cache
 C:\Users\User\Desktop\HospitalApp\hospitalapp\hospitalapp\obj\Debug\net9.0\ref\HospitalApp.dll
+=======
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/BCrypt.Net-Next.dll
+>>>>>>> ad0a8194e4d2553135622e4f7c8e0e9714915f31
+C:\Users\User\Desktop\HospitalApp\HospitalApp\HospitalApp\bin\Debug\net9.0\BCrypt.Net-Next.dll
