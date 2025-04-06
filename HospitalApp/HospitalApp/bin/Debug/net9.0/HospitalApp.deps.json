@@ -8,12 +8,13 @@
     ".NETCoreApp,Version=v9.0": {
       "HospitalApp/1.0.0": {
         "dependencies": {
-          "Avalonia": "11.2.5",
+          "Avalonia": "11.2.6",
           "Avalonia.Desktop": "11.2.1",
           "Avalonia.Diagnostics": "11.2.1",
           "Avalonia.Fonts.Inter": "11.2.1",
           "Avalonia.Svg.Skia": "11.2.0.2",
           "Avalonia.Themes.Fluent": "11.2.1",
+          "BCrypt.Net-Next": "4.0.3",
           "CommunityToolkit.Mvvm": "8.2.1",
           "Microsoft.AspNetCore.SignalR.Client": "9.0.3",
           "ReactiveUI": "20.2.45",
@@ -23,56 +24,56 @@
           "HospitalApp.dll": {}
         }
       },
-      "Avalonia/11.2.5": {
+      "Avalonia/11.2.6": {
         "dependencies": {
           "Avalonia.BuildServices": "0.0.31",
-          "Avalonia.Remote.Protocol": "11.2.5",
+          "Avalonia.Remote.Protocol": "11.2.6",
           "MicroCom.Runtime": "0.11.0"
         },
         "runtime": {
           "lib/net8.0/Avalonia.Base.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.Controls.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.DesignerSupport.dll": {
             "assemblyVersion": "0.7.0.0",
             "fileVersion": "0.7.0.0"
           },
           "lib/net8.0/Avalonia.Dialogs.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.Markup.Xaml.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.Markup.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.Metal.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.MicroCom.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.OpenGL.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.Vulkan.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           },
           "lib/net8.0/Avalonia.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           }
         }
       },
@@ -98,8 +99,8 @@
       "Avalonia.BuildServices/0.0.31": {},
       "Avalonia.Controls.ColorPicker/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5",
-          "Avalonia.Remote.Protocol": "11.2.5"
+          "Avalonia": "11.2.6",
+          "Avalonia.Remote.Protocol": "11.2.6"
         },
         "runtime": {
           "lib/net8.0/Avalonia.Controls.ColorPicker.dll": {
@@ -110,8 +111,8 @@
       },
       "Avalonia.Controls.DataGrid/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5",
-          "Avalonia.Remote.Protocol": "11.2.5"
+          "Avalonia": "11.2.6",
+          "Avalonia.Remote.Protocol": "11.2.6"
         },
         "runtime": {
           "lib/net8.0/Avalonia.Controls.DataGrid.dll": {
@@ -122,7 +123,7 @@
       },
       "Avalonia.Desktop/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5",
+          "Avalonia": "11.2.6",
           "Avalonia.Native": "11.2.1",
           "Avalonia.Skia": "11.2.1",
           "Avalonia.Win32": "11.2.1",
@@ -137,7 +138,7 @@
       },
       "Avalonia.Diagnostics/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5",
+          "Avalonia": "11.2.6",
           "Avalonia.Controls.ColorPicker": "11.2.1",
           "Avalonia.Controls.DataGrid": "11.2.1",
           "Avalonia.Themes.Simple": "11.2.1"
@@ -151,7 +152,7 @@
       },
       "Avalonia.Fonts.Inter/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5"
+          "Avalonia": "11.2.6"
         },
         "runtime": {
           "lib/net8.0/Avalonia.Fonts.Inter.dll": {
@@ -162,7 +163,7 @@
       },
       "Avalonia.FreeDesktop/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5",
+          "Avalonia": "11.2.6",
           "Tmds.DBus.Protocol": "0.20.0"
         },
         "runtime": {
@@ -174,7 +175,7 @@
       },
       "Avalonia.Native/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5"
+          "Avalonia": "11.2.6"
         },
         "runtime": {
           "lib/net8.0/Avalonia.Native.dll": {
@@ -190,17 +191,17 @@
           }
         }
       },
-      "Avalonia.Remote.Protocol/11.2.5": {
+      "Avalonia.Remote.Protocol/11.2.6": {
         "runtime": {
           "lib/net8.0/Avalonia.Remote.Protocol.dll": {
-            "assemblyVersion": "11.2.5.0",
-            "fileVersion": "11.2.5.0"
+            "assemblyVersion": "11.2.6.0",
+            "fileVersion": "11.2.6.0"
           }
         }
       },
       "Avalonia.Skia/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5",
+          "Avalonia": "11.2.6",
           "HarfBuzzSharp": "7.3.0.2",
           "HarfBuzzSharp.NativeAssets.Linux": "7.3.0.2",
           "HarfBuzzSharp.NativeAssets.WebAssembly": "7.3.0.3-preview.2.2",
@@ -217,7 +218,7 @@
       },
       "Avalonia.Svg.Skia/11.2.0.2": {
         "dependencies": {
-          "Avalonia": "11.2.5",
+          "Avalonia": "11.2.6",
           "Avalonia.Skia": "11.2.1",
           "SkiaSharp": "2.88.8",
           "Svg.Skia": "2.0.0.4"
@@ -231,7 +232,7 @@
       },
       "Avalonia.Themes.Fluent/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5"
+          "Avalonia": "11.2.6"
         },
         "runtime": {
           "lib/net8.0/Avalonia.Themes.Fluent.dll": {
@@ -242,7 +243,7 @@
       },
       "Avalonia.Themes.Simple/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5"
+          "Avalonia": "11.2.6"
         },
         "runtime": {
           "lib/net8.0/Avalonia.Themes.Simple.dll": {
@@ -253,7 +254,7 @@
       },
       "Avalonia.Win32/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5",
+          "Avalonia": "11.2.6",
           "Avalonia.Angle.Windows.Natives": "2.1.22045.20230930"
         },
         "runtime": {
@@ -265,7 +266,7 @@
       },
       "Avalonia.X11/11.2.1": {
         "dependencies": {
-          "Avalonia": "11.2.5",
+          "Avalonia": "11.2.6",
           "Avalonia.FreeDesktop": "11.2.1",
           "Avalonia.Skia": "11.2.1"
         },
@@ -273,6 +274,14 @@
           "lib/net8.0/Avalonia.X11.dll": {
             "assemblyVersion": "11.2.1.0",
             "fileVersion": "11.2.1.0"
+          }
+        }
+      },
+      "BCrypt.Net-Next/4.0.3": {
+        "runtime": {
+          "lib/net6.0/BCrypt.Net-Next.dll": {
+            "assemblyVersion": "4.0.3.0",
+            "fileVersion": "4.0.3.0"
           }
         }
       },
@@ -744,12 +753,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Avalonia/11.2.5": {
+    "Avalonia/11.2.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-drAn4ymqy6c1AWIzpQIFLIQjPx9p7Ffsu+7bYy4vV8MtvmgiQ2s6R5HvmNuWheUtpHyhnowVQoOdJQl5uS6a+A==",
-      "path": "avalonia/11.2.5",
-      "hashPath": "avalonia.11.2.5.nupkg.sha512"
+      "sha512": "sha512-Z92CH5hMnI/gAWgNC4fyK07YRN33jpP9DS39cjii4pXXzaOhjNEKopecGZjcjZaAzeFPJWI6+UKnXFe2wf0ovA==",
+      "path": "avalonia/11.2.6",
+      "hashPath": "avalonia.11.2.6.nupkg.sha512"
     },
     "Avalonia.Angle.Windows.Natives/2.1.22045.20230930": {
       "type": "package",
@@ -814,12 +823,12 @@
       "path": "avalonia.native/11.2.1",
       "hashPath": "avalonia.native.11.2.1.nupkg.sha512"
     },
-    "Avalonia.Remote.Protocol/11.2.5": {
+    "Avalonia.Remote.Protocol/11.2.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-wS/qPTRVmgB49PxVMEFRczWS2UQ91Sl7xBI4qQtVyyi+REeH5L0sXYTjyKkHALI/vZd4DeH4SrleDEX0zNOVmA==",
-      "path": "avalonia.remote.protocol/11.2.5",
-      "hashPath": "avalonia.remote.protocol.11.2.5.nupkg.sha512"
+      "sha512": "sha512-0DVvZW6awq5piAnKD6+sb6JB30zY9wlaZPfR8vhRsvlJGZUx4By24SOku3cHZIvnS1Yxwca+IY5lr99FlJtF+Q==",
+      "path": "avalonia.remote.protocol/11.2.6",
+      "hashPath": "avalonia.remote.protocol.11.2.6.nupkg.sha512"
     },
     "Avalonia.Skia/11.2.1": {
       "type": "package",
@@ -862,6 +871,13 @@
       "sha512": "sha512-h2aCpyLmxGkldPK7cbncEgyobrJ5En7gQtrwVARLmN32Rw6dHut3jyF3P8at2DmWxRuKwZVXgWBSSI62hINgrQ==",
       "path": "avalonia.x11/11.2.1",
       "hashPath": "avalonia.x11.11.2.1.nupkg.sha512"
+    },
+    "BCrypt.Net-Next/4.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
+      "path": "bcrypt.net-next/4.0.3",
+      "hashPath": "bcrypt.net-next.4.0.3.nupkg.sha512"
     },
     "CommunityToolkit.Mvvm/8.2.1": {
       "type": "package",

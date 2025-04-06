@@ -1,30 +1,46 @@
 using System;
+using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Media; // ✅ Fix: Add missing Brushes reference
 using HospitalApp.ViewModels;
+using HospitalApp.Views;
 
-namespace HospitalApp;
-
-public class ViewLocator : IDataTemplate
+namespace HospitalApp
 {
-    public Control? Build(object? param)
+    public class ViewLocator : IDataTemplate
     {
-        if (param is null)
-            return null;
+        private readonly ApiService _apiService;
+        private readonly SignalRService _signalRService;
 
-        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
-        var type = Type.GetType(name);
-
-        if (type != null)
+        public ViewLocator()
         {
-            return (Control)Activator.CreateInstance(type)!;
+            _apiService = new ApiService();
+            _signalRService = new SignalRService();
         }
 
-        return new TextBlock { Text = "Not Found: " + name };
-    }
+        public Control Build(object param)
+        {
+            var name = param.GetType().FullName!.Replace("ViewModel", "View");
+            var type = Type.GetType(name) ?? Type.GetType(name + ", " + Assembly.GetExecutingAssembly().FullName);
 
-    public bool Match(object? data)
-    {
-        return data is ViewModelBase;
+            if (type != null)
+            {
+                var instance = Activator.CreateInstance(type);
+                if (instance is Control control)
+                {
+                    control.DataContext = param; // ✅ Bind ViewModel to View
+                    return control;
+                }
+
+                return new TextBlock { Text = $"Failed to create view: {name}" };
+            }
+
+            Console.WriteLine($"ViewLocator: View not found for {name}");
+            return new TextBlock { Text = $"View Not Found: {name}", Foreground = Brushes.Red };
+        }
+
+
+        public bool Match(object data) => data is ViewModelBase;
     }
 }
