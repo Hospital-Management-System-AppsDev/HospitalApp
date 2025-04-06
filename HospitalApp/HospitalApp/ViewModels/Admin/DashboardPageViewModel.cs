@@ -2,10 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Http;
-using Microsoft.AspNetCore.SignalR.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using HospitalApp.Models;
 
 namespace HospitalApp.ViewModels
@@ -13,7 +10,7 @@ namespace HospitalApp.ViewModels
     public partial class DashboardPageViewModel : ViewModelBase
     {
         private readonly ApiService _apiService;
-        private readonly HubConnection _hubConnection;
+        private readonly SignalRService _signalRService;
 
         [ObservableProperty]
         private ObservableCollection<Doctor> doctors = new();
@@ -24,45 +21,42 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private string searchText = string.Empty;
 
-        public DashboardPageViewModel()
+        // [Observable Property]
+
+        // private Admin admin = 
+
+        public DashboardPageViewModel(ApiService apiService, SignalRService signalRService)
         {
-            _apiService = new ApiService();
-            _hubConnection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5271/doctorHub") // Update with your API URL
-                .WithAutomaticReconnect()
-                .Build();
+            _apiService = apiService;
+            _signalRService = signalRService;
 
-            _hubConnection.On<int, int>("UpdateDoctorAvailability", (doctorId, isAvailable) =>
-            {
-                var doctor = Doctors.FirstOrDefault(d => d.Id == doctorId);
-                if (doctor != null)
-                {
-                    doctor.is_available = isAvailable;
-                    FilterDoctors(); // Refresh the UI
-                }
-            });
+            _signalRService.DoctorAvailabilityUpdated += OnDoctorAvailabilityUpdated;
+            _signalRService.DoctorAdded += OnDoctorAdded;
 
-            ConnectToSignalR();
             LoadDoctors();
+            ConnectToSignalR();
         }
 
         private async void ConnectToSignalR()
         {
-            try
-            {
-                await _hubConnection.StartAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("SignalR connection error: " + ex.Message);
-            }
+            await _signalRService.ConnectAsync();
         }
 
         private async void LoadDoctors()
         {
             var doctorsList = await _apiService.GetDoctorsAsync();
             Doctors = new ObservableCollection<Doctor>(doctorsList);
-            FilterDoctors(); // Initialize filtered list
+            FilterDoctors();
+        }
+
+        private void OnDoctorAvailabilityUpdated(int doctorId, int isAvailable)
+        {
+            var doctor = Doctors.FirstOrDefault(d => d.Id == doctorId);
+            if (doctor != null)
+            {
+                doctor.is_available = isAvailable;
+                FilterDoctors();
+            }
         }
 
         partial void OnSearchTextChanged(string value)
@@ -75,18 +69,31 @@ namespace HospitalApp.ViewModels
             if (string.IsNullOrWhiteSpace(SearchText))
             {
                 FilteredDoctors = new ObservableCollection<Doctor>(
-                    Doctors.OrderByDescending(d => d.is_available) // Sorting online doctors first
+                    Doctors.OrderByDescending(d => d.is_available)
                 );
             }
             else
             {
                 var filteredList = Doctors
                     .Where(d => d.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
-                    .OrderByDescending(d => d.is_available) // Sorting online doctors first
+                    .OrderByDescending(d => d.is_available)
                     .ToList();
 
                 FilteredDoctors = new ObservableCollection<Doctor>(filteredList);
             }
         }
+        private void OnDoctorAdded(Doctor doctor)
+        {
+            if (!Doctors.Any(d => d.Id == doctor.Id)) // Prevent duplicate entries
+            {
+                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                {
+                    Doctors.Add(doctor);
+                    FilterDoctors(); // Refresh filtered list
+                });
+            }
+        }
+
+
     }
 }

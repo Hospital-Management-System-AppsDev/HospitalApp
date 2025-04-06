@@ -46,7 +46,7 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.2.5, )"
+              "version": "[11.2.6, )"
             },
             "Avalonia.Desktop": {
               "target": "Package",
@@ -67,6 +67,10 @@
             "Avalonia.Themes.Fluent": {
               "target": "Package",
               "version": "[11.2.1, )"
+            },
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
             },
             "CommunityToolkit.Mvvm": {
               "target": "Package",

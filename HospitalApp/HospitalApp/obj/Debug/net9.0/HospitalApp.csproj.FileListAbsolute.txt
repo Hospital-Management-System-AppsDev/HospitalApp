@@ -237,3 +237,4 @@ C:/Users/User/Desktop/HospitalApp/HospitalApp/HospitalApp/obj/Debug/net9.0/ref/H
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/System.Net.ServerSentEvents.dll
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/System.Threading.Channels.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/BCrypt.Net-Next.dll
