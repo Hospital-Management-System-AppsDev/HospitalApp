@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using HospitalApp.Models;
+using HospitalApp.Services;
 
 namespace HospitalApp.ViewModels
 {
@@ -21,6 +22,12 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private string searchText = string.Empty;
 
+        private readonly UserSessionService _session = UserSessionService.Instance;
+
+
+        [ObservableProperty]
+        private User _currentUser;
+
         // [Observable Property]
 
         // private Admin admin = 
@@ -32,9 +39,13 @@ namespace HospitalApp.ViewModels
 
             _signalRService.DoctorAvailabilityUpdated += OnDoctorAvailabilityUpdated;
             _signalRService.DoctorAdded += OnDoctorAdded;
+            
+            CurrentUser = _session.CurrentUser;
 
             LoadDoctors();
             ConnectToSignalR();
+            Console.WriteLine($"CurrentUser: {_currentUser?.Name}");
+
         }
 
         private async void ConnectToSignalR()

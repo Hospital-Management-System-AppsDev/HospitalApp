@@ -29,7 +29,7 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
         _mainViewModel = mainViewModel;
 
         // Ensure LINQ is available for FirstOrDefault()
-        var dashboardItem = Items.FirstOrDefault(item => item.ModelType == typeof(DashboardPageViewModel));
+        var dashboardItem = Items.FirstOrDefault(item => item.ModelType == typeof(DoctorDashboardPageViewModel));
         if (dashboardItem is not null)
         {
             SelectedListItem = dashboardItem; // This will trigger OnSelectedListItemChanged
@@ -45,7 +45,7 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
         // Manually create instances of view models with dependencies
         ViewModelBase? instance = value.ModelType switch
         {
-            Type t when t == typeof(DashboardPageViewModel) => new DashboardPageViewModel(_apiService, _signalRService),
+            Type t when t == typeof(DoctorDashboardPageViewModel) => new DoctorDashboardPageViewModel(),
             Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(), // Ensure correct dependencies
             Type t when t == typeof(PharmacyPageViewModel) => new PharmacyPageViewModel(),
             Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
@@ -61,7 +61,7 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
 
     public ObservableCollection<ListItemTemplate> Items { get; } = new()
     {
-        new ListItemTemplate(typeof(DashboardPageViewModel), "Dashboard"),
+        new ListItemTemplate(typeof(DoctorDashboardPageViewModel), "Dashboard"),
         new ListItemTemplate(typeof(AppointmentsPageViewModel), "Appointments"),
         new ListItemTemplate(typeof(PharmacyPageViewModel), "Pharmacy"),
         new ListItemTemplate(typeof(SettingsPageViewModel), "Settings"),
