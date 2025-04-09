@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HospitalApp.Services;
 
 namespace HospitalApp.ViewModels;
 
@@ -23,6 +24,8 @@ public partial class MainMenuViewModel : ViewModelBase
 
     [ObservableProperty]
     private ListItemTemplate? _selectedListItem;
+
+
 
     public MainMenuViewModel(MainWindowViewModel mainViewModel)
     {
