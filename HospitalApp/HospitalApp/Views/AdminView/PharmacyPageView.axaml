@@ -2,393 +2,296 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Background="White"
-             x:Class="HospitalApp.Views.PharmacyPageView">
-    <Grid>
-        <TextBlock Text="Pharmacy" Foreground="#3E8DC0" FontWeight="Bold" FontSize="30" Margin="20, 10, 10, 10"/>
+             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
+             x:Class="HospitalApp.Views.PharmacyPageView"
+             d:DataContext="{d:DesignInstance vm:PharmacyPageViewModel}"
+             x:DataType="vm:PharmacyPageViewModel">
+
+    <UserControl.Styles>
+        <!-- TextBox Style -->
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <!-- ListBox Styles -->
+        <Style Selector="ListBoxItem">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <Style Selector="ListBoxItem:pointerover">
+            <Setter Property="Background" Value="#E0F0FF"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <Style Selector="ListBoxItem:selected">
+            <Setter Property="Background" Value="#4CA6FF"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
         
-        <Border Background="#D4E6F1" Margin="50, 60, 50, 50" CornerRadius="20">
-            <Grid Margin="20">
+        <Style Selector="TextBox:focus">
+            <Setter Property="Background" Value="#009BFF"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
+        </Style>
+
+        <!-- Header Text Style -->
+        <Style Selector="TextBlock.header">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Search Box Style -->
+        <Style Selector="TextBox.search">
+            <Setter Property="Background" Value="#9BD8F6"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        
+        <!-- Card Container Style -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BoxShadow" Value="2 2 8 0 #00000020"/>
+        </Style>
+
+        <!-- ListBox Style -->
+        <Style Selector="ListBox">
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        
+        <!-- Button Style -->
+        <Style Selector="Button.action">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        
+        <Style Selector="Button.small">
+            <Setter Property="Background" Value="#4CA6FF"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        
+        <!-- NumericUpDown Style -->
+        <Style Selector="NumericUpDown">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Background="#E6F2FF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" 
+                       Text="Pharmacy"
+                       Classes="header"/>
+            
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Classes="action" Command="{Binding EditMedicineCommand}">
+                    <TextBlock Text="Edit medicine" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+                <Button Classes="action" Command="{Binding AddMedicineCommand}">
+                    <TextBlock Text="Add medicine" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content Grid -->
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="400"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Left side - Medicine List -->
+            <Border Grid.Column="0" 
+                    Classes="card" 
+                    Margin="0,0,5,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBox Grid.Row="0" 
+                             Text="{Binding SearchText, Mode=TwoWay}" 
+                             Classes="search"
+                             Watermark="Search Medicine"
+                             IsEnabled="True"
+                             Margin="10"
+                             Foreground="Black"/>
+
+                    <ListBox Grid.Row="1" 
+                             Margin="10,0" 
+                             Background="White"
+                             ItemsSource="{Binding FilteredItems}"
+                             SelectedItem="{Binding SelectedMedicine}"
+                             Foreground="Black">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" FontSize="14" Foreground="Black"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+            
+            <!-- Right side - Details and Cart -->
+            <Grid Grid.Column="1" Margin="5,0,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
-                <!-- Header Row -->
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <!-- Medicine Details -->
+            <Border Grid.Row="0" Classes="card" Margin="0,0,0,5">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     
-                    <Border Background="Black" Grid.Column="0" Margin="2">
-                        <TextBlock Text="MEDICINE ID" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                    </Border>
-                    <Border Background="Black" Grid.Column="1" Margin="2">
-                        <TextBlock Text="MEDICINE NAME" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                    </Border>
-                    <Border Background="Black" Grid.Column="2" Margin="2">
-                        <TextBlock Text="PRICE/UNIT" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                    </Border>
-                    <Border Background="Black" Grid.Column="3" Margin="2">
-                        <TextBlock Text="STOCKS" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                    </Border>
-                    <Border Background="Black" Grid.Column="4" Margin="2">
-                        <TextBlock Text="ITEMS" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                    </Border>
-                    <Border Background="Black" Grid.Column="5" Margin="2">
-                        <TextBlock Text="TOTAL PRICE" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                    </Border>
-                    <Border Background="Black" Grid.Column="6" Margin="2">
-                        <TextBlock Text="ADD" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                    </Border>
+                    <TextBlock Grid.Row="0" Text="Medicine Details" Foreground="Black" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                    
+                    <StackPanel Grid.Row="1" IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNotNull}}">
+                        <TextBlock Text="{Binding SelectedMedicine.Name}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" Foreground="Black"/>
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="Price:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Price, StringFormat='{}{0:C}'}" Margin="0,0,0,5"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Black" Text="In Stock:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Stock}" Margin="0,0,0,5"/>
+                            
+                            <TextBlock Grid.Row="2" Grid.Column="0" Foreground="Black" Text="Manufacturer:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Manufacturer}" Margin="0,0,0,5"/>
+                            
+                            <TextBlock Grid.Row="3" Grid.Column="0" Foreground="Black" Text="Category:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Category}" Margin="0,0,0,5"/>
+                            
+                            <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Black" Text="Dosage:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.DosageForm}" Margin="0,0,0,5"/>
+                        </Grid>
+                        
+                        <!-- Quantity selection -->
+                        <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,Auto,*">
+                            <TextBlock Grid.Column="0" Text="Quantity:" VerticalAlignment="Center" Foreground="White" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                            <NumericUpDown Grid.Column="1" 
+                                        Minimum="1" 
+                                        Maximum="{Binding SelectedMedicine.Stock}" 
+                                        Value="{Binding QuantityToAdd}" 
+                                        Width="120"
+                                        FormatString="0"
+                                        Foreground="White"/>
+                        </Grid>
+                    </StackPanel>
+                    
+                    <TextBlock Grid.Row="1" Text="Select a medicine from the list to view details"
+                            IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNull}}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" 
+                            Foreground="Black" FontStyle="Italic"/>
+                    
+                    <Button Grid.Row="2" 
+                            Content="Add to Cart" 
+                            Command="{Binding AddToCartCommand}"
+                            Foreground="Black"
+                            CommandParameter="{Binding QuantityToAdd}"
+                            IsEnabled="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNotNull}}"
+                            HorizontalAlignment="Right" 
+                            Margin="0,10,0,0"
+                            Classes="action"/>
                 </Grid>
+            </Border>
                 
-                <!-- Data Rows -->
-                <StackPanel Grid.Row="1" Margin="0,5,0,0">
-                    <!-- Row 1 -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                <!-- Cart Section -->
+                    <Border Grid.Row="1" Classes="card" Margin="0,5,0,0">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
                         
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0001" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="MEDICINE 1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P10.99" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="10" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                    
-                    <!-- Row 2 -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Text="Cart" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" Foreground="Black"/>
                         
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0002" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="MEDICINE 2" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P10.99" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="50" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                    
-                    <!-- Row 3 -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <ListBox Grid.Row="1" 
+                                ItemsSource="{Binding CartItems}"
+                                MaxHeight="200"
+                                Foreground="Black"
+                                Background="Transparent">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center" Foreground="Black"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Quantity, StringFormat='x{0}'}" Margin="10,0" VerticalAlignment="Center" Foreground="Black"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <!-- Remove ListBoxItem styling that adds backgrounds -->
+                            <ListBox.Styles>
+                                <Style Selector="ListBoxItem">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                    <Setter Property="Margin" Value="0,5"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+                                <Style Selector="ListBoxItem:pointerover">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+                                <Style Selector="ListBoxItem:selected">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+                            </ListBox.Styles>
+                        </ListBox>
                         
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0003" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="MEDICINE 3" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P10.99" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="22" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                    
-                    <!-- Row 4 -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="1" Text="Your cart is empty" 
+                                IsVisible="{Binding CartItems.Count, Converter={x:Static ObjectConverters.IsNull}}"
+                                HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                Foreground="Black" FontStyle="Italic"/>
                         
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0004" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="MEDICINE 4" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P10.99" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="31" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                            <Button Content="Checkout" 
+                                    Command="{Binding CheckoutCommand}" 
+                                    Classes="action"
+                                    Foreground="Black"/>
+                        </StackPanel>
                     </Grid>
-                    
-                    <!-- Row 5 (New) -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0005" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="PARACETAMOL" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P5.50" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="150" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                    
-                    <!-- Row 6 (New) -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0006" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="AMOXICILLIN" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P15.75" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="45" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                    
-                    <!-- Row 7 (New) -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0007" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="OMEPRAZOLE" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P18.25" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="65" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                    
-                    <!-- Row 8 (New) -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0008" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="LISINOPRIL" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P25.50" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="38" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                    
-                    <!-- Row 9 (New) -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="0009" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="METFORMIN" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="P12.99" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="75" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="4" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBT" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <TextBlock Text="TBC" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-                        </Border>
-                        <Border Grid.Column="6" BorderBrush="LightGray" BorderThickness="1" Margin="2">
-                            <CheckBox IsChecked="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                </StackPanel>
-                
-                <!-- Footer Row -->
-                <Grid Grid.Row="2" Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Text="Total Price: Pxxx.xx" FontWeight="Bold" FontSize="16" Grid.Column="0" VerticalAlignment="Center"/>
-                    <Button Content="See Cart" Background="#3E8DC0" Foreground="White" Grid.Column="1" Padding="20,10" CornerRadius="5"/>
-                </Grid>
+                </Border>
             </Grid>
-        </Border>
-        
-        <!-- Add search icon and back button at top right similar to the image -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,50,0">
-            <Button Background="WhiteSmoke" CornerRadius="50" Width="40" Height="40" Margin="5">
-                <TextBlock Text="🔍" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Button>
-            <Button Background="WhiteSmoke" CornerRadius="50" Width="40" Height="40" Margin="5">
-                <TextBlock Text="←" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Button>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
