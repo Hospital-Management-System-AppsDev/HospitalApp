@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HospitalApp.Views.DoctorDashboardPageView">
+  <Grid Margin="20">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Row="0"
+            Grid.ColumnSpan="2"
+    >
+      <TextBlock Text="Dashboard" FontSize="40" FontFamily="Rubik" Foreground="#3E8DC0" FontWeight="Bold"/>
+    </Border>
+
+    <Border Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Background="#EAF2F8" CornerRadius="20">
+      <StackPanel>
+        <TextBlock Text="Appointments" FontSize="20" Padding="20" Foreground="Black" FontWeight="Bold" />
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Disabled"
+                  Background="Transparent">
+          <ListBox ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  Background="Transparent"
+                  Padding="20">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <!-- Sample ListBoxItems -->
+            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
+            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
+            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
+            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
+            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
+            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
+            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
+          </ListBox>
+        </ScrollViewer>
+      </StackPanel>
+    </Border>
+
+    <Border Grid.Row ="2" Grid.Column="0" Background="#EAF2F8"
+    CornerRadius="20"
+    Margin="10"
+    >
+
+    </Border>
+
+    <Border Grid.Row="2" Grid.Column="1" Background="#EAF2F8"
+    CornerRadius="20"
+    Margin="10"
+    Width="200"
+    >
+
+    </Border>
+
+
+  </Grid>
+</UserControl>

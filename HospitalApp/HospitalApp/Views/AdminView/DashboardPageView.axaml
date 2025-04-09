@@ -81,7 +81,10 @@
 
         <!-- HEADER -->
         <StackPanel Grid.Row="0">
-            <TextBlock Text="Hello, [Name]" FontSize="24" FontFamily="Rubik" FontWeight="Bold" Margin="0 5" Foreground="Black"/>
+            <TextBlock FontSize="24" FontFamily="Rubik" FontWeight="Bold" Margin="0 5" Foreground="Black">
+                <Run Text="Hello, "/>
+                <Run Text="{Binding CurrentUser.Name}"/>
+            </TextBlock>
             <TextBlock Text="DashBoard" FontSize="48" FontWeight="Bold" Foreground="#3E8DC0" Margin="0 5"/>
         </StackPanel>
 

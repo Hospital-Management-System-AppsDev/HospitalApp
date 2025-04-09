@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HospitalApp.Views;
 using System;
+using HospitalApp.Services;
 
 namespace HospitalApp.ViewModels
 {
@@ -9,10 +10,15 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private ViewModelBase _currentView;
 
+        public UserSessionService SessionService { get; }
+
+
         public MainWindowViewModel()
         {
             // Start with the login view
             CurrentView = new LoginViewModel(this);
+            SessionService = UserSessionService.Instance;
+
         }
 
         public void NavigateToAdminMainMenu()

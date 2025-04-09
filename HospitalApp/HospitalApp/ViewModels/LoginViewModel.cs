@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using HospitalApp.Models;
 using System.Threading.Tasks;
+using HospitalApp.Services;
+using System;
 
 namespace HospitalApp.ViewModels
 {
@@ -10,6 +12,8 @@ namespace HospitalApp.ViewModels
         private readonly MainWindowViewModel _mainViewModel;
         private readonly ApiService _apiService = new ApiService();
         private readonly SignalRService _signalRService = new SignalRService();
+        private readonly UserSessionService _session = UserSessionService.Instance;
+
 
 
         [ObservableProperty]
@@ -45,6 +49,10 @@ namespace HospitalApp.ViewModels
                 // Handle incorrect password
                 return;
             }
+
+            _session.SetUser(user); // ✅ Store globally
+            Console.WriteLine($"Logged in as: {_session.CurrentUser.Username} ({_session.CurrentUser.Role})");
+
 
             if (user.Role == "admin")
             {
