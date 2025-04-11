@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Avalonia.Controls;
 using HospitalApp.Models;
 
 namespace HospitalApp.ViewModels
@@ -24,6 +23,7 @@ namespace HospitalApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
         public ObservableCollection<Medicine> Medicines { get; } = new()
         {
             new Medicine { Name = "Paracetamol", Description = "Common pain reliever and fever reducer", Price = 5.99M, Stock = 100, Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "500mg" },
@@ -31,11 +31,9 @@ namespace HospitalApp.ViewModels
             new Medicine { Name = "Ibuprofen", Description = "Non-steroidal anti-inflammatory drug", Price = 6.75M, Stock = 120, Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "400mg" },
             new Medicine { Name = "Amoxicillin", Description = "Antibiotic medication", Price = 12.99M, Stock = 50, Manufacturer = "HealthPharm", Category = "Antibiotics", DosageForm = "Capsule", Strength = "500mg" },
             new Medicine { Name = "Cetirizine", Description = "Antihistamine for allergy relief", Price = 8.25M, Stock = 85, Manufacturer = "AllergyRx", Category = "Allergy", DosageForm = "Tablet", Strength = "10mg" },
-            // Keep all other medicines from your original list - truncated for brevity
             new Medicine { Name = "Aspirin", Description = "Blood thinner and pain reliever", Price = 4.50M, Stock = 150, Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "81mg" },
             new Medicine { Name = "Metformin", Description = "Anti-diabetic medication", Price = 9.99M, Stock = 70, Manufacturer = "DiabeteCare", Category = "Diabetes", DosageForm = "Tablet", Strength = "500mg" },
             new Medicine { Name = "Simvastatin", Description = "Cholesterol-lowering medication", Price = 15.75M, Stock = 60, Manufacturer = "HeartHealth", Category = "Cardiovascular", DosageForm = "Tablet", Strength = "20mg" },
-            // Add the rest of your medicines here with additional properties
         };
 
         // Commands
@@ -49,8 +47,13 @@ namespace HospitalApp.ViewModels
         {
             _filteredItems = new ObservableCollection<Medicine>(Medicines);
             _cartItems = new ObservableCollection<CartItem>();
-            
-            // Initialize commands
+
+            _cartItems.CollectionChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(TotalCartPrice));
+                ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
+            };
+
             AddMedicineCommand = new RelayCommand(_ => AddMedicine());
             EditMedicineCommand = new RelayCommand(_ => EditMedicine(), _ => SelectedMedicine != null);
             AddToCartCommand = new RelayCommand(_ => AddToCart(), _ => SelectedMedicine != null);
@@ -100,11 +103,29 @@ namespace HospitalApp.ViewModels
             get => _cartItems;
             set
             {
+                _cartItems.CollectionChanged -= (s, e) =>
+                {
+                    OnPropertyChanged(nameof(TotalCartPrice));
+                    ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
+                };
+
                 _cartItems = value;
+
+                if (_cartItems != null)
+                {
+                    _cartItems.CollectionChanged += (s, e) =>
+                    {
+                        OnPropertyChanged(nameof(TotalCartPrice));
+                        ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
+                    };
+                }
+
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalCartPrice));
                 ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
             }
         }
+        public decimal TotalCartPrice => CartItems.Sum(item => item.TotalPrice);
 
         private void FilterMedicines()
         {
@@ -124,25 +145,25 @@ namespace HospitalApp.ViewModels
 
         private void AddMedicine()
         {
-           
+            // Implementation for adding a new medicine
         }
 
         private void EditMedicine()
         {
-    
+            // Implementation for editing a medicine
         }
 
         private void AddToCart()
         {
-                if (SelectedMedicine != null && QuantityToAdd > 0 && QuantityToAdd <= SelectedMedicine.Stock)
+            if (SelectedMedicine != null && QuantityToAdd > 0 && QuantityToAdd <= SelectedMedicine.Stock)
             {
                 var existingItem = CartItems.FirstOrDefault(i => i.Medicine.Name == SelectedMedicine.Name);
                 
                 if (existingItem != null)
                 {
                     existingItem.Quantity += QuantityToAdd;
-                    var temp = new ObservableCollection<CartItem>(CartItems);
-                    CartItems = temp;
+                    var index = CartItems.IndexOf(existingItem);
+                    CartItems[index] = existingItem;
                 }
                 else
                 {
@@ -153,7 +174,11 @@ namespace HospitalApp.ViewModels
                     });
                 }
                 
-                ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
+                // Update the stock of the medicine
+                SelectedMedicine.Stock -= QuantityToAdd;
+                var tempFiltered = new ObservableCollection<Medicine>(FilteredItems);
+                FilteredItems = tempFiltered;
+
             }
         }
 
@@ -162,7 +187,6 @@ namespace HospitalApp.ViewModels
             if (item != null)
             {
                 CartItems.Remove(item);
-                ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -171,7 +195,6 @@ namespace HospitalApp.ViewModels
             if (CartItems.Count > 0)
             {
                 CartItems.Clear();
-                ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
             }
         }
     }

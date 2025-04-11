@@ -6,6 +6,7 @@
         <entry key="HospitalApp/App.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Assets/Icons.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/AdminView/DashboardPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
+        <entry key="HospitalApp/Views/AdminView/PharmacyPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/AppointmentsPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/DashboardPageView.axaml" value="HospitalApp/HospitalApp.csproj" />
         <entry key="HospitalApp/Views/DoctorView/DoctorDashboardPageView.axaml" value="HospitalApp/HospitalApp.csproj" />

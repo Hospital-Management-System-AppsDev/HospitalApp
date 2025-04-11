@@ -72,9 +72,9 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
         
-        <!-- Button Style -->
+        <!-- Button Style for action buttons -->
         <Style Selector="Button.action">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="#4CA6FF"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Width" Value="150"/>
             <Setter Property="Height" Value="40"/>
@@ -82,6 +82,12 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
         
+        <!-- Hover effect for action buttons -->
+        <Style Selector="Button.action:pointerover">
+            <Setter Property="Background" Value="#6BB8FF"/>
+        </Style>
+
+        <!-- Button Style for small buttons -->
         <Style Selector="Button.small">
             <Setter Property="Background" Value="#4CA6FF"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -128,7 +134,7 @@
         <Grid Grid.Row="1" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
             <!-- Left side - Medicine List -->
@@ -167,72 +173,74 @@
             <!-- Right side - Details and Cart -->
             <Grid Grid.Column="1" Margin="5,0,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
                 <!-- Medicine Details -->
-            <Border Grid.Row="0" Classes="card" Margin="0,0,0,5">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    
-                    <TextBlock Grid.Row="0" Text="Medicine Details" Foreground="Black" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
-                    
-                    <StackPanel Grid.Row="1" IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNotNull}}">
-                        <TextBlock Text="{Binding SelectedMedicine.Name}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" Foreground="Black"/>
-                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">                            
-                            <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="Price:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Price, StringFormat='{}{0:C}'}" Margin="0,0,0,5"/>
-                            
-                            <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Black" Text="In Stock:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Stock}" Margin="0,0,0,5"/>
-                            
-                            <TextBlock Grid.Row="2" Grid.Column="0" Foreground="Black" Text="Manufacturer:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Manufacturer}" Margin="0,0,0,5"/>
-                            
-                            <TextBlock Grid.Row="3" Grid.Column="0" Foreground="Black" Text="Category:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Category}" Margin="0,0,0,5"/>
-                            
-                            <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Black" Text="Dosage:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                            <TextBlock Grid.Row="4" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.DosageForm}" Margin="0,0,0,5"/>
-                        </Grid>
+                <Border Grid.Row="0" Classes="card" Margin="0,0,0,5">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
                         
-                        <!-- Quantity selection -->
-                        <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,Auto,*">
-                            <TextBlock Grid.Column="0" Text="Quantity:" VerticalAlignment="Center" Foreground="White" FontWeight="SemiBold" Margin="0,0,10,0"/>
-                            <NumericUpDown Grid.Column="1" 
-                                        Minimum="1" 
-                                        Maximum="{Binding SelectedMedicine.Stock}" 
-                                        Value="{Binding QuantityToAdd}" 
-                                        Width="120"
-                                        FormatString="0"
-                                        Foreground="White"/>
-                        </Grid>
-                    </StackPanel>
-                    
-                    <TextBlock Grid.Row="1" Text="Select a medicine from the list to view details"
-                            IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNull}}"
-                            HorizontalAlignment="Center" VerticalAlignment="Center" 
-                            Foreground="Black" FontStyle="Italic"/>
-                    
-                    <Button Grid.Row="2" 
-                            Content="Add to Cart" 
-                            Command="{Binding AddToCartCommand}"
-                            Foreground="Black"
-                            CommandParameter="{Binding QuantityToAdd}"
-                            IsEnabled="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNotNull}}"
-                            HorizontalAlignment="Right" 
-                            Margin="0,10,0,0"
-                            Classes="action"/>
-                </Grid>
-            </Border>
+                        <TextBlock Grid.Row="0" Text="Medicine Details" Foreground="Black" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                        
+                        <StackPanel Grid.Row="1" IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNotNull}}">
+                            <TextBlock Text="{Binding SelectedMedicine.Name}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" Foreground="Black"/>
+                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="Price:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Price, StringFormat='{}{0:C}'}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Black" Text="In Stock:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Stock}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="2" Grid.Column="0" Foreground="Black" Text="Manufacturer:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Manufacturer}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="3" Grid.Column="0" Foreground="Black" Text="Category:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Category}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Black" Text="Dosage:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="4" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.DosageForm}" Margin="0,0,0,5"/>
+                            </Grid>
+                            <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,Auto,*">
+                                <TextBlock Grid.Column="0" Text="Quantity:" VerticalAlignment="Center" Foreground="White" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                                <NumericUpDown Grid.Column="1" 
+                                               Minimum="1" 
+                                               Maximum="{Binding SelectedMedicine.Stock}" 
+                                               Value="{Binding QuantityToAdd}" 
+                                               Width="120"
+                                               FormatString="0"
+                                               Foreground="White"/>
+                            </Grid>
+                        </StackPanel>
+                        
+                        <TextBlock Grid.Row="1" Text="Select a medicine from the list to view details"
+                                   IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNull}}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                   Foreground="Black" FontStyle="Italic"/>
+                        
+                        <Button Grid.Row="2" 
+                                Command="{Binding AddToCartCommand}"
+                                Foreground="Black"
+                                CommandParameter="{Binding QuantityToAdd}"
+                                IsEnabled="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                HorizontalAlignment="Right" 
+                                Margin="0,10,0,0"
+                                Classes="action">
+                            <TextBlock Text="Add to Cart" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"
+                                       FontSize="16"/>
+                        </Button>
+                    </Grid>
+                </Border>
                 
                 <!-- Cart Section -->
-                    <Border Grid.Row="1" Classes="card" Margin="0,5,0,0">
+                <Border Grid.Row="1" Classes="card" Margin="0,5,0,0">
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -243,23 +251,24 @@
                         <TextBlock Grid.Row="0" Text="Cart" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" Foreground="Black"/>
                         
                         <ListBox Grid.Row="1" 
-                                ItemsSource="{Binding CartItems}"
-                                MaxHeight="200"
-                                Foreground="Black"
-                                Background="Transparent">
+                                 ItemsSource="{Binding CartItems}"
+                                 MaxHeight="200"
+                                 Foreground="Black"
+                                 Background="Transparent">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center" Foreground="Black"/>
                                         <TextBlock Grid.Column="1" Text="{Binding Quantity, StringFormat='x{0}'}" Margin="10,0" VerticalAlignment="Center" Foreground="Black"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding TotalPrice, StringFormat='{}{0:C}'}" Margin="10,0" VerticalAlignment="Center" Foreground="Black"/>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-                            <!-- Remove ListBoxItem styling that adds backgrounds -->
                             <ListBox.Styles>
                                 <Style Selector="ListBoxItem">
                                     <Setter Property="Background" Value="Transparent"/>
@@ -279,15 +288,21 @@
                         </ListBox>
                         
                         <TextBlock Grid.Row="1" Text="Your cart is empty" 
-                                IsVisible="{Binding CartItems.Count, Converter={x:Static ObjectConverters.IsNull}}"
-                                HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                Foreground="Black" FontStyle="Italic"/>
+                                   IsVisible="{Binding CartItems.Count, Converter={x:Static ObjectConverters.IsNull}}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                   Foreground="Black" FontStyle="Italic"/>
                         
                         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                            <Button Content="Checkout" 
-                                    Command="{Binding CheckoutCommand}" 
+                            <TextBlock Text="Total: " FontWeight="Bold" Foreground="Black" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding TotalCartPrice, StringFormat='{}{0:C}'}" Foreground="Black" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Button Command="{Binding CheckoutCommand}" 
                                     Classes="action"
-                                    Foreground="Black"/>
+                                    Foreground="Black">
+                                <TextBlock Text="Checkout" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"
+                                           FontSize="16"/>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Border>

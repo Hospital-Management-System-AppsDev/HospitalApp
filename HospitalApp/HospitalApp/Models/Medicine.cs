@@ -1,3 +1,5 @@
+using HospitalApp.ViewModels;
+
 namespace HospitalApp.Models
 {
     public class Medicine
@@ -12,10 +14,23 @@ namespace HospitalApp.Models
         public string Strength { get; set; } // 500mg, 10ml, etc.
     }
 
-    public class CartItem
+    public class CartItem : ViewModelBase // Inherit from ViewModelBase to get INotifyPropertyChanged
     {
+        private int _quantity;
+
         public Medicine Medicine { get; set; }
-        public int Quantity { get; set; }
+
+        public int Quantity
+        {
+            get => _quantity;
+            set
+            {
+                _quantity = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalPrice)); // Notify that TotalPrice has changed
+            }
+        }
+
         public decimal TotalPrice => Medicine.Price * Quantity;
 
         public string Name => Medicine.Name;
