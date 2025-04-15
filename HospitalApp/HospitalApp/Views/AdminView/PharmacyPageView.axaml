@@ -188,35 +188,67 @@
                         
                         <TextBlock Grid.Row="0" Text="Medicine Details" Foreground="Black" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
                         
-                        <StackPanel Grid.Row="1" IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNotNull}}">
-                            <TextBlock Text="{Binding SelectedMedicine.Name}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" Foreground="Black"/>
-                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
-                                <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="Price:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Price, StringFormat='{}{0:C}'}" Margin="0,0,0,5"/>
-                                
-                                <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Black" Text="In Stock:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                                <TextBlock Grid.Row="1" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Stock}" Margin="0,0,0,5"/>
-                                
-                                <TextBlock Grid.Row="2" Grid.Column="0" Foreground="Black" Text="Manufacturer:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                                <TextBlock Grid.Row="2" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Manufacturer}" Margin="0,0,0,5"/>
-                                
-                                <TextBlock Grid.Row="3" Grid.Column="0" Foreground="Black" Text="Category:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                                <TextBlock Grid.Row="3" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.Category}" Margin="0,0,0,5"/>
-                                
-                                <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Black" Text="Dosage:" FontWeight="SemiBold" Margin="0,0,10,5"/>
-                                <TextBlock Grid.Row="4" Grid.Column="1" Foreground="Black" Text="{Binding SelectedMedicine.DosageForm}" Margin="0,0,0,5"/>
-                            </Grid>
-                            <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,Auto,*">
-                                <TextBlock Grid.Column="0" Text="Quantity:" VerticalAlignment="Center" Foreground="White" FontWeight="SemiBold" Margin="0,0,10,0"/>
-                                <NumericUpDown Grid.Column="1" 
-                                               Minimum="1" 
-                                               Maximum="{Binding SelectedMedicine.Stock}" 
-                                               Value="{Binding QuantityToAdd}" 
-                                               Width="120"
-                                               FormatString="0"
-                                               Foreground="White"/>
-                            </Grid>
-                        </StackPanel>
+                        <!-- Inside the StackPanel for Medicine Details -->
+                    <StackPanel Grid.Row="1" IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNotNull}}">
+                        <TextBlock Text="{Binding SelectedMedicine.Name}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" Foreground="Black"/>
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                            <!-- Price -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="Price:" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" 
+                                    Text="{Binding SelectedMedicine.Price, Mode=TwoWay}" 
+                                    Margin="0,0,0,5" 
+                                    Classes="search"
+                                    Foreground="Black"
+                                    IsEnabled="{Binding IsEditing}"/>
+
+                            <!-- In Stock -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Black" Text="In Stock:" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" 
+                                    Text="{Binding SelectedMedicine.Stock, Mode=TwoWay}" 
+                                    Margin="0,0,0,5" 
+                                    Classes="search"
+                                    Foreground="Black"
+                                    IsEnabled="{Binding IsEditing}"/>
+
+                            <!-- Manufacturer -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" Foreground="Black" Text="Manufacturer:" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" 
+                                    Text="{Binding SelectedMedicine.Manufacturer, Mode=TwoWay}" 
+                                    Margin="0,0,0,5" 
+                                    Classes="search"
+                                    Foreground="Black"
+                                    IsEnabled="{Binding IsEditing}"/>
+
+                            <!-- Category -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" Foreground="Black" Text="Category:" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" 
+                                    Text="{Binding SelectedMedicine.Category, Mode=TwoWay}" 
+                                    Margin="0,0,0,5" 
+                                    Classes="search"
+                                    Foreground="Black"
+                                    IsEnabled="{Binding IsEditing}"/>
+
+                            <!-- Dosage -->
+                            <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Black" Text="Dosage:" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" 
+                                    Text="{Binding SelectedMedicine.DosageForm, Mode=TwoWay}" 
+                                    Margin="0,0,0,5" 
+                                    Classes="search"
+                                    Foreground="Black"
+                                    IsEnabled="{Binding IsEditing}"/>
+                        </Grid>
+                        <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,Auto,*">
+                            <TextBlock Grid.Column="0" Text="Quantity:" VerticalAlignment="Center" Foreground="Black" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                            <NumericUpDown Grid.Column="1" 
+                                        Minimum="0" 
+                                        Value="{Binding QuantityToAdd, Mode=TwoWay}"
+                                        AllowSpin="True"
+                                        Width="120"
+                                        Increment="1"
+                                        FormatString="0"
+                                        Foreground="White"/>
+                        </Grid>
+                    </StackPanel>
                         
                         <TextBlock Grid.Row="1" Text="Select a medicine from the list to view details"
                                    IsVisible="{Binding SelectedMedicine, Converter={x:Static ObjectConverters.IsNull}}"
