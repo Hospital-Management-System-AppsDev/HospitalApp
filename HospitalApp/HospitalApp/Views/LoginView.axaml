@@ -2,12 +2,97 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              x:Class="HospitalApp.Views.LoginView"
-             x:DataType="vm:LoginViewModel">
+             x:DataType="vm:LoginViewModel"
+             Background="#e4ecf7">
 
-    <Grid RowDefinitions="Auto,Auto,Auto">
-        <TextBox Grid.Row="0" Watermark="Username" Text="{Binding Username}"/>
-        <TextBox Grid.Row="1" PasswordChar="●" Watermark="Password" Text="{Binding Password}" />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0"
+                CornerRadius="0,80,80,0"
+                ClipToBounds="True"
+                BoxShadow="0 4 100 0 #80000000">
+            <Image Source="avares://HospitalApp/Assets/logo.jpg"
+                   Stretch="UniformToFill"
+                   Opacity="2"/>
+        </Border>
+        <Grid Grid.Column="1" Margin="40">
+            <StackPanel VerticalAlignment="Center" Spacing="20">
+                <TextBlock Text="Username" 
+                           FontSize="16" 
+                           FontWeight="Bold" 
+                           Foreground="#2D3748"/>
+                <Border CornerRadius="10"
+                        Background="White"
+                        BoxShadow="0 1 10 0 #80000000"
+                        Padding="0">
+                    <TextBox Text="{Binding Username}" 
+                             FontSize="16"
+                             Padding="15"
+                             BorderThickness="0"
+                             Background="Transparent"/>
+                </Border>
+                <TextBlock Text="Password" 
+                           FontSize="16" 
+                           FontWeight="Bold" 
+                           Foreground="#2D3748"/>
+                <Border CornerRadius="10"
+                        Background="White"
+                        BoxShadow="0 1 10 0 #80000000"
+                        Padding="0">
+                    <TextBox Text="{Binding Password}" 
+                             PasswordChar="●"
+                             FontSize="16"
+                             Padding="15"
+                             BorderThickness="0"
+                             Background="Transparent"/>
+                </Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Content="Show Password"
+                              VerticalAlignment="Center"
+                              FontSize="12"
+                              Foreground="Black"
+                              Grid.Column="0"/>
+                    <TextBlock Text="Forgot Password"
+                               FontSize="12"
+                               Foreground="Gray"
+                               TextDecorations="Underline"
+                               VerticalAlignment="Center"
+                               Cursor="Hand"
+                               Grid.Column="2"
+                               HorizontalAlignment="Right"/>
+                </Grid>
+                
+                <Grid Margin="0,20,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border CornerRadius="10"
+                            BoxShadow="0 1 9 0 #80000040"
+                            Background="Transparent">
+                        <Button Content="Log In"
+                                Command="{Binding LoginCommand}"
+                                Background="#1877F2"
+                                Foreground="White"
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Padding="15"
+                                BorderThickness="0"
+                                CornerRadius="6"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"/>
 
-        <Button Grid.Row="2" Content="Login" Command="{Binding LoginCommand}"/>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
