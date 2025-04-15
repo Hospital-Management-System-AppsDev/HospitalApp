@@ -1,13 +1,14 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using HospitalApp.ViewModels;
 
-namespace HospitalApp.Views;
-
-public partial class AppointmentsPageView : UserControl
+namespace HospitalApp.Views
 {
-    public AppointmentsPageView()
+    public partial class AppointmentsPageView : UserControl
     {
-        InitializeComponent();
+        public AppointmentsPageView()
+        {
+            InitializeComponent();
+            DataContext = new AppointmentsPageViewModel(); 
+        }
     }
 }
