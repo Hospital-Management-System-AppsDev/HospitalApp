@@ -6,6 +6,7 @@ using System.Linq;
 using Avalonia.Markup.Xaml;
 using HospitalApp.ViewModels;
 using HospitalApp.Views;
+using Avalonia.Styling;
 
 namespace HospitalApp;
 
@@ -22,6 +23,8 @@ public partial class App : Application
         {
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            RequestedThemeVariant = ThemeVariant.Light;
+
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
