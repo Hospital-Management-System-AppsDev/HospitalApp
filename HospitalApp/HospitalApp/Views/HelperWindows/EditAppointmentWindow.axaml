@@ -2,17 +2,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:HospitalApp.ViewModels"
         x:Class="HospitalApp.Views.EditAppointmentWindow"
-        x:DataType="vm:EditAppointmentWindowViewModel">
+        x:DataType="vm:EditAppointmentWindowViewModel"
+        Width="500" Height="500"
+        Title="Edit Appointment"
+>
 
     <StackPanel Margin="20" Spacing="10">
         <TextBlock Text="Patient Name:" />
         <TextBox Text="{Binding Appointment.PatientName}" IsReadOnly="True"/>
 
         <TextBlock Text="Appointment Type:" />
-        <ComboBox ItemsSource="{Binding AppointmentTypes}" SelectedItem="{Binding Appointment.AppointmentType}" />
+        <ComboBox ItemsSource="{Binding AppointmentTypes}" SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}" />
 
         <TextBlock Text="Doctor:" />
-        <ComboBox ItemsSource="{Binding Doctors}" SelectedItem="{Binding Appointment.AssignedDoctor}">
+        <ComboBox ItemsSource="{Binding Doctors}" SelectedItem="{Binding Doc, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />
@@ -21,14 +24,22 @@
         </ComboBox>
 
         <TextBlock Text="Date:" />
-        <CalendarDatePicker SelectedDate="{Binding Appointment.AppointmentDateForPicker, Mode=TwoWay}" />
-        
+        <CalendarDatePicker SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}" />
+        <Button Content="Get Available Time Slots"
+                                    Command="{Binding OnGetAvailableSlotsCommand}"
+                                    CornerRadius="10"
+                                    Padding="10"
+                                    FontSize="15"
+                                    Background="#006CB5"
+                                    Foreground="White"
+                                    />
         <TextBlock Text="Time:" />
           <ComboBox Width="150"
-                    SelectedItem="{Binding Appointment.AppointmentTime, Mode=TwoWay}"
+                    SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
                     ItemsSource="{Binding AvailableTimeSlots}" />
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+            <TextBlock Text="{Binding ErrorMsgCreate}" IsVisible="{Binding ErrorMsgCreateVisible}" Foreground="red"/>
             <Button Name="SaveButton" Content="Save" Width="80" />
             <Button Name="CancelButton" Content="Cancel" Width="80" />
         </StackPanel>

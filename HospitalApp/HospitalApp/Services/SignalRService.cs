@@ -11,6 +11,8 @@ public class SignalRService
     public event Action<Doctor>? DoctorAdded;
 
     public event Action<int, Appointment>? AppointmentUpdated;
+    public event Action<Appointment>? AppointmentAdded;
+
     public SignalRService()
     {
         _hubConnection = new HubConnectionBuilder()
@@ -30,6 +32,11 @@ public class SignalRService
 
         _hubConnection.On<int, Appointment>("UpdateAppointment", (appointmentID, appointment)=>{
             AppointmentUpdated?.Invoke(appointmentID, appointment);
+        });
+
+        _hubConnection.On<Appointment>("AppointmentAdded", appointment =>
+        {
+            AppointmentAdded?.Invoke(appointment);
         });
     }
 

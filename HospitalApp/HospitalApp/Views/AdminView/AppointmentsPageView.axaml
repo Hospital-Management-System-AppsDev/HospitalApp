@@ -13,25 +13,19 @@
 
     <Grid Margin="50" Grid.RowDefinitions="Auto, *">
         <!-- Header Section -->
-        <Grid Grid.ColumnDefinitions="Auto, *" Grid.Row="0">
+        <Grid>
             <TextBlock Grid.Column="0" Text="Appointments" Foreground="#3E8DC0" FontSize="48" FontWeight="Bold" FontFamily="Rubik" Margin="20"/>
-            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
-                <Button Content="Search" VerticalAlignment="Center" Margin="10" Background="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                        Padding="20"
-                        CornerRadius="5"/>
-                <Button Content="New Appointment" VerticalAlignment="Center" Margin="10" Background="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                        Padding="20"
-                        CornerRadius="5"
-                />
-            </StackPanel>
         </Grid>
         
         <!-- Appointment List Section (To be added in Grid.Row 1) -->
         <TabControl Margin="5" Grid.Row="1">
             <TabItem Header="Upcoming Appointments" FontSize="20" Foreground="#3E8DC0">
                 
-                <Border Grid.Row="1" Margin="20">                        
-                    <DataGrid ItemsSource="{Binding UpcomingAppointments}" 
+                <Border Grid.Row="1" Margin="20">
+                    <StackPanel>
+                    <TextBox Watermark="Search..." Text="{Binding AppointmentSearchText, Mode=TwoWay}" Width="200" Margin="10"/>
+                        
+                    <DataGrid ItemsSource="{Binding FilteredAppointments}" 
                             AutoGenerateColumns="False" IsReadOnly="True"
                             GridLinesVisibility="All" BorderBrush="Gray">
                         
@@ -68,7 +62,7 @@
                         </DataGrid.Styles>
                         
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding PkId}"/>
+                                <DataGridTextColumn Header="ID" Binding="{Binding PkId}"/>
                                 <DataGridTextColumn Header="Patient ID" Binding="{Binding PatientID}"/>
                                 <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}"/>
                                 <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}"/>
@@ -99,6 +93,7 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+                    </StackPanel>
                 </Border>
             </TabItem>
 
@@ -145,6 +140,7 @@
                             
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding PkId}"/>
+
                                 <DataGridTextColumn Header="Patient ID" Binding="{Binding PatientID}"/>
                                 <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}"/>
                                 <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}"/>
@@ -158,46 +154,79 @@
             </TabItem>
 
             <TabItem Header="Create Appointment" FontSize="20" Foreground="#3E8DC0">
-                <StackPanel>
-                    <TextBlock Margin="0 5" >Patient ID:</TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding PId, Mode=TwoWay}"/>
+                <Border Background="#D4E6F1" CornerRadius="20">
+                    <StackPanel Spacing="5" Margin="35">
+                        <TextBlock Margin="0 5" Text = "Patient ID" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBox Text="{Binding PId, Mode=TwoWay}" Watermark="Patient ID" Padding="10" FontSize="15"/>
 
-                        <Button Content="Get Patient" Background="blue"
-                                Command="{Binding OnGetPatientByIdCommand}"
-                                />
-                    </StackPanel>
+                            <Button Content="Get Patient"
+                                    Command="{Binding OnGetPatientByIdCommand}"
+                                    CornerRadius="10"
+                                    Padding="10"
+                                    FontSize="15"
+                                    Background="#006CB5"
+                                    Foreground="White"
+                                    />
+                            <TextBlock Text="{Binding ErrorMsgFind}" IsVisible="{Binding ErrorMsgFindVisible}" Foreground="red"/>
 
-                    <TextBlock Margin="0 5" >Patient Name:</TextBlock>
-                    <TextBox Watermark="Patient Name" Text="{Binding newPatient.Name}" IsReadOnly="True"/>
-                    <TextBlock Margin="0 5" >Appointment Type:</TextBlock>
-                    <ComboBox ItemsSource="{Binding AppointmentTypes}"
-                              SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}"
-                    />
-                    <TextBlock Margin="0 5" >Assigned Doctor:</TextBlock>
-                    <ComboBox ItemsSource="{Binding DoctorsList}"
-                              SelectedItem="{Binding Doc, Mode=TwoWay}"
-                    >
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <TextBlock Margin="0 5" >Appointment Slot</TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <CalendarDatePicker Width="150"
-                            SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}"
+                        </StackPanel>
+
+                        <TextBlock Margin="0 5" Text="Patient Name" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
+                        <TextBox Watermark="Patient Name" Text="{Binding newPatient.Name}" Width="500" HorizontalAlignment="Left" IsReadOnly="True" Padding="10" FontSize="15"
                         />
-                            
-                        <ComboBox Width="150"
-                                Foreground="white"
-                                ItemsSource="{Binding AvailableTimeSlots}" 
-                                SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
+                        <TextBlock Margin="0 5" Text = "Appointment Type" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                        <ComboBox ItemsSource="{Binding AppointmentTypes}"
+                                SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}"
+                                Width="250"
+                                Padding="10" FontSize="15"
+                        />
+                        <TextBlock Margin="0 5" Text = "Assigned Doctor" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                        <ComboBox ItemsSource="{Binding DoctorsList}"
+                                SelectedItem="{Binding Doc, Mode=TwoWay}"
+                                Width="250"
+                                Padding="10" FontSize="15"
+
+                        >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" FontSize="15"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Margin="0 5" Text = "Appointment Slot" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                        <StackPanel Spacing="5">
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <CalendarDatePicker Width="250"
+                                    SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}"
+                                    Padding="10" FontSize="15"
                                 />
+                                <Button Content="Get Available Time Slots"
+                                    Command="{Binding OnGetAvailableSlotsCommand}"
+                                    CornerRadius="10"
+                                    Padding="10"
+                                    FontSize="15"
+                                    Background="#006CB5"
+                                    Foreground="White"
+                                    />
+                                    
+                            </StackPanel>
+                            <ComboBox Width="250"
+                                    Foreground="Black"
+                                    ItemsSource="{Binding AvailableTimeSlots}" 
+                                    SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
+                                    Padding="10" FontSize="15"
+                                    />
+                        </StackPanel>
+                        <TextBlock Text="{Binding ErrorMsgCreate}" IsVisible="{Binding ErrorMsgCreateVisible}" Foreground="red"/>
+
+                        <Button Content="Create Appointment" Command="{Binding OnCreateAppointment}" CornerRadius="10"
+                                    Padding="10"
+                                    FontSize="15"
+                                    Background="Green"
+                                    Foreground="White"/>
                     </StackPanel>
-                    <Button Content="Create Appointment" Background="blue" Command="{Binding OnCreateAppointment}"/>
-                </StackPanel>
+                </Border>
             </TabItem>
         </TabControl>
     </Grid>

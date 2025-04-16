@@ -22,12 +22,12 @@ public partial class EditAppointmentWindow : Window
 
             this.FindControl<Button>("SaveButton").Click += async (_, _) =>
             {
-                var success = await _apiService.UpdateAppointment(editedAppointment.pkId, editedAppointment);
+                ViewModel.ApplySelectedChanges(); // <--- Apply UI changes to model
+
+                var success = await _apiService.UpdateAppointment(ViewModel.Appointment.pkId, ViewModel.Appointment);
                 if (success)
                 {
-                    // Don't try to update collections manually here
-                    // The SignalR event will handle the update
-                    Close(editedAppointment);
+                    Close(ViewModel.Appointment);
                 }
             };
 
