@@ -42,4 +42,33 @@ public class ApiService
         return response.IsSuccessStatusCode;
     }
 
+    public async Task<Patient> GetPatientAsync(int id){
+        return await _httpClient.GetFromJsonAsync<Patient>($"patients/{id}");
+    }
+
+    public async Task<List<Appointment>> GetAppointmentsAsync(){
+        var response = await _httpClient.GetAsync("appointments");
+        if (!response.IsSuccessStatusCode) return new List<Appointment>();
+
+        var data = await response.Content.ReadFromJsonAsync<List<Appointment>>();
+        return data ?? new List<Appointment>();
+    }
+    public async Task<bool> AddAppointmentAsync(Appointment appointment)
+    {
+        var response = await _httpClient.PostAsJsonAsync("appointments/add", appointment);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> UpdateAppointment(int appointmentID, Appointment appointment)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"appointments/{appointmentID}", appointment);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> CancelAppointment(int id)
+    {
+        var response = await _httpClient.DeleteAsync($"appointments/{id}");
+        return response.IsSuccessStatusCode;
+    }
 }
+

@@ -46,7 +46,7 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
         ViewModelBase? instance = value.ModelType switch
         {
             Type t when t == typeof(DoctorDashboardPageViewModel) => new DoctorDashboardPageViewModel(),
-            Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(), // Ensure correct dependencies
+            Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(_apiService, _signalRService), // Ensure correct dependencies
             Type t when t == typeof(PharmacyPageViewModel) => new PharmacyPageViewModel(),
             Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
             _ => null
