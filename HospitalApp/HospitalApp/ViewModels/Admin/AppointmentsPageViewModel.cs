@@ -612,3 +612,5 @@ public partial class AppointmentsPageViewModel : ViewModelBase
 
 }
 }
+
+

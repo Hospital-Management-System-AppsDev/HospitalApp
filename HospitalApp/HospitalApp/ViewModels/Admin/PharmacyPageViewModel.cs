@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Avalonia.Controls;
 using HospitalApp.Models;
 
 namespace HospitalApp.ViewModels
@@ -13,29 +12,39 @@ namespace HospitalApp.ViewModels
         private ObservableCollection<Medicine> _filteredItems;
         private Medicine _selectedMedicine;
         private ObservableCollection<CartItem> _cartItems;
+        private bool _isEditing; // New property to track editing state
 
-        private int _quantityToAdd = 1;
-        public int QuantityToAdd
+        private string _quantityToAdd = "1";
+        public string QuantityToAdd
         {
             get => _quantityToAdd;
             set
             {
                 _quantityToAdd = value;
+                OnPropertyChanged(nameof(QuantityToAdd));
+            }
+        }
+
+        public bool IsEditing
+        {
+            get => _isEditing;
+            set
+            {
+                _isEditing = value;
                 OnPropertyChanged();
             }
         }
+
         public ObservableCollection<Medicine> Medicines { get; } = new()
         {
-            new Medicine { Name = "Paracetamol", Description = "Common pain reliever and fever reducer", Price = 5.99M, Stock = 100, Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "500mg" },
-            new Medicine { Name = "Loperamide", Description = "Anti-diarrheal medication", Price = 7.50M, Stock = 75, Manufacturer = "MediCorp", Category = "Gastrointestinal", DosageForm = "Capsule", Strength = "2mg" },
-            new Medicine { Name = "Ibuprofen", Description = "Non-steroidal anti-inflammatory drug", Price = 6.75M, Stock = 120, Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "400mg" },
-            new Medicine { Name = "Amoxicillin", Description = "Antibiotic medication", Price = 12.99M, Stock = 50, Manufacturer = "HealthPharm", Category = "Antibiotics", DosageForm = "Capsule", Strength = "500mg" },
-            new Medicine { Name = "Cetirizine", Description = "Antihistamine for allergy relief", Price = 8.25M, Stock = 85, Manufacturer = "AllergyRx", Category = "Allergy", DosageForm = "Tablet", Strength = "10mg" },
-            // Keep all other medicines from your original list - truncated for brevity
-            new Medicine { Name = "Aspirin", Description = "Blood thinner and pain reliever", Price = 4.50M, Stock = 150, Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "81mg" },
-            new Medicine { Name = "Metformin", Description = "Anti-diabetic medication", Price = 9.99M, Stock = 70, Manufacturer = "DiabeteCare", Category = "Diabetes", DosageForm = "Tablet", Strength = "500mg" },
-            new Medicine { Name = "Simvastatin", Description = "Cholesterol-lowering medication", Price = 15.75M, Stock = 60, Manufacturer = "HeartHealth", Category = "Cardiovascular", DosageForm = "Tablet", Strength = "20mg" },
-            // Add the rest of your medicines here with additional properties
+            new Medicine { Name = "Paracetamol", Description = "Common pain reliever and fever reducer", Price = "5.99", Stock = "100", Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "500mg" },
+            new Medicine { Name = "Loperamide", Description = "Anti-diarrheal medication", Price = "7.50", Stock = "75", Manufacturer = "MediCorp", Category = "Gastrointestinal", DosageForm = "Capsule", Strength = "2mg" },
+            new Medicine { Name = "Ibuprofen", Description = "Non-steroidal anti-inflammatory drug", Price = "6.75", Stock = "120", Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "400mg" },
+            new Medicine { Name = "Amoxicillin", Description = "Antibiotic medication", Price = "12.99", Stock = "50", Manufacturer = "HealthPharm", Category = "Antibiotics", DosageForm = "Capsule", Strength = "500mg" },
+            new Medicine { Name = "Cetirizine", Description = "Antihistamine for allergy relief", Price = "8.25", Stock = "85", Manufacturer = "AllergyRx", Category = "Allergy", DosageForm = "Tablet", Strength = "10mg" },
+            new Medicine { Name = "Aspirin", Description = "Blood thinner and pain reliever", Price = "4.50", Stock = "150", Manufacturer = "Pharma Inc.", Category = "Pain Relief", DosageForm = "Tablet", Strength = "81mg" },
+            new Medicine { Name = "Metformin", Description = "Anti-diabetic medication", Price = "9.99", Stock = "70", Manufacturer = "DiabeteCare", Category = "Diabetes", DosageForm = "Tablet", Strength = "500mg" },
+            new Medicine { Name = "Simvastatin", Description = "Cholesterol-lowering medication", Price = "15.75", Stock = "60", Manufacturer = "HeartHealth", Category = "Cardiovascular", DosageForm = "Tablet", Strength = "20mg" },
         };
 
         // Commands
@@ -49,8 +58,14 @@ namespace HospitalApp.ViewModels
         {
             _filteredItems = new ObservableCollection<Medicine>(Medicines);
             _cartItems = new ObservableCollection<CartItem>();
-            
-            // Initialize commands
+            _isEditing = false; // TextBox fields disabled by default
+
+            _cartItems.CollectionChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(TotalCartPrice));
+                ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
+            };
+
             AddMedicineCommand = new RelayCommand(_ => AddMedicine());
             EditMedicineCommand = new RelayCommand(_ => EditMedicine(), _ => SelectedMedicine != null);
             AddToCartCommand = new RelayCommand(_ => AddToCart(), _ => SelectedMedicine != null);
@@ -89,7 +104,8 @@ namespace HospitalApp.ViewModels
             {
                 _selectedMedicine = value;
                 OnPropertyChanged();
-                QuantityToAdd = 1;
+                QuantityToAdd = "1";
+                IsEditing = false; // Reset editing state when selecting a new medicine
                 ((RelayCommand)EditMedicineCommand).RaiseCanExecuteChanged();
                 ((RelayCommand)AddToCartCommand).RaiseCanExecuteChanged();
             }
@@ -100,11 +116,30 @@ namespace HospitalApp.ViewModels
             get => _cartItems;
             set
             {
+                _cartItems.CollectionChanged -= (s, e) =>
+                {
+                    OnPropertyChanged(nameof(TotalCartPrice));
+                    ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
+                };
+
                 _cartItems = value;
+
+                if (_cartItems != null)
+                {
+                    _cartItems.CollectionChanged += (s, e) =>
+                    {
+                        OnPropertyChanged(nameof(TotalCartPrice));
+                        ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
+                    };
+                }
+
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalCartPrice));
                 ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
             }
         }
+
+        public decimal TotalCartPrice => CartItems.Sum(item => item.TotalPrice);
 
         private void FilterMedicines()
         {
@@ -124,36 +159,60 @@ namespace HospitalApp.ViewModels
 
         private void AddMedicine()
         {
-           
+            // Implementation for adding a new medicine
         }
 
         private void EditMedicine()
         {
-    
+            if (SelectedMedicine != null)
+            {
+                IsEditing = !IsEditing; // Toggle editing state
+            }
         }
 
         private void AddToCart()
         {
-                if (SelectedMedicine != null && QuantityToAdd > 0 && QuantityToAdd <= SelectedMedicine.Stock)
+            if (SelectedMedicine != null && 
+                int.TryParse(QuantityToAdd, out int quantity) && 
+                quantity > 0)
             {
+                // Validate and parse Stock
+                if (!int.TryParse(SelectedMedicine.Stock, out int stock) || stock < quantity)
+                {
+                    // Optionally notify user of invalid stock
+                    return;
+                }
+
+                // Validate and parse Price
+                if (!decimal.TryParse(SelectedMedicine.Price, out decimal price) || price < 0)
+                {
+                    // Optionally notify user of invalid price
+                    return;
+                }
+
                 var existingItem = CartItems.FirstOrDefault(i => i.Medicine.Name == SelectedMedicine.Name);
-                
+
                 if (existingItem != null)
                 {
-                    existingItem.Quantity += QuantityToAdd;
-                    var temp = new ObservableCollection<CartItem>(CartItems);
-                    CartItems = temp;
+                    existingItem.Quantity += quantity;
                 }
                 else
                 {
-                    CartItems.Add(new CartItem 
-                    { 
-                        Medicine = SelectedMedicine, 
-                        Quantity = QuantityToAdd 
+                    CartItems.Add(new CartItem
+                    {
+                        Medicine = SelectedMedicine,
+                        Quantity = quantity
                     });
                 }
-                
+
+                // Update stock as string
+                SelectedMedicine.Stock = (stock - quantity).ToString();
+                // Notify changes
+                OnPropertyChanged(nameof(CartItems));
+                OnPropertyChanged(nameof(TotalCartPrice));
                 ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
+
+                QuantityToAdd = "1";
             }
         }
 
@@ -162,7 +221,6 @@ namespace HospitalApp.ViewModels
             if (item != null)
             {
                 CartItems.Remove(item);
-                ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -171,7 +229,6 @@ namespace HospitalApp.ViewModels
             if (CartItems.Count > 0)
             {
                 CartItems.Clear();
-                ((RelayCommand)CheckoutCommand).RaiseCanExecuteChanged();
             }
         }
     }
