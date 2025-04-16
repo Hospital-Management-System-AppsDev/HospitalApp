@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -53,10 +54,28 @@ public class ApiService
         var data = await response.Content.ReadFromJsonAsync<List<Appointment>>();
         return data ?? new List<Appointment>();
     }
-    public async Task<bool> AddAppointmentAsync(Appointment appointment)
+    public async Task<Appointment> AddAppointmentAsync(Appointment appointment)
     {
         var response = await _httpClient.PostAsJsonAsync("appointments/add", appointment);
-        return response.IsSuccessStatusCode;
+        
+        if (response.IsSuccessStatusCode)
+        {
+            try {
+                var result = await response.Content.ReadFromJsonAsync<Appointment>();
+                
+                // Debug - check what's being returned
+                Console.WriteLine($"API returned - ID: {result?.pkId}, PatientID: {result?.PatientID}, " +
+                    $"PatientName: {result?.PatientName}, Doctor: {result?.AssignedDoctor?.Name}");
+                
+                return result;
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error parsing appointment response: {ex.Message}");
+                return null;
+            }
+        }
+        
+        return null;
     }
 
     public async Task<bool> UpdateAppointment(int appointmentID, Appointment appointment)
@@ -69,6 +88,30 @@ public class ApiService
     {
         var response = await _httpClient.DeleteAsync($"appointments/{id}");
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task<List<DateTime>> GetAvailableTime(int doctorId, DateTime date, string appointmentType)
+    {
+        try
+        {
+            var endpoint = $"appointments/available-slots/{doctorId}/{date:yyyy-MM-dd}/{appointmentType.ToLower()}";
+            var response = await _httpClient.GetAsync(endpoint);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Failed to get available slots: {response.StatusCode}");
+                return new List<DateTime>();
+            }
+
+            // Define a response wrapper class to match the API response shape
+            var result = await response.Content.ReadFromJsonAsync<AvailableSlotResponse>();
+            return result?.availableSlots ?? new List<DateTime>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching available time: {ex.Message}");
+            return new List<DateTime>();
+        }
     }
 }
 
