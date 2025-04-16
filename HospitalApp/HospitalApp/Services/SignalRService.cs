@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using HospitalApp.Models;
+using HospitalApp;
 
 public class SignalRService
 {
@@ -9,10 +10,11 @@ public class SignalRService
     public event Action<int, int>? DoctorAvailabilityUpdated;
     public event Action<Doctor>? DoctorAdded;
 
+    public event Action<int, Appointment>? AppointmentUpdated;
     public SignalRService()
     {
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:5271/doctorHub")
+            .WithUrl("http://localhost:5271/hospitalHub")
             .WithAutomaticReconnect()
             .Build();
 
@@ -24,6 +26,10 @@ public class SignalRService
         _hubConnection.On<Doctor>("DoctorAdded", doctor =>
         {
             DoctorAdded?.Invoke(doctor);
+        });
+
+        _hubConnection.On<int, Appointment>("UpdateAppointment", (appointmentID, appointment)=>{
+            AppointmentUpdated?.Invoke(appointmentID, appointment);
         });
     }
 

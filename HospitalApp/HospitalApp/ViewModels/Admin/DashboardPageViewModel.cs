@@ -40,7 +40,7 @@ namespace HospitalApp.ViewModels
             _signalRService.DoctorAvailabilityUpdated += OnDoctorAvailabilityUpdated;
             _signalRService.DoctorAdded += OnDoctorAdded;
             
-            CurrentUser = _session.CurrentUser;
+            _currentUser = _session.CurrentUser;
 
             LoadDoctors();
             ConnectToSignalR();

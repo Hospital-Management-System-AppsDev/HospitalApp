@@ -39,27 +39,40 @@ public partial class MainMenuViewModel : ViewModelBase
         }
     }
 
-
+    public MainMenuViewModel()
+    {
+    }
 
     partial void OnSelectedListItemChanged(ListItemTemplate? value)
     {
         if (value is null) return;
 
-        // Manually create instances of view models with dependencies
-        ViewModelBase? instance = value.ModelType switch
-        {
-            Type t when t == typeof(DashboardPageViewModel) => new DashboardPageViewModel(_apiService, _signalRService),
-            Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(), // Ensure correct dependencies
-            Type t when t == typeof(PharmacyPageViewModel) => new PharmacyPageViewModel(),
-            Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
-            _ => null
-        };
-
-        if (instance is not null)
-        {
-            CurrentPage = instance;
-        }
+        LoadViewModelAsync(value);
     }
+
+
+    private async void LoadViewModelAsync(ListItemTemplate value)
+    {
+    ViewModelBase? instance = value.ModelType switch
+    {
+        Type t when t == typeof(DashboardPageViewModel) => new DashboardPageViewModel(_apiService, _signalRService),
+        Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(_apiService, _signalRService),
+        Type t when t == typeof(PharmacyPageViewModel) => new PharmacyPageViewModel(),
+        Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
+        _ => null
+    };
+
+    if (instance is AppointmentsPageViewModel apptVM)
+    {
+        await apptVM.LoadDataAsync();
+    }
+
+    if (instance is not null)
+    {
+        CurrentPage = instance;
+    }
+    }
+
 
 
     public ObservableCollection<ListItemTemplate> Items { get; } = new()
