@@ -41,33 +41,38 @@
                         Background="White"
                         BoxShadow="0 1 10 0 #80000000"
                         Padding="0">
-                    <TextBox Text="{Binding Password}" 
-                             PasswordChar="●"
+                    <TextBox Text="{Binding Password}"
+                             PasswordChar="{Binding ShowPasswordChar}"
                              FontSize="16"
                              Padding="15"
                              BorderThickness="0"
                              Background="Transparent"/>
                 </Border>
+                
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox Content="Show Password"
+                    <CheckBox IsChecked="{Binding ShowPassword}"
+                              Content="Show Password"
                               VerticalAlignment="Center"
                               FontSize="12"
                               Foreground="Black"
                               Grid.Column="0"/>
-                    <TextBlock Text="Forgot Password"
-                               FontSize="12"
-                               Foreground="Gray"
-                               TextDecorations="Underline"
-                               VerticalAlignment="Center"
-                               Cursor="Hand"
-                               Grid.Column="2"
-                               HorizontalAlignment="Right"/>
                 </Grid>
+                <!-- Error Message Display -->
+                <Border Background="#FFEBEE"
+                        CornerRadius="8"
+                        Padding="10"
+                        IsVisible="{Binding ErrorMsgVisible}">
+                    <TextBlock Text="{Binding ErrorMsg}"
+                               Foreground="#D32F2F"
+                               FontSize="14"
+                               TextWrapping="Wrap"/>
+                </Border>
+                
                 <Grid Margin="0,20,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
