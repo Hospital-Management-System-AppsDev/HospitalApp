@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="HospitalApp.Views.AppointmentDetailsView"
+             xmlns:viewmodels="using:HospitalApp.ViewModels"
+             x:DataType="viewmodels:AppointmentDetailsViewModel">
+
+    <StackPanel Spacing="10" Margin="20">
+        <TextBlock Text="{Binding Appointment.PkId}" />
+        <!-- Other details can go here -->
+
+        <Button Content="Back to Dashboard"
+                Command="{Binding BackToDashboardCommand}" />
+    </StackPanel>
+</UserControl>
