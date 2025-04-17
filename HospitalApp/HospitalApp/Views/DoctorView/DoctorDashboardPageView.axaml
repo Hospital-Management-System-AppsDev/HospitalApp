@@ -2,69 +2,142 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="HospitalApp.Views.DoctorDashboardPageView">
-  <Grid Margin="20">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="Auto"/>
-    </Grid.ColumnDefinitions>
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="HospitalApp.Views.DoctorDashboardPageView"
+             xmlns:models="using:HospitalApp.Models"
+             xmlns:viewmodels="using:HospitalApp.ViewModels"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             x:DataType="viewmodels:DoctorDashboardPageViewModel">
+    
+    <UserControl.Styles>
+        <Styles>
+            <!-- Base ListBoxItem Style -->
+            <Style Selector="ListBoxItem">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                        Background="{TemplateBinding Background}"
+                                        CornerRadius="{TemplateBinding CornerRadius}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        Content="{TemplateBinding Content}"
+                                        Padding="{TemplateBinding Padding}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </ControlTemplate>
+                </Setter>
+            </Style>
 
-    <Border Grid.Row="0"
-            Grid.ColumnSpan="2"
-    >
-      <TextBlock Text="Dashboard" FontSize="40" FontFamily="Rubik" Foreground="#3E8DC0" FontWeight="Bold"/>
-    </Border>
+            <!-- Hover Effect -->
+            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="#48b9ff"/>
+            </Style>
 
-    <Border Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Background="#EAF2F8" CornerRadius="20">
-      <StackPanel>
-        <TextBlock Text="Appointments" FontSize="20" Padding="20" Foreground="Black" FontWeight="Bold" />
-        <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Disabled"
-                  Background="Transparent">
-          <ListBox ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  Background="Transparent"
-                  Padding="20">
-            <ListBox.ItemsPanel>
-              <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal"/>
-              </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
+            <Style Selector="ListBoxItem:pointerover">
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
 
-            <!-- Sample ListBoxItems -->
-            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
-            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
-            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
-            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
-            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
-            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
-            <ListBoxItem Width="200" Height="250" Background="Blue" Margin="5"/>
-          </ListBox>
-        </ScrollViewer>
-      </StackPanel>
-    </Border>
+            <!-- Selected Item Style -->
+            <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="#009BFF"/>
+            </Style>
 
-    <Border Grid.Row ="2" Grid.Column="0" Background="#EAF2F8"
-    CornerRadius="20"
-    Margin="10"
-    >
+            <Style Selector="ListBoxItem:selected">
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
 
-    </Border>
+            <!-- Hover Effect for Selected Item -->
+            <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="#48b9ff"/>
+            </Style>
+        </Styles>
+    </UserControl.Styles>
 
-    <Border Grid.Row="2" Grid.Column="1" Background="#EAF2F8"
-    CornerRadius="20"
-    Margin="10"
-    Width="200"
-    >
+    <Grid Margin="20">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
 
-    </Border>
+      <Border Grid.Row="0"
+              Grid.ColumnSpan="2"
+      >
+        <TextBlock Text="Dashboard" FontSize="40" FontFamily="Rubik" Foreground="#3E8DC0" FontWeight="Bold"/>
+      </Border>
+
+      <Border Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Background="#EAF2F8" CornerRadius="20" Height="275">
+        <StackPanel>
+          <TextBlock Text="Today's Appointments" FontSize="20" Padding="20" Foreground="#00738C" FontWeight="Bold" HorizontalAlignment="Center"/>
+          <TextBlock Text="No appointments yet for today" IsVisible="{Binding MsgIsVisible}" FontSize="20" Padding="20" Foreground="gray" FontWeight="Bold" HorizontalAlignment="Center" Opacity="50" VerticalAlignment="Center"/>
+          <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Disabled"
+                    Background="Transparent">
+            
+<ListBox ItemsSource="{Binding AppointmentsToday}"
+         SelectedItem="{Binding SelectedAppointment}"
+         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+         Background="Transparent"
+         Padding="10">
+    <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+            <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+    
+    <Interaction.Behaviors>
+        <EventTriggerBehavior EventName="SelectionChanged">
+            <InvokeCommandAction Command="{Binding AppointmentClickedCommand}" 
+                               CommandParameter="{Binding SelectedAppointment}"/>
+        </EventTriggerBehavior>
+    </Interaction.Behaviors>
+    
+    <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="models:Appointment">
+            <Border Width="200" Height="145" Background="white" Margin="5" CornerRadius="10" Padding="10">
+                <StackPanel>
+                    <Border BorderBrush="#00738C" BorderThickness="2" CornerRadius="10" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding AppointmentTime}" Foreground="Black" Padding="10"/>
+                    </Border>
+                    
+                    <TextBlock Text="{Binding PatientName}" Foreground="Black" FontSize="15" FontWeight="SemiBold" Margin="0, 20, 0, 10"/>
+                    <TextBlock Text="{Binding AppointmentType}" Foreground="Black" Margin="0, 10, 0, 10"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+</ListBox>
+
+          </ScrollViewer>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row ="2" Grid.Column="0" Background="#EAF2F8"
+      CornerRadius="20"
+      Margin="10"
+      >
+
+      </Border>
+
+      <Border Grid.Row="2" Grid.Column="1" Background="#EAF2F8"
+      CornerRadius="20"
+      Margin="10"
+      Width="200"
+      >
+
+      </Border>
 
 
-  </Grid>
+    </Grid>
 </UserControl>
