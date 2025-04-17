@@ -14,18 +14,32 @@ namespace HospitalApp.ViewModels
         private readonly SignalRService _signalRService = new SignalRService();
         private readonly UserSessionService _session = UserSessionService.Instance;
 
-
-
         [ObservableProperty]
         private string _username;
 
         [ObservableProperty]
         private string _password;
 
+        [ObservableProperty]
+        private bool _showPassword;
+
+        [ObservableProperty]
+        private string errorMsg;
+
+        [ObservableProperty]
+        private bool errorMsgVisible = false;
+
+        public char ShowPasswordChar => ShowPassword ? '\0' : '●';
+
         public LoginViewModel(MainWindowViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             ConnectToSignalR();
+        }
+
+        partial void OnShowPasswordChanged(bool value)
+        {
+            OnPropertyChanged(nameof(ShowPasswordChar));
         }
 
         private async void ConnectToSignalR()
@@ -36,37 +50,44 @@ namespace HospitalApp.ViewModels
         [RelayCommand]
         private async Task Login()
         {
-            var user = await _apiService.LoginAsync(_username);
-            if (user == null)
-            {
-                // Handle invalid username
-                return;
-            }
+            try{
+                var user = await _apiService.LoginAsync(_username);
+                if (user == null)
+                {
+                    ErrorMsg = "Invalid Username or Password";
+                    ErrorMsgVisible = true;
+                    return;
+                }
 
-            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(_password, user.Password);
-            if (!isPasswordValid)
-            {
-                // Handle incorrect password
-                return;
-            }
+                bool isPasswordValid = BCrypt.Net.BCrypt.Verify(_password, user.Password);
+                if (!isPasswordValid)
+                {
+                    ErrorMsg = "Invalid Username or Password";
+                    ErrorMsgVisible = true;
+                    return;
+                }
 
-            _session.SetUser(user); // ✅ Store globally
-            Console.WriteLine($"Logged in as: {_session.CurrentUser.Username} ({_session.CurrentUser.Role})");
+                _session.SetUser(user); // ✅ Store globally
+                Console.WriteLine($"Logged in as: {_session.CurrentUser.Username} ({_session.CurrentUser.Role})");
 
-
-            if (user.Role == "admin")
-            {
-                _mainViewModel.NavigateToAdminMainMenu();
-            }
-            else if (user.Role == "doctor")
-            {
-                await _apiService.UpdateDoctorAvailabilityAsync(user.Id, 1);
-
-                _mainViewModel.NavigateToDoctorsMainMenu();
-            }
-            else
-            {
-                // Handle unauthorized role
+                if (user.Role == "admin")
+                {
+                    _mainViewModel.NavigateToAdminMainMenu();
+                }
+                else if (user.Role == "doctor")
+                {
+                    await _apiService.UpdateDoctorAvailabilityAsync(user.Id, 1);
+                    _mainViewModel.NavigateToDoctorsMainMenu();
+                }
+                else
+                {
+                    ErrorMsg = "Unauthorized Access.";
+                    ErrorMsgVisible = true;
+                    return;
+                }
+            }catch(Exception ex){
+                ErrorMsg = "Invalid Username or Password";
+                ErrorMsgVisible = true;
             }
         }
     }
