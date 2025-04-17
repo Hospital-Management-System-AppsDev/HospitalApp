@@ -13,6 +13,9 @@ namespace HospitalApp.ViewModels
 
         public UserSessionService SessionService { get; }
 
+        private ApiService _apiService = new ApiService();
+        private SignalRService _signalRService = new SignalRService();
+
 
         public MainWindowViewModel()
         {
@@ -45,10 +48,10 @@ namespace HospitalApp.ViewModels
         public void NavigateToAppointmentDetails(Appointment appointment)
         {
             Console.WriteLine($"Navigating to Appointment Details for {appointment.PatientName}");
-            CurrentView = new AppointmentDetailsViewModel(this, appointment);
+            CurrentView = new AppointmentDetailsViewModel(_apiService, _signalRService, this, appointment);
             Console.WriteLine($"CurrentView is now: {CurrentView.GetType().Name}");
         }
 
-        
+
     }
 }
