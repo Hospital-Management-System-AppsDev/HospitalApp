@@ -2,6 +2,7 @@
 using HospitalApp.Views;
 using System;
 using HospitalApp.Services;
+using HospitalApp.Models;
 
 namespace HospitalApp.ViewModels
 {
@@ -40,5 +41,14 @@ namespace HospitalApp.ViewModels
         {
             CurrentView = new LoginViewModel(this);
         }
+
+        public void NavigateToAppointmentDetails(Appointment appointment)
+        {
+            Console.WriteLine($"Navigating to Appointment Details for {appointment.PatientName}");
+            CurrentView = new AppointmentDetailsViewModel(this, appointment);
+            Console.WriteLine($"CurrentView is now: {CurrentView.GetType().Name}");
+        }
+
+        
     }
 }

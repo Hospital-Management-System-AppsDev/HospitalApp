@@ -113,5 +113,13 @@ public class ApiService
             return new List<DateTime>();
         }
     }
+
+    public async Task<List<Appointment>> GetAppointmentsByDoctorAsync(int id){
+        var response = await _httpClient.GetAsync($"appointments/by-doctor/{id}");
+        if (!response.IsSuccessStatusCode) return new List<Appointment>();
+
+        var data = await response.Content.ReadFromJsonAsync<List<Appointment>>();
+        return data ?? new List<Appointment>();
+    }
 }
 
