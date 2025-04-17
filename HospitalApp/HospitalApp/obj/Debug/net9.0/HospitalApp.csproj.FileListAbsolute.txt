@@ -258,3 +258,10 @@ C:/Users/User/Desktop/HospitalApp/hospitalapp/hospitalapp/bin/Debug/net9.0/Syste
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/obj/Debug/net9.0/Hospital.58D4885F.Up2Date
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/obj/Debug/net9.0/HospitalApp.genruntimeconfig.cache
 /Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/obj/Debug/net9.0/ref/HospitalApp.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Avalonia.Xaml.Interactions.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Avalonia.Xaml.Interactions.Custom.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Avalonia.Xaml.Interactions.DragAndDrop.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Avalonia.Xaml.Interactions.Draggable.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Avalonia.Xaml.Interactions.Events.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Avalonia.Xaml.Interactions.Responsive.dll
+/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/bin/Debug/net9.0/Avalonia.Xaml.Interactivity.dll
