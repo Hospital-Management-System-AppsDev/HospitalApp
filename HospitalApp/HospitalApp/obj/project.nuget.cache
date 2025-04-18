@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "k/p1aL6LBPg=",
+  "dgSpecHash": "pbFf7gglD8Y=",
   "success": true,
   "projectFilePath": "/Users/jcatillo/RiderProjects/HospitalApp/HospitalApp/HospitalApp/HospitalApp.csproj",
   "expectedPackageFiles": [
@@ -53,6 +53,7 @@
     "/Users/jcatillo/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.3/microsoft.extensions.logging.abstractions.9.0.3.nupkg.sha512",
     "/Users/jcatillo/.nuget/packages/microsoft.extensions.options/9.0.3/microsoft.extensions.options.9.0.3.nupkg.sha512",
     "/Users/jcatillo/.nuget/packages/microsoft.extensions.primitives/9.0.3/microsoft.extensions.primitives.9.0.3.nupkg.sha512",
+    "/Users/jcatillo/.nuget/packages/questpdf/2025.4.0/questpdf.2025.4.0.nupkg.sha512",
     "/Users/jcatillo/.nuget/packages/reactiveui/20.2.45/reactiveui.20.2.45.nupkg.sha512",
     "/Users/jcatillo/.nuget/packages/shimskiasharp/2.0.0.4/shimskiasharp.2.0.0.4.nupkg.sha512",
     "/Users/jcatillo/.nuget/packages/skiasharp/2.88.8/skiasharp.2.88.8.nupkg.sha512",
