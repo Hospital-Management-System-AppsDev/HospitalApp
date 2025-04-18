@@ -57,6 +57,7 @@
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/9.0.1/ref/net9.0/Microsoft.Win32.Registry.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/9.0.1/ref/net9.0/mscorlib.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/9.0.1/ref/net9.0/netstandard.dll
+/Users/jcatillo/.nuget/packages/questpdf/2025.4.0/lib/net8.0/QuestPDF.dll
 /Users/jcatillo/.nuget/packages/reactiveui/20.2.45/lib/net9.0/ReactiveUI.dll
 /Users/jcatillo/.nuget/packages/shimskiasharp/2.0.0.4/lib/net8.0/ShimSkiaSharp.dll
 /Users/jcatillo/.nuget/packages/skiasharp/2.88.8/lib/net6.0/SkiaSharp.dll

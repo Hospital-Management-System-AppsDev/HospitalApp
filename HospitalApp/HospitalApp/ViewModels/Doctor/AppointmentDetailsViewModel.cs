@@ -1,26 +1,49 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Email;
 using HospitalApp.Models;
 
 namespace HospitalApp.ViewModels;
 
 public partial class AppointmentDetailsViewModel : ViewModelBase
 {
+
+    [ObservableProperty]
+    private bool isLoading;
+
     public Appointment Appointment { get; }
 
     private readonly ApiService _apiService;
     private readonly SignalRService _signalRService;
 
     [ObservableProperty]
-    private string additionalNotes;
+    private string symptoms;
 
     [ObservableProperty]
-    private string diagnosis;
+    private string findings;
+    [ObservableProperty]
+    private string recommendations;
+
+    [ObservableProperty]
+    private string condition;
+
+    [ObservableProperty]
+    private string disease;
+
+    [ObservableProperty]
+    private string prescription;
+
+    public DateTime Today => DateTime.Today;
+
+    [ObservableProperty]
+    private DateTime selectedCertificateDate = DateTime.Today;
 
     [ObservableProperty]
     public Patient currentPatient;
@@ -80,20 +103,95 @@ public partial class AppointmentDetailsViewModel : ViewModelBase
         _mainWindowViewModel.NavigateToDoctorsMainMenu();
     }
 
-    [RelayCommand]
-    private void SubmitDiagnosis()
+    private void GenerateDiagnosis()
     {
-        // Example: Save to database or trigger further actions
-        Console.WriteLine($"Diagnosis: {Diagnosis}");
-        Console.WriteLine($"Notes: {AdditionalNotes}");
+        Diagnosis diagnosis = new Diagnosis(){
+            condition = Condition,
+            findings = Findings,
+            recommendations = Recommendations,
+            symptoms = Symptoms
+        };
+        PdfServices.GenerateDiagnosis(Appointment, CurrentPatient, diagnosis);
+    }
 
-        string[] arr = Diagnosis.Split("\n");
-
-        foreach(string token in arr){
-            Console.WriteLine($"token: {token}");
+    [RelayCommand]
+    public async void MarkAsDone()
+    {
+        if (string.IsNullOrWhiteSpace(Condition) ||
+            string.IsNullOrWhiteSpace(Symptoms) ||
+            string.IsNullOrWhiteSpace(Findings) ||
+            string.IsNullOrWhiteSpace(Recommendations) ||
+            string.IsNullOrWhiteSpace(Prescription) ||
+            string.IsNullOrWhiteSpace(Disease))
+        {
+            await ShowValidationDialogAsync();
+            return;
         }
 
-        // Optional: Display a message or call a service
+        IsLoading = true;
+
+        try
+        {
+            GenerateDiagnosis();
+            GenerateMedicalCertificate();
+            GeneratePrescription();
+            
+            await _apiService.UpdateAppointmentStatus(Appointment.PkId);
+            await EmailService.SendEmail();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+        }
+        finally
+        {
+            IsLoading = false;
+            BackToDashboard();
+        }
+    }
+
+
+    private void GeneratePrescription(){
+        PdfServices.GeneratePrescription(Appointment, CurrentPatient, Prescription);
+    }
+
+    private void GenerateMedicalCertificate(){
+        MedicalCertificate mc = new MedicalCertificate(){
+            disease = Disease,
+            period = SelectedCertificateDate
+        };
+        PdfServices.GenerateMedicalCertificate(Appointment, CurrentPatient, mc);
+        Console.WriteLine("PDF Generated");
+    }
+
+    private async Task ShowValidationDialogAsync()
+    {
+        var dialog = new Window
+        {
+            Width = 400,
+            Height = 200,
+            Title = "Incomplete Information",
+            Content = new TextBlock
+            {
+                Text = "Please fill out the diagnosis, prescription, and medical certificate before marking the appointment as done.",
+                TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
+                Margin = new Thickness(20)
+            },
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        };
+
+        if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop &&
+            desktop.MainWindow is Window mainWindow)
+        {
+            await dialog.ShowDialog(mainWindow);
+        }
+        else
+        {
+            // As a fallback, you can log or throw an error because dialog can't be shown without a parent
+            Debug.WriteLine("MainWindow not available — cannot show validation dialog.");
+        }
     }
 
    

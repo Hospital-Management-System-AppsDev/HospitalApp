@@ -24,7 +24,7 @@
         </ComboBox>
 
         <TextBlock Text="Date:" />
-        <CalendarDatePicker SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}" />
+        <CalendarDatePicker SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}" DisplayDateStart="{Binding Today}" />
         <Button Content="Get Available Time Slots"
                                     Command="{Binding OnGetAvailableSlotsCommand}"
                                     CornerRadius="10"
