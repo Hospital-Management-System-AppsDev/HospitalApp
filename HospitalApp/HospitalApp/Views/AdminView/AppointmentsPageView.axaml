@@ -200,6 +200,7 @@
                                 <CalendarDatePicker Width="250"
                                     SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}"
                                     Padding="10" FontSize="15"
+                                    DisplayDateStart="{Binding Today}"
                                 />
                                 <Button Content="Get Available Time Slots"
                                     Command="{Binding OnGetAvailableSlotsCommand}"

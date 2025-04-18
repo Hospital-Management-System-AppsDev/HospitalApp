@@ -18,6 +18,8 @@ using Avalonia.Media;
 namespace HospitalApp.ViewModels{
 public partial class AppointmentsPageViewModel : ViewModelBase
 {
+    public DateTime Today => DateTime.Now;
+
     public Window ParentWindow { get; set; }
 
     [ObservableProperty]
@@ -62,6 +64,7 @@ public partial class AppointmentsPageViewModel : ViewModelBase
         get => _doc;
         set => SetProperty(ref _doc, value);
     }
+    
 
     [ObservableProperty]
     private string selectedAppointmentType;
@@ -376,9 +379,18 @@ public partial class AppointmentsPageViewModel : ViewModelBase
             }
 
             // Convert DateTime list to TimeSpan list (only time part for UI)
-            foreach (var dt in availableSlots)
-            {
-                AvailableTimeSlots.Add(dt.TimeOfDay);
+            if(SelectedAppointmentDate == Today.Date){
+                foreach (var dt in availableSlots)
+                {
+                    if(dt.TimeOfDay > Today.TimeOfDay){
+                        AvailableTimeSlots.Add(dt.TimeOfDay);
+                    }
+                }
+            }else{
+                foreach (var dt in availableSlots)
+                {
+                    AvailableTimeSlots.Add(dt.TimeOfDay);
+                }
             }
         }
         catch (Exception ex)
@@ -410,6 +422,14 @@ public partial class AppointmentsPageViewModel : ViewModelBase
         if (!SelectedAppointmentDate.HasValue)
         {
             ErrorMsgCreate = "Error: No date selected.";
+            ErrorMsgCreateVisible = true;
+            return;
+        }
+
+        // Add this validation for time slot
+        if (SelectedAppointmentTime == default(TimeSpan))
+        {
+            ErrorMsgCreate = "Error: No time slot selected.";
             ErrorMsgCreateVisible = true;
             return;
         }

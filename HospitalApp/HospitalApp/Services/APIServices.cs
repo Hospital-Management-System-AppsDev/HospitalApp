@@ -121,5 +121,11 @@ public class ApiService
         var data = await response.Content.ReadFromJsonAsync<List<Appointment>>();
         return data ?? new List<Appointment>();
     }
+
+    public async Task<bool> UpdateAppointmentStatus(int appointmentID)
+    {
+        var response = await _httpClient.PatchAsync($"appointments/update-status/{appointmentID}", null);
+        return response.IsSuccessStatusCode;
+    }
 }
 

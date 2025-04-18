@@ -13,6 +13,9 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private Appointment appointment;
 
+        public DateTime Today => DateTime.Now;
+
+
         private ApiService _apiService = new ApiService();
 
         public ObservableCollection<Doctor> Doctors { get; set; }
@@ -115,9 +118,18 @@ namespace HospitalApp.ViewModels
                 }
 
                 // Convert DateTime list to TimeSpan list (only time part for UI)
-                foreach (var dt in availableSlots)
-                {
-                    AvailableTimeSlots.Add(dt.TimeOfDay);
+                if(SelectedAppointmentDate == Today.Date){
+                    foreach (var dt in availableSlots)
+                    {
+                        if(dt.TimeOfDay > Today.TimeOfDay){
+                            AvailableTimeSlots.Add(dt.TimeOfDay);
+                        }
+                    }
+                }else{
+                    foreach (var dt in availableSlots)
+                    {
+                        AvailableTimeSlots.Add(dt.TimeOfDay);
+                    }
                 }
             }
             catch (Exception ex)
