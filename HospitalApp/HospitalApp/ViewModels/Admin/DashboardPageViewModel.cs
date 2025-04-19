@@ -17,6 +17,10 @@ namespace HospitalApp.ViewModels
         private ObservableCollection<Doctor> doctors = new();
 
         [ObservableProperty]
+        private Doctor? selectedDoctor;
+
+
+        [ObservableProperty]
         private ObservableCollection<Doctor> filteredDoctors = new();
 
         [ObservableProperty]
