@@ -1,13 +1,35 @@
-# Default ignored files
+# -------- Rider-specific (from your snippet) --------
 /shelf/
 /workspace.xml
-# Rider ignored files
 /contentModel.xml
-/modules.xml
 /projectSettingsUpdater.xml
 /.idea.HospitalApp.iml
+/modules.xml
+
 # Editor-based HTTP Client requests
 /httpRequests/
+
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+# -------- C# / .NET build output --------
+bin/
+obj/
+Debug/
+Release/
+
+# -------- User-specific / IDE settings --------
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# -------- Visual Studio Code settings --------
+.vscode/
+
+# -------- Logs --------
+*.log
+
+# Optional: Dotnet launch settings (can include local-specific ports)
+/**/Properties/launchSettings.json
