@@ -1,0 +1,25 @@
+# Build output
+bin/
+obj/
+Debug/
+Release/
+
+# Rider and IDE files
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code settings
+.vscode/
+
+# HTTP Client
+httpRequests/
+
+# Local data source
+dataSources/
+dataSources.local.xml
+
+# Other temp files
+*.log
