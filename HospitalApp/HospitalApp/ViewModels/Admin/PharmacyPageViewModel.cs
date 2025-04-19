@@ -1,8 +1,12 @@
 using System;
+using Avalonia;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using HospitalApp.Models;
+using Avalonia.Controls;
+using HospitalApp.Views.HelperWindows;
+using Avalonia.Controls.ApplicationLifetimes;
 
 namespace HospitalApp.ViewModels
 {
@@ -157,9 +161,40 @@ namespace HospitalApp.ViewModels
             }
         }
 
-        private void AddMedicine()
+        private async void AddMedicine()
         {
-            // Implementation for adding a new medicine
+            Window parentWindow = null;
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                parentWindow = desktop.MainWindow;
+            }
+
+            if (parentWindow == null)
+            {
+                Console.WriteLine("Error: Parent window not available");
+                return;
+            }
+    
+            var addMedicineViewModel = new AddMedicineViewModel();
+    
+            var dialog = new Window
+            {
+                Title = "Add New Medicine",
+                Content = new AddMedicineView { DataContext = addMedicineViewModel },
+                Width = 400,
+                Height = 500,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+    
+            addMedicineViewModel.SetWindow(dialog);
+    
+            var result = await dialog.ShowDialog<Medicine>(parentWindow);
+    
+            if (result != null)
+            {
+                Medicines.Add(result);
+                FilterMedicines(); 
+            }
         }
 
         private void EditMedicine()
