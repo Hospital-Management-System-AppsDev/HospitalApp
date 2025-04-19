@@ -7,17 +7,17 @@ using System.IO;
 
 class PdfServices
 {
-    public static void GenerateMedicalCertificate(Appointment appointment, Patient patient, MedicalCertificate medcert)
+    public static string GenerateMedicalCertificate(Appointment appointment, Patient patient, MedicalCertificate medcert)
     {
-        QuestPDF.Settings.License = LicenseType.Community; // <-- Add this line
+        QuestPDF.Settings.License = LicenseType.Community;
 
-        string documentType = "MEDICAL CERTIFICATE"; // Change to "Prescription" as needed
+        string documentType = "MEDICAL CERTIFICATE";
         string date = DateTime.Now.ToString("MM/dd/yyyy");
 
-        string headerImagePath = "./Resources/ForPDF/mcheader.png"; // Update with actual image path
-        string footerImagePath = "./Resources/ForPDF/mcfooter.png"; // Update with actual image path
-        string signature = "./Resources/ForPDF/signature.png";
-        var fileName = $"./Records/MedicalCertificates/MC_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf";
+        string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
+        string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
+        string signature = Path.Combine("Resources", "ForPDF", "signature.png");
+        string fileName = Path.Combine("Records", "MedicalCertificates", $"MC_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>
         {
@@ -26,7 +26,7 @@ class PdfServices
                 page.Size(PageSizes.A4);
                 page.Margin(20);
                 page.PageColor(Colors.White);
-                
+
                 page.Header()
                     .Image(headerImagePath)
                     .FitWidth();
@@ -41,7 +41,7 @@ class PdfServices
                         col.Item().PaddingBottom(20).Text(txt =>
                         {
                             txt.Span("This is to certify that ").FontSize(12);
-                            txt.Span($"{(patient.Sex=="Male"? "Mr." : "Ms.")} {patient.Name}").FontSize(12).Underline().Italic();
+                            txt.Span($"{(patient.Sex == "Male" ? "Mr." : "Ms.")} {patient.Name}").FontSize(12).Underline().Italic();
                             txt.Span($", {patient.Sex}").FontSize(12).Underline().Italic();
                             txt.Span($", {patient.Age}").FontSize(12).Underline().Italic();
                             txt.Span($" years old, residing at ").FontSize(12);
@@ -57,8 +57,8 @@ class PdfServices
 
                         col.Item().PaddingBottom(20).Text("Sincerely,").FontSize(12);
                         col.Item()
-                            .Width(100) // Limit the width of the signature
-                            .Height(20) // Limit the height of the signature
+                            .Width(100)
+                            .Height(20)
                             .Image(signature);
                         col.Item().PaddingBottom(10).PaddingHorizontal(10).Text(appointment.AssignedDoctor.Name).FontSize(12).Underline();
                         col.Item().PaddingBottom(10).PaddingHorizontal(10).Text(appointment.AssignedDoctor.specialization).FontSize(12);
@@ -72,19 +72,21 @@ class PdfServices
         .GeneratePdf(fileName);
 
         Console.WriteLine($"PDF Generated: {fileName}");
+        return fileName;
+
     }
 
-    public static void GeneratePrescription(Appointment appointment, Patient patient, string prescription)
+    public static string GeneratePrescription(Appointment appointment, Patient patient, string prescription)
     {
-        QuestPDF.Settings.License = LicenseType.Community; // <-- Add this line
+        QuestPDF.Settings.License = LicenseType.Community;
 
         string date = DateTime.Now.ToString("MM/dd/yyyy");
 
-        string headerImagePath = "./Resources/ForPDF/stet.webp"; // Update with actual image path
-        string footerImagePath = "./Resources/ForPDF/mcfooter.png"; // Update with actual image path
-        string rxlogo = "./Resources/ForPDF/rx.png";
-        string signature = "./Resources/ForPDF/signature.png";
-        string fileName = $"./Records/Prescriptions/RX_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf";
+        string headerImagePath = Path.Combine("Resources", "ForPDF", "stet.webp");
+        string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
+        string rxlogo = Path.Combine("Resources", "ForPDF", "rx.png");
+        string signature = Path.Combine("Resources", "ForPDF", "signature.png");
+        string fileName = Path.Combine("Records", "Prescriptions", $"RX_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>
         {
@@ -93,56 +95,65 @@ class PdfServices
                 page.Size(PageSizes.A4);
                 page.Margin(20);
                 page.PageColor(Colors.White);
-                
-                page.Header().Row(row =>{
+
+                page.Header().Row(row =>
+                {
                     row.ConstantItem(100)
-                    .Height(100)
-                    .Image(headerImagePath);
+                        .Height(100)
+                        .Image(headerImagePath);
 
                     row.RelativeItem()
-                    .PaddingLeft(50) // Space between image and text
-                    .Column(col =>
-                    {
-                        col.Item().Text($"{appointment.AssignedDoctor.Name}")
-                            .FontSize(50).Bold().FontColor("#004aad");
+                        .PaddingLeft(50)
+                        .Column(col =>
+                        {
+                            col.Item().Text($"{appointment.AssignedDoctor.Name}")
+                                .FontSize(50).Bold().FontColor("#004aad");
 
-                        col.Item().Text($"{appointment.AssignedDoctor.specialization}")
-                            .FontSize(20).Bold().FontColor("#004aad");
-                    });
+                            col.Item().Text($"{appointment.AssignedDoctor.specialization}")
+                                .FontSize(20).Bold().FontColor("#004aad");
+                        });
                 });
 
                 page.Content()
                     .PaddingVertical(50)
                     .Column(col =>
                     {
-                        col.Item().AlignRight().Text(text=>{
+                        col.Item().AlignRight().Text(text =>
+                        {
                             text.Span("Date: ").FontSize(12).Bold();
                             text.Span($"{date}").FontSize(12).Underline().Italic();
                         });
 
-                        col.Item().Row(row =>{
-                            row.RelativeItem().Text(text=>{
+                        col.Item().Row(row =>
+                        {
+                            row.RelativeItem().Text(text =>
+                            {
                                 text.Span("Patient Name:").FontSize(12).Bold();
                                 text.Span($" {patient.Name}").FontSize(12).Bold().Italic().Underline();
                             });
-                            row.RelativeItem().Text(text=>{
+                            row.RelativeItem().Text(text =>
+                            {
                                 text.Span("Patient Id:").FontSize(12).Bold();
                                 text.Span($" {patient.PatientID}").FontSize(12).Bold().Italic().Underline();
                             });
                         });
 
-                        col.Item().Row(row =>{
-                            row.RelativeItem().Text(text=>{
-                            row.RelativeItem().Text(text=>{
+                        col.Item().Row(row =>
+                        {
+                            row.RelativeItem().Text(text =>
+                            {
                                 text.Span("Age:").FontSize(12).Bold();
                                 text.Span($" {patient.Age}").FontSize(12).Bold().Italic().Underline();
                             });
+                            row.RelativeItem().Text(text =>
+                            {
                                 text.Span("Gender:").FontSize(12).Bold();
                                 text.Span($" {patient.Sex}").FontSize(12).Bold().Italic().Underline();
                             });
                         });
 
-                        col.Item().Text(text=>{
+                        col.Item().Text(text =>
+                        {
                             text.Span("Address: ").FontSize(12).Bold();
                             text.Span($"{patient.Address}").FontSize(12).Underline().Italic();
                         });
@@ -154,39 +165,38 @@ class PdfServices
                         col.Item().Text($"• {prescription.Replace("\n", "\n• ")}");
                     });
 
-                page.Footer().Column(col=>{
-
+                page.Footer().Column(col =>
+                {
                     col.Item()
-                            .Width(100) // Limit the width of the signature
-                            .Height(20) // Limit the height of the signature
-                            .Image(signature);
-                        col.Item().PaddingBottom(10).PaddingHorizontal(10).Text(appointment.AssignedDoctor.Name).FontSize(12).Underline();
-                        col.Item().PaddingBottom(10).PaddingHorizontal(10).Text(appointment.AssignedDoctor.specialization).FontSize(12);
+                        .Width(100)
+                        .Height(20)
+                        .Image(signature);
+                    col.Item().PaddingBottom(10).PaddingHorizontal(10).Text(appointment.AssignedDoctor.Name).FontSize(12).Underline();
+                    col.Item().PaddingBottom(10).PaddingHorizontal(10).Text(appointment.AssignedDoctor.specialization).FontSize(12);
 
                     col.Item().Image(footerImagePath)
-                    .FitWidth();
+                        .FitWidth();
                 });
-                    
             });
-
         })
         .GeneratePdf(fileName);
 
         Console.WriteLine($"PDF Generated: {fileName}");
+        return fileName;
+
     }
 
-    public static void GenerateDiagnosis(Appointment appointment, Patient patient, Diagnosis diagnosis)
+    public static string GenerateDiagnosis(Appointment appointment, Patient patient, Diagnosis diagnosis)
     {
         QuestPDF.Settings.License = LicenseType.Community;
 
         string documentType = "MEDICAL DIAGNOSIS REPORT";
         string date = DateTime.Now.ToString("MM/dd/yyyy");
 
-        string headerImagePath = "./Resources/ForPDF/mcheader.png";
-        string footerImagePath = "./Resources/ForPDF/mcfooter.png";
-        string signature = "./Resources/ForPDF/signature.png";
-
-        var fileName = $"./Records/Diagnosis/D_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf";
+        string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
+        string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
+        string signature = Path.Combine("Resources", "ForPDF", "signature.png");
+        string fileName = Path.Combine("Records", "Diagnosis", $"D_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>
         {
@@ -206,7 +216,6 @@ class PdfServices
 
                     col.Item().PaddingBottom(10).Text("TO WHOM IT MAY CONCERN").FontSize(14).Bold();
 
-                    // Patient Information
                     col.Item().PaddingBottom(15).Text(txt =>
                     {
                         txt.Span("This is to certify that ").FontSize(12);
@@ -217,7 +226,6 @@ class PdfServices
                         txt.Span(" has been examined and the following medical information was recorded:").FontSize(12);
                     });
 
-                    // Diagnosis Sections
                     if (!string.IsNullOrWhiteSpace(diagnosis.condition))
                     {
                         col.Item().PaddingBottom(5).Text("Condition/s:").FontSize(12).Bold();
@@ -237,8 +245,6 @@ class PdfServices
                             }
                         });
                     }
-
-                    col.Item().PaddingBottom(5).Text("").FontSize(12).Bold();
 
                     if (!string.IsNullOrWhiteSpace(diagnosis.symptoms))
                     {
@@ -260,8 +266,6 @@ class PdfServices
                         });
                     }
 
-                    col.Item().PaddingBottom(5).Text("").FontSize(12).Bold();
-
                     if (!string.IsNullOrWhiteSpace(diagnosis.findings))
                     {
                         col.Item().PaddingBottom(5).Text("Finding/s:").FontSize(12).Bold();
@@ -282,9 +286,6 @@ class PdfServices
                         });
                     }
 
-                    col.Item().PaddingBottom(5).Text("").FontSize(12).Bold();
-
-                    // Recommendations
                     if (!string.IsNullOrWhiteSpace(diagnosis.recommendations))
                     {
                         col.Item().PaddingBottom(5).Text("Recommendations:").FontSize(12).Bold();
@@ -305,7 +306,6 @@ class PdfServices
                         });
                     }
 
-                    // Doctor Signature
                     col.Item().PaddingTop(30).Text("Sincerely,").FontSize(12);
                     col.Item().Width(100).Height(20).Image(signature);
                     col.Item().Text(appointment.AssignedDoctor.Name).FontSize(12).Underline();
@@ -317,7 +317,8 @@ class PdfServices
         })
         .GeneratePdf(fileName);
 
-        Console.WriteLine($"PDF Generated: {fileName}");
-    }
 
+        Console.WriteLine($"PDF Generated: {fileName}");
+        return fileName;
+    }
 }

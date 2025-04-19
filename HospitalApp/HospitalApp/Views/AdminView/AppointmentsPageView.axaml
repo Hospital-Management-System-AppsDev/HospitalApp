@@ -62,15 +62,15 @@
                         </DataGrid.Styles>
                         
                         <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding PkId}"/>
-                                <DataGridTextColumn Header="Patient ID" Binding="{Binding PatientID}"/>
-                                <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}"/>
-                                <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}"/>
-                                <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
-                                <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}"/>
+                                <DataGridTextColumn Header="AID" Binding="{Binding PkId}" Width="Auto"/>
+                                <DataGridTextColumn Header="PID" Binding="{Binding PatientID}" Width="Auto"/>
+                                <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
+                                <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
+                                <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="Auto"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                                <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="Auto"/>
 
-                            <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn Header="Actions" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Spacing="5">
@@ -139,14 +139,13 @@
                             </DataGrid.Styles>
                             
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding PkId}"/>
-
-                                <DataGridTextColumn Header="Patient ID" Binding="{Binding PatientID}"/>
-                                <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}"/>
-                                <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}"/>
-                                <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
-                                <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}"/>
+                                <DataGridTextColumn Header="AID" Binding="{Binding PkId}" Width="Auto"/>
+                                <DataGridTextColumn Header="PID" Binding="{Binding PatientID}" Width="Auto"/>
+                                <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
+                                <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
+                                <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="*"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                                <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>
