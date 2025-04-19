@@ -127,5 +127,31 @@ public class ApiService
         var response = await _httpClient.PatchAsync($"appointments/update-status/{appointmentID}", null);
         return response.IsSuccessStatusCode;
     }
+
+    public async Task<Records> AddRecordAsync(Records record){
+        var response = await _httpClient.PostAsJsonAsync("records/add-record", record);
+
+        if (response.IsSuccessStatusCode)
+        {
+            try {
+                var result = await response.Content.ReadFromJsonAsync<Records>();    
+                return result;
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error parsing appointment response: {ex.Message}");
+                return null;
+            }
+        }
+        
+        return null;
+    }
+
+    public async Task<List<Records>> GetRecordByPatientId(int patientid){
+        var response = await _httpClient.GetAsync($"records/{patientid}");
+        if (!response.IsSuccessStatusCode) return new List<Records>();
+
+        var data = await response.Content.ReadFromJsonAsync<List<Records>>();
+        return data ?? new List<Records>();
+    }
 }
 

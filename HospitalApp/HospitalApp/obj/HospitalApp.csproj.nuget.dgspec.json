@@ -99,6 +99,10 @@
             "System.Net.Http.Json": {
               "target": "Package",
               "version": "[9.0.3, )"
+            },
+            "WebView.Avalonia.Desktop": {
+              "target": "Package",
+              "version": "[11.0.0.1, )"
             }
           },
           "imports": [

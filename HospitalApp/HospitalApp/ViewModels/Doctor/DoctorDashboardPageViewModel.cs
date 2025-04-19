@@ -61,7 +61,7 @@ private Appointment? _selectedAppointment;
             Console.WriteLine($"Appointment ID: {appointment.PkId}, Patient: {appointment.PatientName}, Date: {appointment.AppointmentDateTime}, Status: {appointment.Status}");
         }
 
-        var today = Appointments.Where(a => a.Status != 1).Where(a => a.AppointmentDateForPicker == DateTime.UtcNow.Date)
+        var today = Appointments.Where(a => a.Status != 1).Where(a => a.AppointmentDateForPicker == DateTime.Now.Date)
                 .OrderBy(a => a.AppointmentDateTime)
                 .ToList();
 
