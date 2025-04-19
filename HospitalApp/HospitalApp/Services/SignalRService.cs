@@ -12,6 +12,8 @@ public class SignalRService
 
     public event Action<int, Appointment>? AppointmentUpdated;
     public event Action<Appointment>? AppointmentAdded;
+    public event Action<Records>? RecordAdded; // 👈 new event for record
+
 
     public SignalRService()
     {
@@ -37,6 +39,11 @@ public class SignalRService
         _hubConnection.On<Appointment>("AppointmentAdded", appointment =>
         {
             AppointmentAdded?.Invoke(appointment);
+        });
+
+        _hubConnection.On<Records>("RecordAdded", record =>
+        {
+            RecordAdded?.Invoke(record);
         });
     }
 

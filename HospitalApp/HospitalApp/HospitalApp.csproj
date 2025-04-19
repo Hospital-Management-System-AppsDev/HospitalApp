@@ -34,5 +34,6 @@
         <PackageReference Include="QuestPDF" Version="2025.4.0" />
         <PackageReference Include="ReactiveUI" Version="20.2.45" />
         <PackageReference Include="System.Net.Http.Json" Version="9.0.3" />
+        <PackageReference Include="WebView.Avalonia.Desktop" Version="11.0.0.1" />
     </ItemGroup>
 </Project>

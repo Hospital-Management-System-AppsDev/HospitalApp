@@ -4,6 +4,8 @@ using HospitalApp.Models;
 using System.Threading.Tasks;
 using HospitalApp.Services;
 using System;
+using HospitalApp.Views;
+using System.IO;
 
 namespace HospitalApp.ViewModels
 {
@@ -85,6 +87,17 @@ namespace HospitalApp.ViewModels
                     ErrorMsgVisible = true;
                     return;
                 }
+                var basePath = AppContext.BaseDirectory;
+                Console.WriteLine("Original Base Path: " + basePath);
+
+                // Traverse up the directory structure to get the third "HospitalApp"
+                var thirdHospitalAppPath = basePath;
+
+                // Go up 3 levels (you can adjust the number of levels if needed)
+                for (int i = 0; i < 4; i++)
+                {
+                    thirdHospitalAppPath = Directory.GetParent(thirdHospitalAppPath).FullName;
+                }                
             }catch(Exception ex){
                 ErrorMsg = "Invalid Username or Password";
                 ErrorMsgVisible = true;

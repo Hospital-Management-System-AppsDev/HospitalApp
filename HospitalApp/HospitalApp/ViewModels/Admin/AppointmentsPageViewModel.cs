@@ -22,6 +22,8 @@ public partial class AppointmentsPageViewModel : ViewModelBase
 
     public Window ParentWindow { get; set; }
 
+    
+
     [ObservableProperty]
     private string appointmentSearchText;
     public ObservableCollection<Appointment> FilteredAppointments { get; set; } = new();
@@ -189,7 +191,7 @@ public partial class AppointmentsPageViewModel : ViewModelBase
     }
 
     private Task<bool> ShowConfirmationDialog(string title, string message)
-{
+    {
     var tcs = new TaskCompletionSource<bool>();
 
     Window confirmationWindow = null; // Declare first

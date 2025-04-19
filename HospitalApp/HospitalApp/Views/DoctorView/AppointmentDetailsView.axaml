@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:HospitalApp.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
@@ -163,7 +164,42 @@
                         </TabItem>
 
                         <!-- Medical Records -->
-                        <TabItem Header="Medical Records" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold"/>
+                        <TabItem Header="Medical Records" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold">
+                            <DataGrid ItemsSource="{Binding PatientRecords}" AutoGenerateColumns="False" IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="AID" Binding="{Binding appointment.PkId}" Width="Auto" />
+                                    <DataGridTextColumn Header="RID" Binding="{Binding id}" Width="Auto" />
+                                    <DataGridTextColumn Header="Doctor" Binding="{Binding appointment.AssignedDoctor.Name}" Width="*" />
+                                    <DataGridTextColumn Header="Date" Binding="{Binding appointment.AppointmentDateTime, StringFormat={}{0:yyyy-MM-dd}}" Width="*" />
+                                    <DataGridTemplateColumn Header="Actions" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                                    <Button Content="View Diagnosis" 
+                                                            Command="{Binding $parent[DataGrid]((vm:AppointmentDetailsViewModel)DataContext).ViewPdfCommand}" 
+                                                            CommandParameter="{Binding diagnosisPath}"
+                                                            Background="#3E8DC0"
+                                                            Foreground="White"
+                                                            Padding="5,2"/>
+                                                    <Button Content="View Prescription" 
+                                                            Command="{Binding $parent[DataGrid]((vm:AppointmentDetailsViewModel)DataContext).ViewPdfCommand}" 
+                                                            CommandParameter="{Binding prescriptionPath}"
+                                                            Background="#3E8DC0"
+                                                            Foreground="White"
+                                                            Padding="5,2"/>
+                                                    <Button Content="View Certificate" 
+                                                            Command="{Binding $parent[DataGrid]((vm:AppointmentDetailsViewModel)DataContext).ViewPdfCommand}" 
+                                                            CommandParameter="{Binding medicalCertificatePath}"
+                                                            Background="#3E8DC0"
+                                                            Foreground="White"
+                                                            Padding="5,2"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </TabItem>
                     </TabControl>
                 </StackPanel>
             </ScrollViewer>
