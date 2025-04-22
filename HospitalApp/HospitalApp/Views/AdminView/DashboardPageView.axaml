@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              xmlns:models="clr-namespace:HospitalApp.Models"
+             xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
              x:DataType="vm:DashboardPageViewModel"> <!-- Add this -->
 
              
@@ -81,15 +82,15 @@
 
         <!-- HEADER -->
         <StackPanel Grid.Row="0">
-            <TextBlock FontSize="24" FontFamily="Rubik" FontWeight="Bold" Margin="0 5" Foreground="Black">
-                <Run Text="Hello, "/>
+            <TextBlock FontSize="24" FontFamily="Rubik" FontWeight="Bold" Margin="0 5" Foreground="#3E8DC0">
+                <Run Text="Hello,"/>
                 <Run Text="{Binding CurrentUser.Name}"/>
             </TextBlock>
             <TextBlock Text="DashBoard" FontSize="48" FontWeight="Bold" Foreground="#3E8DC0" Margin="0 5"/>
         </StackPanel>
 
         <TabControl Grid.Row="1">
-            <TabItem Header="Doctors">
+            <TabItem Header="Doctors" FontSize="15">
                 <!-- CONTENT GRID (Full Height) -->
                 <Grid>
                     <Grid.RowDefinitions>
@@ -111,14 +112,30 @@
                         <Grid> 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/> <!-- New row for add button -->
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
                             <!-- Search Bar -->
                             <TextBox Text="{Binding SearchText, Mode=TwoWay}" Watermark="Search Doctors..." Grid.Row="0"></TextBox>
 
+                            <!-- Add Doctor Button -->
+                            <Button Grid.Row="1" Content="Add Doctor" HorizontalAlignment="Stretch" 
+                                    Background="#009BFF" Foreground="White" Padding="10" 
+                                    CornerRadius="8" Margin="0 0 0 10" 
+                                    >
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <PathIcon Data="M12 4v16m8-8H4" />
+                                            <TextBlock Text="Add Doctor" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+
                             <!-- ScrollViewer for List -->
-                            <ScrollViewer Grid.Row="1">
+                            <ScrollViewer Grid.Row="2">
                                 <ListBox ItemsSource="{Binding FilteredDoctors}" 
                                             SelectedItem="{Binding SelectedDoctor, Mode=TwoWay}"
                                             Background="Transparent" BorderThickness="0">
@@ -170,27 +187,121 @@
                     </Border>
 
                     <Border Grid.Row="0" Grid.Column="2" Background="#006CB5" Margin="5 0 5 0" CornerRadius="10" Grid.ColumnSpan="2" Padding="20">
-                        <StackPanel>
-                            <TextBlock Text="{Binding SelectedDoctor.Name}" FontSize="24" Foreground="White" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding SelectedDoctor.specialization}" FontSize="18" Foreground="White"/>
-                            <TextBlock Text="{Binding SelectedDoctor.ContactNumber}" FontSize="16" Foreground="White"/>
-                            <TextBlock Text="{Binding SelectedDoctor.is_available}" 
-                                    FontSize="16" Foreground="White"/>
-                        </StackPanel>
+                        <Grid>
+                            <TextBlock Text="Please select a doctor to view their information" 
+                                    FontSize="20" FontWeight="SemiBold" Foreground="white"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    IsVisible="{Binding !ShowDoctor}" Opacity="75"/>
+
+                            <Grid IsVisible="{Binding ShowDoctor}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" /> <!-- Profile picture -->
+                                    <RowDefinition Height="Auto" /> <!-- Information section -->
+                                    <RowDefinition Height="Auto" /> <!-- Buttons -->
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Profile Picture (Circular) -->
+                                <Ellipse Grid.Row="0" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,20">
+                                    <Ellipse.Fill>
+                                        <ImageBrush Source="avares://HospitalApp/Assets/dr-default.png" Stretch="UniformToFill"/>
+                                    </Ellipse.Fill>
+                                    <Ellipse.Stroke>
+                                        <SolidColorBrush Color="White" />
+                                    </Ellipse.Stroke>
+                                    <Ellipse.StrokeThickness>2</Ellipse.StrokeThickness>
+                                </Ellipse>
+                                
+                                <!-- Information Section -->
+                                <Grid Grid.Row="1" Margin="0,0,0,20">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Title -->
+                                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Information:" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,10" />
+                                    
+                                    <!-- First Row -->
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                                        <TextBlock Text="Name: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding SelectedDoctor.Name}" FontSize="16" Foreground="White" />
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock Text="Age: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding SelectedDoctor.Age}" FontSize="16" Foreground="White" />
+                                    </StackPanel>
+                                    
+                                    <!-- Second Row -->
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+                                        <TextBlock Text="Sex: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding SelectedDoctor.Sex}" FontSize="16" Foreground="White" />
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock Text="Email: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding SelectedDoctor.Email}" FontSize="16" Foreground="White" />
+                                    </StackPanel>
+                                    
+                                    <!-- Third Row -->
+                                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
+                                        <TextBlock Text="Specialization: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding SelectedDoctor.specialization}" FontSize="16" Foreground="White" />
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock Text="Contact: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding SelectedDoctor.ContactNumber}" FontSize="16" Foreground="White" />
+                                    </StackPanel>
+                                </Grid>
+                                
+                                <!-- Buttons -->
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Spacing="20">
+                                    <Button  Background="#48b9ff" Foreground="White" Padding="15,8" CornerRadius="5">
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <PathIcon Data="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                            <TextBlock Text="Edit" />
+                                        </StackPanel>
+                                    </Button>
+                                    
+                                    <Button  Background="#FF5252" Foreground="White" Padding="15,8" CornerRadius="5">
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <PathIcon Data="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                            <TextBlock Text="Delete" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
                     </Border>
 
 
-                    <!-- Graph Section -->
+                    <!-- Chart Section -->
                     <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Background="#D4E6F1" Margin="5 10 5 0" CornerRadius="10">
+                        <lvc:CartesianChart Margin="20"
+
+                            DataContext="{Binding DoctorChart}"
+                            Series="{Binding Series}"
+                            Title="{Binding Title}"
+                            XAxes="{Binding XAxes}"
+                            YAxes="{Binding YAxes}"
+                            AnimationsSpeed="00:00:01.000"
+                        />
                     </Border>
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Admins">
+            <TabItem Header="Admins" FontSize="15">
 
             </TabItem>
 
-            <TabItem Header="Patients">
+            <TabItem Header="Patients" FontSize="15">
                 
             </TabItem>
         </TabControl>

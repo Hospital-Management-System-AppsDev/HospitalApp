@@ -19,7 +19,8 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private Doctor? selectedDoctor;
 
-
+        [ObservableProperty]
+        private bool showDoctor;
         [ObservableProperty]
         private ObservableCollection<Doctor> filteredDoctors = new();
 
@@ -31,6 +32,8 @@ namespace HospitalApp.ViewModels
 
         [ObservableProperty]
         private User _currentUser;
+
+        public DoctorChartViewModel DoctorChart {get;} = new();  
 
         // [Observable Property]
 
@@ -109,6 +112,9 @@ namespace HospitalApp.ViewModels
             }
         }
 
-
+        partial void OnSelectedDoctorChanged(Doctor? value)
+        {
+            ShowDoctor = value != null;
+        }
     }
 }
