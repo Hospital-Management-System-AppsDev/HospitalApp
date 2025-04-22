@@ -153,5 +153,15 @@ public class ApiService
         var data = await response.Content.ReadFromJsonAsync<List<Records>>();
         return data ?? new List<Records>();
     }
+
+    public async Task<List<int>> GetNumOfPatientsAsync(int year, int month)
+    {
+        var response = await _httpClient.GetAsync($"appointments/getnumpatientspermonth/{year}/{month}");
+
+        if (!response.IsSuccessStatusCode) return new List<int>();
+
+        var data = await response.Content.ReadFromJsonAsync<List<int>>();
+        return data ?? new List<int>();
+    }
 }
 

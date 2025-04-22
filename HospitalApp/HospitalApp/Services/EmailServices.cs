@@ -29,7 +29,7 @@ namespace Email
                     mail.Body = @$"<p>Dear {app.PatientName},</p>
                                 <p>We hope this email finds you in good health.</p>
 
-                                <p>Please find attached the medical certificate and prescription as per your recent <strong>{app.AppointmentType}</strong> with <strong>Dr. {app.AssignedDoctor.Name}</strong> at <strong>CETA Medical Arts</strong> on <strong>{app.AppointmentDateTime}</strong>. Kindly review the documents for your records and follow the prescribed instructions as indicated.</p>
+                                <p>Please find attached the medical certificate and prescription as per your recent <strong>{app.AppointmentType}</strong> with <strong> {app.AssignedDoctor.Name}</strong> at <strong>CETA Medical Arts</strong> on <strong>{app.AppointmentDateTime}</strong>. Kindly review the documents for your records and follow the prescribed instructions as indicated.</p>
 
                                 <p>If you have any questions or require further assistance, please do not hesitate to reach out to us.</p>
 
