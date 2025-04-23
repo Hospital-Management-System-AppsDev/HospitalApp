@@ -47,7 +47,8 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private User _currentUser;
 
-        public AdminDashChartViewModel AdminChart {get;} = new();  
+        public AdminDashChartDocViewModel AdminChart {get;} = new();  
+        public AdminDashChartPatientsViewModel AdminChartPatients {get;} = new();  
 
         // [Observable Property]
 
