@@ -57,6 +57,8 @@ public partial class MainMenuViewModel : ViewModelBase
     {
         Type t when t == typeof(DashboardPageViewModel) => new DashboardPageViewModel(_apiService, _signalRService),
         Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(_apiService, _signalRService),
+        Type t when t == typeof(DoctorPageViewModel) => new DoctorPageViewModel(_apiService, _signalRService),
+        Type t when t == typeof(PatientPageViewModel) => new PatientPageViewModel(_apiService, _signalRService),
         Type t when t == typeof(PharmacyPageViewModel) => new PharmacyPageViewModel(),
         Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
         _ => null
@@ -79,6 +81,8 @@ public partial class MainMenuViewModel : ViewModelBase
     {
         new ListItemTemplate(typeof(DashboardPageViewModel), "Dashboard"),
         new ListItemTemplate(typeof(AppointmentsPageViewModel), "Appointments"),
+        new ListItemTemplate(typeof(DoctorPageViewModel), "Doctor"),
+        new ListItemTemplate(typeof(PatientPageViewModel), "Patient"),
         new ListItemTemplate(typeof(PharmacyPageViewModel), "Pharmacy"),
         new ListItemTemplate(typeof(SettingsPageViewModel), "Settings"),
     };
