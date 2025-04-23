@@ -24,7 +24,7 @@ namespace Email
                 using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                 {
                     mail.From = new MailAddress("cetamedicalarts@gmail.com");
-                    mail.To.Add("jcatillo1121@gmail.com");
+                    mail.To.Add($"{patient.Email}");
                     mail.Subject = "Medical Certificate and Prescription for Your Recent Visit";
                     mail.Body = @$"<p>Dear {app.PatientName},</p>
                                 <p>We hope this email finds you in good health.</p>
