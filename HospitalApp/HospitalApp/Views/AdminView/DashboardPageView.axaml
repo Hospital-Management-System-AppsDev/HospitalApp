@@ -70,7 +70,7 @@
     </UserControl.Styles>
     
     <!-- Rest of the XAML code remains the same -->
-    <Grid Margin="50"> 
+    <Grid Margin="50">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -103,89 +103,105 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
+                    
                     <!-- SIDEBAR: Full Height Background -->
-                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="#EAF2F8"
-                            VerticalAlignment="Stretch"  Margin="0 0 5 0"
-                            Padding="20" CornerRadius="10">
-                        
-                        <Grid> 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/> <!-- New row for add button -->
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" RowDefinitions="Auto, *"> 
+                        <Grid Grid.Row="0" Margin="0 10 10 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                            <!-- Search Bar -->
-                            <TextBox Text="{Binding SearchText, Mode=TwoWay}" Watermark="Search Doctors..." Grid.Row="0"></TextBox>
+                            <Border Grid.Column="0" Padding="20" Background="#006EBB" CornerRadius="10" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="Total Doctors" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
+                                </StackPanel>
+                            </Border>
 
-                            <!-- Add Doctor Button -->
-                            <Button Grid.Row="1" Content="Add Doctor" HorizontalAlignment="Stretch" 
-                                    Background="#009BFF" Foreground="White" Padding="10" 
-                                    CornerRadius="8" Margin="0 0 0 10" 
-                                    >
-                                <Button.ContentTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Spacing="5">
-                                            <PathIcon Data="M12 4v16m8-8H4" />
-                                            <TextBlock Text="Add Doctor" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </Button.ContentTemplate>
-                            </Button>
+                            <Border Grid.Column="1" Padding="20" Background="#006EBB" CornerRadius="10" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="New Doctors" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
+                                </StackPanel>
+                            </Border>
 
-                            <!-- ScrollViewer for List -->
-                            <ScrollViewer Grid.Row="2">
-                                <ListBox ItemsSource="{Binding FilteredDoctors}" 
-                                            SelectedItem="{Binding SelectedDoctor, Mode=TwoWay}"
-                                            Background="Transparent" BorderThickness="0">
-                                    <ListBox.Styles>
-                                        <!-- Base Item Style -->
-                                        <Style Selector="ListBoxItem">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Padding" Value="10"/>
-                                            <Setter Property="Margin" Value="5"/>
-                                            <Setter Property="CornerRadius" Value="8"/>
-                                            <Setter Property="FontSize" Value="18"/>
-                                            <Setter Property="Foreground" Value="Black"/>
-                                        </Style>
-
-                                        <!-- Hover Effect -->
-                                        <Style Selector="ListBoxItem:pointerover">
-                                            <Setter Property="Background" Value="#D6EAF8"/>
-                                            <Setter Property="Foreground" Value="Black"/>
-                                        </Style>
-
-                                        <!-- Selected Item -->
-                                        <Style Selector="ListBoxItem:selected">
-                                            <Setter Property="Background" Value="#009BFF"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </Style>
-
-                                        <!-- Hover Effect for Selected Item -->
-                                        <Style Selector="ListBoxItem:selected:pointerover">
-                                            <Setter Property="Background" Value="#48b9ff"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </Style>
-                                    </ListBox.Styles>
-
-                                    <!-- Define how each item should be displayed -->
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate x:DataType="models:Doctor">
-                                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                                <Ellipse Width="10" Height="10" 
-                                                    Fill="{Binding is_available, Converter={StaticResource AvailabilityToColorConverter}}"
-                                                    VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding Name}" FontSize="18"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-
-                            </ScrollViewer>
+                            <Border Grid.Column="2" Padding="20" Background="#006EBB" CornerRadius="10">
+                                <StackPanel>
+                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="Available Doctors" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
+                                </StackPanel>
+                            </Border>
                         </Grid>
-                    </Border>
 
+                        <Border Background="#EAF2F8"
+                                VerticalAlignment="Stretch"  Margin="0 0 5 0"
+                                Padding="20" CornerRadius="10" Grid.Row="1">
+                            
+                            <Grid> 
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Search Bar -->
+                                <TextBox Text="{Binding SearchText, Mode=TwoWay}" Watermark="Search Doctors..." Grid.Row="0"></TextBox>
+
+                                <!-- ScrollViewer for List -->
+                                <ScrollViewer Grid.Row="2">
+                                    <ListBox ItemsSource="{Binding FilteredDoctors}" 
+                                                SelectedItem="{Binding SelectedDoctor, Mode=TwoWay}"
+                                                Background="Transparent" BorderThickness="0">
+                                        <ListBox.Styles>
+                                            <!-- Base Item Style -->
+                                            <Style Selector="ListBoxItem">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="Padding" Value="10"/>
+                                                <Setter Property="Margin" Value="5"/>
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                                <Setter Property="FontSize" Value="18"/>
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </Style>
+
+                                            <!-- Hover Effect -->
+                                            <Style Selector="ListBoxItem:pointerover">
+                                                <Setter Property="Background" Value="#D6EAF8"/>
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </Style>
+
+                                            <!-- Selected Item -->
+                                            <Style Selector="ListBoxItem:selected">
+                                                <Setter Property="Background" Value="#009BFF"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Style>
+
+                                            <!-- Hover Effect for Selected Item -->
+                                            <Style Selector="ListBoxItem:selected:pointerover">
+                                                <Setter Property="Background" Value="#48b9ff"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Style>
+                                        </ListBox.Styles>
+
+                                        <!-- Define how each item should be displayed -->
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Doctor">
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                    <Ellipse Width="10" Height="10" 
+                                                        Fill="{Binding is_available, Converter={StaticResource AvailabilityToColorConverter}}"
+                                                        VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Name}" FontSize="18"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- Doctor Information Panel - Responsive Implementation with 2-Column Layout -->
                     <Border Grid.Row="0" Grid.Column="2" Background="#006CB5" Margin="5 0 5 0" CornerRadius="10" Grid.ColumnSpan="2" Padding="20">
                         <Grid>
                             <TextBlock Text="Please select a doctor to view their information" 
@@ -197,7 +213,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" /> <!-- Profile picture -->
                                     <RowDefinition Height="Auto" /> <!-- Information section -->
-                                    <RowDefinition Height="Auto" /> <!-- Buttons -->
+                                    <RowDefinition Height="Auto" /> <!-- Buttons (if needed) -->
                                 </Grid.RowDefinitions>
                                 
                                 <!-- Profile Picture (Circular) -->
@@ -211,72 +227,64 @@
                                     <Ellipse.StrokeThickness>2</Ellipse.StrokeThickness>
                                 </Ellipse>
                                 
-                                <!-- Information Section -->
-                                <Grid Grid.Row="1" Margin="0,0,0,20">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <!-- Title -->
-                                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Information:" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,10" />
-                                    
-                                    <!-- First Row -->
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                                        <TextBlock Text="Name: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
-                                        <TextBlock Text="{Binding SelectedDoctor.Name}" FontSize="16" Foreground="White" />
+                                <!-- Information Section - Using UniformGrid for 2-Column Layout -->
+                                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel Margin="0,0,0,20">
+                                        <!-- Title -->
+                                        <TextBlock Text="Information:" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,10" />
+                                        
+                                        <!-- Responsive Information Fields with 2-Column Layout -->
+                                        <UniformGrid Columns="2">
+                                            <!-- Name -->
+                                            <Border Margin="0,3,5,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Name: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedDoctor.Name}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Age -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Age: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedDoctor.Age}" FontSize="16" Foreground="White" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Sex -->
+                                            <Border Margin="0,3,5,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Sex: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedDoctor.Sex}" FontSize="16" Foreground="White" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Email -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Email: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedDoctor.Email}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Specialization -->
+                                            <Border Margin="0,3,5,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Specialization: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedDoctor.specialization}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Contact -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Contact: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedDoctor.ContactNumber}" FontSize="16" Foreground="White" />
+                                                </StackPanel>
+                                            </Border>
+                                        </UniformGrid>
                                     </StackPanel>
-                                    
-                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBlock Text="Age: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
-                                        <TextBlock Text="{Binding SelectedDoctor.Age}" FontSize="16" Foreground="White" />
-                                    </StackPanel>
-                                    
-                                    <!-- Second Row -->
-                                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
-                                        <TextBlock Text="Sex: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
-                                        <TextBlock Text="{Binding SelectedDoctor.Sex}" FontSize="16" Foreground="White" />
-                                    </StackPanel>
-                                    
-                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBlock Text="Email: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
-                                        <TextBlock Text="{Binding SelectedDoctor.Email}" FontSize="16" Foreground="White" />
-                                    </StackPanel>
-                                    
-                                    <!-- Third Row -->
-                                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
-                                        <TextBlock Text="Specialization: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
-                                        <TextBlock Text="{Binding SelectedDoctor.specialization}" FontSize="16" Foreground="White" />
-                                    </StackPanel>
-                                    
-                                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBlock Text="Contact: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
-                                        <TextBlock Text="{Binding SelectedDoctor.ContactNumber}" FontSize="16" Foreground="White" />
-                                    </StackPanel>
-                                </Grid>
-                                
-                                <!-- Buttons -->
-                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Spacing="20">
-                                    <Button  Background="#48b9ff" Foreground="White" Padding="15,8" CornerRadius="5">
-                                        <StackPanel Orientation="Horizontal" Spacing="5">
-                                            <PathIcon Data="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                            <TextBlock Text="Edit" />
-                                        </StackPanel>
-                                    </Button>
-                                    
-                                    <Button  Background="#FF5252" Foreground="White" Padding="15,8" CornerRadius="5">
-                                        <StackPanel Orientation="Horizontal" Spacing="5">
-                                            <PathIcon Data="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                            <TextBlock Text="Delete" />
-                                        </StackPanel>
-                                    </Button>
-                                </StackPanel>
+                                </ScrollViewer>
                             </Grid>
                         </Grid>
                     </Border>
@@ -286,7 +294,7 @@
                     <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Background="#D4E6F1" Margin="5 10 5 0" CornerRadius="10">
                         <lvc:CartesianChart Margin="20"
 
-                            DataContext="{Binding DoctorChart}"
+                            DataContext="{Binding AdminChart}"
                             Series="{Binding Series}"
                             Title="{Binding Title}"
                             XAxes="{Binding XAxes}"
@@ -297,12 +305,208 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Admins" FontSize="15">
-
-            </TabItem>
-
             <TabItem Header="Patients" FontSize="15">
-                
+                <!-- CONTENT GRID (Full Height) -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- SIDEBAR: Full Height Background -->
+                    <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" RowDefinitions="Auto, *"> 
+                        <Grid Grid.Row="0" Margin="0 10 10 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Padding="20" Background="#006EBB" CornerRadius="10" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="Total Patients" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Padding="20" Background="#006EBB" CornerRadius="10" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="New Patients" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Background="#EAF2F8"
+                                VerticalAlignment="Stretch"  Margin="0 0 5 0"
+                                Padding="20" CornerRadius="10" Grid.Row="1">
+                            
+                            <Grid> 
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Search Bar -->
+                                <TextBox Text="{Binding SearchTextPatient, Mode=TwoWay}" Watermark="Search Patient..." Grid.Row="0"></TextBox>
+
+                                <!-- ScrollViewer for List -->
+                                <ScrollViewer Grid.Row="2">
+                                    <ListBox ItemsSource="{Binding FilteredPatients}" 
+                                                SelectedItem="{Binding SelectedPatient, Mode=TwoWay}"
+                                                Background="Transparent" BorderThickness="0">
+                                        <ListBox.Styles>
+                                            <!-- Base Item Style -->
+                                            <Style Selector="ListBoxItem">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="Padding" Value="10"/>
+                                                <Setter Property="Margin" Value="5"/>
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                                <Setter Property="FontSize" Value="18"/>
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </Style>
+
+                                            <!-- Hover Effect -->
+                                            <Style Selector="ListBoxItem:pointerover">
+                                                <Setter Property="Background" Value="#D6EAF8"/>
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </Style>
+
+                                            <!-- Selected Item -->
+                                            <Style Selector="ListBoxItem:selected">
+                                                <Setter Property="Background" Value="#009BFF"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Style>
+
+                                            <!-- Hover Effect for Selected Item -->
+                                            <Style Selector="ListBoxItem:selected:pointerover">
+                                                <Setter Property="Background" Value="#48b9ff"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Style>
+                                        </ListBox.Styles>
+
+                                        <!-- Define how each item should be displayed -->
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Patient">
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                    <TextBlock Text="{Binding Name}" FontSize="18"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- Doctor Information Panel - Responsive Implementation with 2-Column Layout -->
+                    <Border Grid.Row="0" Grid.Column="2" Background="#006CB5" Margin="5 0 5 0" CornerRadius="10" Grid.ColumnSpan="2" Padding="20">
+                        <Grid>
+                            <TextBlock Text="Please select a patient to view their information" 
+                                    FontSize="20" FontWeight="SemiBold" Foreground="white"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    IsVisible="{Binding !ShowPatient}" Opacity="75"/>
+
+                            <Grid IsVisible="{Binding ShowPatient}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" /> <!-- Profile picture -->
+                                    <RowDefinition Height="Auto" /> <!-- Information section -->
+                                    <RowDefinition Height="Auto" /> <!-- Buttons (if needed) -->
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Profile Picture (Circular) -->
+                                <Ellipse Grid.Row="0" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,20">
+                                    <Ellipse.Fill>
+                                        <ImageBrush Source="avares://HospitalApp/Assets/patient-default.png" Stretch="UniformToFill"/>
+                                    </Ellipse.Fill>
+                                    <Ellipse.Stroke>
+                                        <SolidColorBrush Color="White" />
+                                    </Ellipse.Stroke>
+                                    <Ellipse.StrokeThickness>2</Ellipse.StrokeThickness>
+                                </Ellipse>
+                                
+                                <!-- Information Section - Using UniformGrid for 2-Column Layout -->
+                                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel Margin="0,0,0,20">
+                                        <!-- Title -->
+                                        <TextBlock Text="Information:" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,10" />
+                                        
+                                        <!-- Responsive Information Fields with 2-Column Layout -->
+                                        <UniformGrid Columns="2">
+                                            <!-- Name -->
+                                            <Border Margin="0,3,5,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Name: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedPatient.Name}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Age -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Age: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedPatient.Age}" FontSize="16" Foreground="White" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Sex -->
+                                            <Border Margin="0,3,5,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Sex: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedPatient.Sex}" FontSize="16" Foreground="White" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Email -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Email: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedPatient.Email}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Specialization -->
+                                            <Border Margin="0,3,5,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Blood Type: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedPatient.BloodType}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Contact -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Contact: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedPatient.ContactNumber}" FontSize="16" Foreground="White" />
+                                                </StackPanel>
+                                            </Border>
+                                        </UniformGrid>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+
+                    <!-- Chart Section -->
+                    <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Background="#D4E6F1" Margin="5 10 5 0" CornerRadius="10">
+                        <lvc:CartesianChart Margin="20"
+
+                            DataContext="{Binding AdminChart}"
+                            Series="{Binding Series}"
+                            Title="{Binding Title}"
+                            XAxes="{Binding XAxes}"
+                            YAxes="{Binding YAxes}"
+                            AnimationsSpeed="00:00:01.000"
+                        />
+                    </Border>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

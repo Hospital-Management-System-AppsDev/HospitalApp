@@ -17,15 +17,29 @@ namespace HospitalApp.ViewModels
         private ObservableCollection<Doctor> doctors = new();
 
         [ObservableProperty]
+        private ObservableCollection<Patient> patients = new();
+
+        [ObservableProperty]
         private Doctor? selectedDoctor;
 
         [ObservableProperty]
         private bool showDoctor;
+
+        [ObservableProperty]
+        private Patient? selectedPatient;
+
+        [ObservableProperty]
+        private bool showPatient;
         [ObservableProperty]
         private ObservableCollection<Doctor> filteredDoctors = new();
 
         [ObservableProperty]
         private string searchText = string.Empty;
+        [ObservableProperty]
+        private ObservableCollection<Patient> filteredPatients = new();
+
+        [ObservableProperty]
+        private string searchTextPatient = string.Empty;
 
         private readonly UserSessionService _session = UserSessionService.Instance;
 
@@ -33,7 +47,7 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private User _currentUser;
 
-        public DoctorChartViewModel DoctorChart {get;} = new();  
+        public AdminDashChartViewModel AdminChart {get;} = new();  
 
         // [Observable Property]
 
@@ -50,6 +64,7 @@ namespace HospitalApp.ViewModels
             _currentUser = _session.CurrentUser;
 
             LoadDoctors();
+            LoadPatients();
             ConnectToSignalR();
             Console.WriteLine($"CurrentUser: {_currentUser?.Name}");
 
@@ -67,6 +82,13 @@ namespace HospitalApp.ViewModels
             FilterDoctors();
         }
 
+        private async void LoadPatients()
+        {
+            var patientsList = await _apiService.GetPatientsAsync();
+            Patients = new ObservableCollection<Patient>(patientsList);
+            FilterPatients(); // Ensure this line is present
+        }
+
         private void OnDoctorAvailabilityUpdated(int doctorId, int isAvailable)
         {
             var doctor = Doctors.FirstOrDefault(d => d.Id == doctorId);
@@ -81,6 +103,12 @@ namespace HospitalApp.ViewModels
         {
             FilterDoctors();
         }
+
+        partial void OnSearchTextPatientChanged(string value)
+        {
+            FilterPatients();
+        }
+
 
         private void FilterDoctors()
         {
@@ -116,5 +144,27 @@ namespace HospitalApp.ViewModels
         {
             ShowDoctor = value != null;
         }
+
+        partial void OnSelectedPatientChanged(Patient? value)
+        {
+            ShowPatient = value != null;
+        }
+
+        private void FilterPatients()
+        {
+            if (string.IsNullOrWhiteSpace(SearchTextPatient))
+            {
+                FilteredPatients = new ObservableCollection<Patient>(Patients); // ✅
+            }
+            else
+            {
+                var filteredList = Patients
+                    .Where(p => p.Name.Contains(SearchTextPatient, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                FilteredPatients = new ObservableCollection<Patient>(filteredList); // ✅
+            }
+        }
+
     }
 }
