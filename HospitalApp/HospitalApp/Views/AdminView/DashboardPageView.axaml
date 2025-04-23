@@ -498,7 +498,7 @@
                     <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Background="#D4E6F1" Margin="5 10 5 0" CornerRadius="10">
                         <lvc:CartesianChart Margin="20"
 
-                            DataContext="{Binding AdminChart}"
+                            DataContext="{Binding AdminChartPatients}"
                             Series="{Binding Series}"
                             Title="{Binding Title}"
                             XAxes="{Binding XAxes}"
