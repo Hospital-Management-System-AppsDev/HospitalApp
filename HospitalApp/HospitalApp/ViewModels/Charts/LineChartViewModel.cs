@@ -10,14 +10,14 @@ using System;
 using System.Threading.Tasks;
 
 
-public class DoctorChartViewModel
+public class AdminDashChartViewModel
 {
     private readonly ApiService _apiService = new ApiService();
 
     // Store the series instance so we can update it
     private LineSeries<int> _lineSeries;
 
-    public DoctorChartViewModel()
+    public AdminDashChartViewModel()
     {
         _lineSeries = new LineSeries<int>
         {

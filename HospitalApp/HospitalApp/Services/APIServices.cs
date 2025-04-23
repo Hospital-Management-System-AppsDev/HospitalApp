@@ -47,6 +47,15 @@ public class ApiService
         return await _httpClient.GetFromJsonAsync<Patient>($"patients/{id}");
     }
 
+    public async Task<List<Patient>> GetPatientsAsync()
+    {
+    var response = await _httpClient.GetAsync("patients/all"); //Endpoint
+    if (!response.IsSuccessStatusCode) return new List<Patient>();
+    
+    var data = await response.Content.ReadFromJsonAsync<List<Patient>>();
+    return data ?? new List<Patient>();
+    }
+
     public async Task<List<Appointment>> GetAppointmentsAsync(){
         var response = await _httpClient.GetAsync("appointments");
         if (!response.IsSuccessStatusCode) return new List<Appointment>();
