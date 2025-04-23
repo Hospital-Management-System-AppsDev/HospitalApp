@@ -10,14 +10,14 @@ using System;
 using System.Threading.Tasks;
 
 
-public class AdminDashChartViewModel
+public class AdminDashChartDocViewModel
 {
     private readonly ApiService _apiService = new ApiService();
 
     // Store the series instance so we can update it
     private LineSeries<int> _lineSeries;
 
-    public AdminDashChartViewModel()
+    public AdminDashChartDocViewModel()
     {
         _lineSeries = new LineSeries<int>
         {
@@ -32,7 +32,7 @@ public class AdminDashChartViewModel
 
     private async Task Initialize()
     {
-        var data = await _apiService.GetNumOfPatientsAsync(DateTime.Now.Year, DateTime.Now.Month);
+        var data = await _apiService.GetNumAppointmentsAsyc(DateTime.Now.Year, DateTime.Now.Month);
 
         _lineSeries.Values = data; // update the chart with the actual data
     }
