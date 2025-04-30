@@ -15,7 +15,6 @@ namespace HospitalApp.ViewModels
 
         public DateTime Today => DateTime.Now;
 
-
         private ApiService _apiService = new ApiService();
 
         public ObservableCollection<Doctor> Doctors { get; set; }
@@ -36,7 +35,8 @@ namespace HospitalApp.ViewModels
         public string errorMsgCreate;
 
         private Doctor _doc;
-        public Doctor Doc{
+        public Doctor Doc
+        {
             get => _doc;
             set => SetProperty(ref _doc, value);
         }
@@ -44,10 +44,10 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private string selectedAppointmentType;
 
-
-
         public EditAppointmentWindowViewModel(Appointment appointmentToEdit, ObservableCollection<Doctor> doctors)
         {
+            Doctors = doctors;
+
             Appointment = new Appointment
             {
                 pkId = appointmentToEdit.pkId,
@@ -58,12 +58,90 @@ namespace HospitalApp.ViewModels
                 Status = appointmentToEdit.Status,
                 AppointmentDateTime = appointmentToEdit.AppointmentDateTime
             };
-            Doc = appointmentToEdit.AssignedDoctor;
-            SelectedAppointmentDate = appointmentToEdit.AppointmentDateTime;
-            SelectedAppointmentType = appointmentToEdit.AppointmentType;
-            SelectedAppointmentTime = appointmentToEdit.AppointmentTime;
 
-            Doctors = doctors;
+            // Find the matching doctor in the Doctors collection
+            Doc = Doctors.FirstOrDefault(d => d.Id == appointmentToEdit.AssignedDoctor.Id);
+            SelectedAppointmentType = appointmentToEdit.AppointmentType;
+            SelectedAppointmentDate = appointmentToEdit.AppointmentDateTime;
+
+            // Add the current time slot to available slots
+            if (SelectedAppointmentTime != default)
+            {
+                AvailableTimeSlots.Add(SelectedAppointmentTime);
+            }
+
+            // Load initial time slots
+            if (SelectedAppointmentDate.HasValue && Doc != null && !string.IsNullOrEmpty(SelectedAppointmentType))
+            {
+                _ = LoadInitialTimeSlots();
+            }
+
+            // Add property change handlers
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(SelectedAppointmentDate) && SelectedAppointmentDate != null)
+                {
+                    _ = OnGetAvailableSlotsCommand();
+                }
+            };
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(SelectedAppointmentType) && SelectedAppointmentType != null && SelectedAppointmentDate != null && Doc != null)
+                {
+                    _ = OnGetAvailableSlotsCommand();
+                }
+            };
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(Doc) && Doc != null && SelectedAppointmentType != null && SelectedAppointmentDate != null)
+                {
+                    _ = OnGetAvailableSlotsCommand();
+                }
+            };
+        }
+
+        private async Task LoadInitialTimeSlots()
+        {
+            try
+            {
+                var doctorId = Doc.Id;
+                var date = SelectedAppointmentDate.Value;
+                var type = SelectedAppointmentType.ToLower();
+
+                var availableSlots = await _apiService.GetAvailableTime(doctorId, date, type);
+
+                if (availableSlots != null && availableSlots.Any())
+                {
+                    AvailableTimeSlots.Clear();
+                    foreach (var dt in availableSlots)
+                    {
+                        // Only add slots that are after current time
+                        if (SelectedAppointmentDate.Value.Date == Today.Date)
+                        {
+                            if (dt.TimeOfDay > Today.TimeOfDay)
+                            {
+                                AvailableTimeSlots.Add(dt.TimeOfDay);
+                            }
+                        }
+                        else
+                        {
+                            AvailableTimeSlots.Add(dt.TimeOfDay);
+                        }
+                    }
+
+                    // Ensure current time slot is in the list
+                    if (SelectedAppointmentTime != default && !AvailableTimeSlots.Contains(SelectedAppointmentTime))
+                    {
+                        AvailableTimeSlots.Add(SelectedAppointmentTime);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading initial time slots: {ex.Message}");
+            }
         }
 
         [RelayCommand]
@@ -71,27 +149,8 @@ namespace HospitalApp.ViewModels
         {
             AvailableTimeSlots.Clear();
 
-            ErrorMsgCreateVisible = false;
-
-            // Validate inputs
-            if (Doc == null)
+            if (Doc == null || !SelectedAppointmentDate.HasValue || string.IsNullOrEmpty(SelectedAppointmentType))
             {
-                ErrorMsgCreate = "Please select a doctor before checking slots.";
-                ErrorMsgCreateVisible = true;
-                return;
-            }
-
-            if (!SelectedAppointmentDate.HasValue)
-            {
-                ErrorMsgCreate = "Please select a date.";
-                ErrorMsgCreateVisible = true;
-                return;
-            }
-
-            if (string.IsNullOrEmpty(SelectedAppointmentType))
-            {
-                ErrorMsgCreate = "Please select an appointment type.";
-                ErrorMsgCreateVisible = true;
                 return;
             }
 
@@ -103,41 +162,42 @@ namespace HospitalApp.ViewModels
 
                 var availableSlots = await _apiService.GetAvailableTime(doctorId, date, type);
 
-                if(Doc.is_available == 0 && SelectedAppointmentDate.Value.Date == DateTime.Now.Date)
+                if (Doc.is_available == 0 && SelectedAppointmentDate.Value.Date == Today.Date)
                 {
-                    ErrorMsgCreate = "Doctor is unavailable on the date selected.";
-                    ErrorMsgCreateVisible = true;
                     return;
                 }
 
-                if (availableSlots == null || !availableSlots.Any())
+                if (availableSlots != null && availableSlots.Any())
                 {
-                    ErrorMsgCreate = "No available slots found for the selected date and type.";
-                    ErrorMsgCreateVisible = true;
-                    return;
-                }
-
-                // Convert DateTime list to TimeSpan list (only time part for UI)
-                if(SelectedAppointmentDate == Today.Date){
+                    // Only show slots after current time for today's date
                     foreach (var dt in availableSlots)
                     {
-                        if(dt.TimeOfDay > Today.TimeOfDay){
+                        if (SelectedAppointmentDate.Value.Date == Today.Date)
+                        {
+                            if (dt.TimeOfDay > Today.TimeOfDay)
+                            {
+                                AvailableTimeSlots.Add(dt.TimeOfDay);
+                            }
+                        }
+                        else
+                        {
                             AvailableTimeSlots.Add(dt.TimeOfDay);
                         }
                     }
-                }else{
-                    foreach (var dt in availableSlots)
+
+                    // Ensure current time slot is in the list
+                    if (SelectedAppointmentTime != default && !AvailableTimeSlots.Contains(SelectedAppointmentTime))
                     {
-                        AvailableTimeSlots.Add(dt.TimeOfDay);
+                        AvailableTimeSlots.Add(SelectedAppointmentTime);
                     }
                 }
             }
             catch (Exception ex)
             {
-                ErrorMsgCreate = $"Error fetching slots: {ex.Message}";
-                ErrorMsgCreateVisible = true;
+                Console.WriteLine($"Error fetching slots: {ex.Message}");
             }
         }
+
         public void ApplySelectedChanges()
         {
             if (SelectedAppointmentDate.HasValue)
@@ -149,5 +209,13 @@ namespace HospitalApp.ViewModels
             Appointment.AssignedDoctor = Doc;
         }
 
+        partial void OnSelectedAppointmentDateChanged(DateTime? value)
+        {
+            if (value == null)
+            {
+                AvailableTimeSlots.Clear();
+                SelectedAppointmentTime = default;
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 class PdfServices
 {
@@ -317,6 +318,180 @@ class PdfServices
         })
         .GeneratePdf(fileName);
 
+
+        Console.WriteLine($"PDF Generated: {fileName}");
+        return fileName;
+    }
+
+    public static string GeneratePharmacyReceipt(List<CartItems> items, decimal totalAmount, string transactionId)
+    {
+        QuestPDF.Settings.License = LicenseType.Community;
+
+        string documentType = "PHARMACY RECEIPT";
+        string date = DateTime.Now.ToString("MM/dd/yyyy");
+        string time = DateTime.Now.ToString("hh:mm tt");
+
+        string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
+        string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
+        string fileName = Path.Combine("Records", "PharmacyReceipts", $"PR_Receipt_{transactionId}_{DateTime.Now:yyyyMMddHHmmss}.pdf");
+
+        Document.Create(container =>
+        {
+            container.Page(page =>
+            {
+                page.Size(216, 279); // Standard receipt size (3.125" x 8.5" in points)
+                page.Margin(10);
+                page.PageColor(Colors.White);
+
+                page.Header().Image(headerImagePath).FitWidth();
+
+                page.Content().PaddingVertical(10).Column(col =>
+                {
+                    col.Item().Text(documentType).FontSize(14).Bold().AlignCenter();
+                    
+                    col.Item().Grid(grid =>
+                    {
+                        grid.Columns(2);
+                        grid.Item().Text($"Date: {date}").FontSize(8);
+                        grid.Item().Text($"Time: {time}").FontSize(8).AlignRight();
+                        grid.Item().Text($"Transaction ID: {transactionId}").FontSize(8);
+                    });
+
+                    col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Black);
+
+                    // Items Header
+                    col.Item().Grid(grid =>
+                    {
+                        grid.Columns(4);
+                        grid.Item().Text("Item").FontSize(8).Bold();
+                        grid.Item().Text("Qty").FontSize(8).Bold().AlignCenter();
+                        grid.Item().Text("Price").FontSize(8).Bold().AlignRight();
+                        grid.Item().Text("Total").FontSize(8).Bold().AlignRight();
+                    });
+
+                    col.Item().LineHorizontal(1).LineColor(Colors.Black);
+
+                    // Items
+                    foreach (var item in items)
+                    {
+                        col.Item().Grid(grid =>
+                        {
+                            grid.Columns(4);
+                            grid.Item().Text(item.Medicine.Name).FontSize(8);
+                            grid.Item().Text(item.Quantity.ToString()).FontSize(8).AlignCenter();
+                            grid.Item().Text($"₱{item.Medicine.Price:N2}").FontSize(8).AlignRight();
+                            grid.Item().Text($"₱{item.TotalPrice:N2}").FontSize(8).AlignRight();
+                        });
+                    }
+
+                    col.Item().LineHorizontal(1).LineColor(Colors.Black);
+
+                    // Total
+                    col.Item().Grid(grid =>
+                    {
+                        grid.Columns(2);
+                        grid.Item().Text("Total Amount:").FontSize(8).Bold().AlignRight();
+                        grid.Item().Text($"₱{totalAmount:N2}").FontSize(8).Bold().AlignRight();
+                    });
+
+                    col.Item().PaddingTop(10).Text("Thank you for your purchase!").FontSize(8).AlignCenter();
+                });
+
+                page.Footer().Image(footerImagePath).FitWidth();
+            });
+        })
+        .GeneratePdf(fileName);
+
+        Console.WriteLine($"PDF Generated: {fileName}");
+        return fileName;
+    }
+
+    public static string GenerateMedicalFeeReceipt(Appointment appointment, Patient patient, decimal amount)
+    {
+        QuestPDF.Settings.License = LicenseType.Community;
+
+        string documentType = "MEDICAL FEE RECEIPT";
+        string date = DateTime.Now.ToString("MM/dd/yyyy");
+
+        string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
+        string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
+        string signature = Path.Combine("Resources", "ForPDF", "signature.png");
+        string fileName = Path.Combine("Records", "Receipts", $"MF_RECEIPT_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}.pdf");
+
+        Document.Create(container =>
+        {
+            container.Page(page =>
+            {
+                page.Size(PageSizes.A4);
+                page.Margin(20);
+                page.PageColor(Colors.White);
+
+                page.Header()
+                    .Image(headerImagePath)
+                    .FitWidth();
+
+                page.Content()
+                    .PaddingVertical(50)
+                    .Column(col =>
+                    {
+                        col.Item().Text($"{documentType}").FontSize(20).Bold().AlignCenter();
+                        col.Item().PaddingBottom(10).Text($"Date: {date}").FontSize(14).AlignEnd();
+
+                        col.Item().Grid(grid =>
+                        {
+                            grid.Columns(2);
+                            grid.Item().Text("Patient Information:").FontSize(14).Bold();
+                            grid.Item().Text("Doctor Information:").FontSize(14).Bold();
+                        });
+
+                        col.Item().Grid(grid =>
+                        {
+                            grid.Columns(2);
+                            grid.Item().Column(c =>
+                            {
+                                c.Item().Text($"Name: {patient.Name}").FontSize(12);
+                                c.Item().Text($"ID: {patient.PatientID}").FontSize(12);
+                                c.Item().Text($"Address: {patient.Address}").FontSize(12);
+                            });
+                            grid.Item().Column(c =>
+                            {
+                                c.Item().Text($"Name: {appointment.AssignedDoctor.Name}").FontSize(12);
+                                c.Item().Text($"Specialization: {appointment.AssignedDoctor.specialization}").FontSize(12);
+                            });
+                        });
+
+                        col.Item().PaddingVertical(20).LineHorizontal(1).LineColor(Colors.Black);
+
+                        col.Item().Grid(grid =>
+                        {
+                            grid.Columns(2);
+                            grid.Item().Text("Service:").FontSize(14).Bold();
+                            grid.Item().Text($"{appointment.AppointmentType}").FontSize(14);
+                        });
+
+                        col.Item().Grid(grid =>
+                        {
+                            grid.Columns(2);
+                            grid.Item().Text("Amount Paid:").FontSize(14).Bold();
+                            grid.Item().Text($"₱{amount:N2}").FontSize(14);
+                        });
+
+                        col.Item().PaddingVertical(20).LineHorizontal(1).LineColor(Colors.Black);
+
+                        col.Item().PaddingTop(40).Text("Authorized Signature:").FontSize(12);
+                        col.Item()
+                            .Width(100)
+                            .Height(20)
+                            .Image(signature);
+                        col.Item().PaddingHorizontal(10).Text(appointment.AssignedDoctor.Name).FontSize(12).Underline();
+                    });
+
+                page.Footer()
+                    .Image(footerImagePath)
+                    .FitWidth();
+            });
+        })
+        .GeneratePdf(fileName);
 
         Console.WriteLine($"PDF Generated: {fileName}");
         return fileName;

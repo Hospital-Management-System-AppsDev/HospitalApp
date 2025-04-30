@@ -9,39 +9,64 @@
 
     <StackPanel Margin="20" Spacing="10">
         <TextBlock Text="Patient Name:" />
-        <TextBox Text="{Binding Appointment.PatientName}" IsReadOnly="True"/>
+        <TextBox Text="{Binding Appointment.PatientName}" IsReadOnly="True" Width="250" HorizontalAlignment="Left" Padding="10" FontSize="15"/>
 
         <TextBlock Text="Appointment Type:" />
-        <ComboBox ItemsSource="{Binding AppointmentTypes}" SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}" />
+        <ComboBox ItemsSource="{Binding AppointmentTypes}" 
+                SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}" 
+                Width="250"
+                Padding="10" 
+                FontSize="15"/>
 
         <TextBlock Text="Doctor:" />
-        <ComboBox ItemsSource="{Binding Doctors}" SelectedItem="{Binding Doc, Mode=TwoWay}">
+        <ComboBox ItemsSource="{Binding Doctors}" 
+                SelectedItem="{Binding Doc, Mode=TwoWay}" 
+                Width="250"
+                Padding="10" 
+                FontSize="15">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
+                    <TextBlock Text="{Binding Name}" FontSize="15"/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
 
         <TextBlock Text="Date:" />
-        <CalendarDatePicker SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}" DisplayDateStart="{Binding Today}" />
-        <Button Content="Get Available Time Slots"
-                                    Command="{Binding OnGetAvailableSlotsCommand}"
-                                    CornerRadius="10"
-                                    Padding="10"
-                                    FontSize="15"
-                                    Background="#006CB5"
-                                    Foreground="White"
-                                    />
+        <CalendarDatePicker SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}" 
+                        DisplayDateStart="{Binding Today}" 
+                        Width="250"
+                        Padding="10" 
+                        FontSize="15"/>
         <TextBlock Text="Time:" />
-          <ComboBox Width="150"
-                    SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
-                    ItemsSource="{Binding AvailableTimeSlots}" />
+        <ComboBox Width="250"
+                Foreground="Black"
+                ItemsSource="{Binding AvailableTimeSlots}" 
+                SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
+                IsEnabled="{Binding SelectedAppointmentDate, Converter={x:Static ObjectConverters.IsNotNull}}"
+                Padding="10" 
+                FontSize="15">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" FontSize="15"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
-            <TextBlock Text="{Binding ErrorMsgCreate}" IsVisible="{Binding ErrorMsgCreateVisible}" Foreground="red"/>
-            <Button Name="SaveButton" Content="Save" Width="80" />
-            <Button Name="CancelButton" Content="Cancel" Width="80" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
+            <Button Name="SaveButton" 
+                    Content="Save" 
+                    Width="100"
+                    Background="Green"
+                    Foreground="White"
+                    Padding="10"
+                    FontSize="15"/>
+            <Button Name="CancelButton" 
+                    Content="Cancel" 
+                    Width="100"
+                    Background="Red"
+                    Foreground="White"
+                    Padding="10"
+                    FontSize="15"/>
         </StackPanel>
     </StackPanel>
 </Window>
