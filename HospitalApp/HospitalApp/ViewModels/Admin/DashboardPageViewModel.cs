@@ -47,6 +47,21 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private User _currentUser;
 
+        [ObservableProperty]
+        private int totalDoctors;
+
+        [ObservableProperty]
+        private int newDoctors;
+
+        [ObservableProperty]
+        private int availableDoctors;
+
+        [ObservableProperty]
+        private int totalPatients;
+
+        [ObservableProperty]
+        private int newPatients;
+
         public AdminDashChartDocViewModel AdminChart {get;} = new();  
         public AdminDashChartPatientsViewModel AdminChartPatients {get;} = new();  
 
@@ -80,6 +95,11 @@ namespace HospitalApp.ViewModels
         {
             var doctorsList = await _apiService.GetDoctorsAsync();
             Doctors = new ObservableCollection<Doctor>(doctorsList);
+            var total = await _apiService.GetTotalPatients();
+            TotalPatients = total;
+            var newpatients = await _apiService.GetNewPatients(DateTime.Now.Year, DateTime.Now.Month);
+            NewPatients = newpatients;
+            AvailableDoctors = Doctors.Count(d => d.is_available == 1);
             FilterDoctors();
         }
 
@@ -87,6 +107,11 @@ namespace HospitalApp.ViewModels
         {
             var patientsList = await _apiService.GetPatientsAsync();
             Patients = new ObservableCollection<Patient>(patientsList);
+            var total = await _apiService.GetTotalDoctors();
+            TotalDoctors = total;
+            var newDoc = await _apiService.GetNewDoctors(DateTime.Now.Year, DateTime.Now.Month);
+            NewDoctors = newDoc;
+            AvailableDoctors = Doctors.Count(d => d.is_available == 1);
             FilterPatients(); // Ensure this line is present
         }
 

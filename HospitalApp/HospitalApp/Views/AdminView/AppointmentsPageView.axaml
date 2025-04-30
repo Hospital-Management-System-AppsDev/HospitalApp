@@ -156,80 +156,97 @@
 
             <TabItem Header="Create Appointment" FontSize="20" Foreground="#3E8DC0">
                 <Border Background="#D4E6F1" CornerRadius="20">
-                    <StackPanel Spacing="5" Margin="35">
-                        <TextBlock Margin="0 5" Text = "Patient ID" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
-                        <StackPanel Orientation="Horizontal" Spacing="5">
-                            <TextBox Text="{Binding PId, Mode=TwoWay}" Watermark="Patient ID" Padding="10" FontSize="15"/>
-
-                            <Button Content="Get Patient"
-                                    Command="{Binding OnGetPatientByIdCommand}"
-                                    CornerRadius="10"
-                                    Padding="10"
-                                    FontSize="15"
-                                    Background="#006CB5"
-                                    Foreground="White"
-                                    />
-                            <TextBlock Text="{Binding ErrorMsgFind}" IsVisible="{Binding ErrorMsgFindVisible}" Foreground="red"/>
-
-                        </StackPanel>
-
-                        <TextBlock Margin="0 5" Text="Patient Name" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
-                        <TextBox Watermark="Patient Name" Text="{Binding newPatient.Name}" Width="500" HorizontalAlignment="Left" IsReadOnly="True" Padding="10" FontSize="15"
-                        />
-                        <TextBlock Margin="0 5" Text = "Appointment Type" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
-                        <ComboBox ItemsSource="{Binding AppointmentTypes}"
-                                SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}"
-                                Width="250"
-                                Padding="10" FontSize="15"
-                        />
-                        <TextBlock Margin="0 5" Text = "Assigned Doctor" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
-                        <ComboBox ItemsSource="{Binding DoctorsList}"
-                                SelectedItem="{Binding Doc, Mode=TwoWay}"
-                                Width="250"
-                                Padding="10" FontSize="15"
-
-                        >
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" FontSize="15"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBlock Margin="0 5" Text = "Appointment Slot" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
-                        <StackPanel Spacing="5">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <StackPanel Spacing="5" Margin="35">
+                            <TextBlock Margin="0 5" Text = "Patient ID" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <CalendarDatePicker Width="250"
-                                    SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}"
-                                    Padding="10" FontSize="15"
-                                    DisplayDateStart="{Binding Today}"
-                                />
-                                <Button Content="Get Available Time Slots"
-                                    Command="{Binding OnGetAvailableSlotsCommand}"
-                                    CornerRadius="10"
-                                    Padding="10"
-                                    FontSize="15"
-                                    Background="#006CB5"
-                                    Foreground="White"
-                                    />
-                                    
-                            </StackPanel>
-                            <ComboBox Width="250"
-                                    Foreground="Black"
-                                    ItemsSource="{Binding AvailableTimeSlots}" 
-                                    SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
-                                    Padding="10" FontSize="15"
-                                    />
-                        </StackPanel>
-                        <TextBlock Text="{Binding ErrorMsgCreate}" IsVisible="{Binding ErrorMsgCreateVisible}" Foreground="red"/>
+                                <TextBox Text="{Binding PId, Mode=TwoWay}" Watermark="Patient ID" Padding="10" FontSize="15"/>
+                                <TextBlock Text="{Binding ErrorMsgFind}" IsVisible="{Binding ErrorMsgFindVisible}" Foreground="red"/>
 
-                        <Button Content="Create Appointment" Command="{Binding OnCreateAppointment}" CornerRadius="10"
-                                    Padding="10"
-                                    FontSize="15"
-                                    Background="Green"
-                                    Foreground="White"/>
+                            </StackPanel>
+
+                            <TextBlock Margin="0 5" Text="Patient Name" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
+                            <TextBox Watermark="Patient Name" Text="{Binding newPatient.Name}" Width="250" HorizontalAlignment="Left" IsReadOnly="True" Padding="10" FontSize="15"
+                            />
+                            <TextBlock Margin="0 5" Text = "Appointment Type" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                            <ComboBox ItemsSource="{Binding AppointmentTypes}"
+                                    SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}"
+                                    Width="250"
+                                    Padding="10" FontSize="15"
+                            />
+                            <TextBlock Margin="0 5" Text = "Assigned Doctor" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                            <ComboBox ItemsSource="{Binding DoctorsList}"
+                                    SelectedItem="{Binding Doc, Mode=TwoWay}"
+                                    Width="250"
+                                    Padding="10" FontSize="15"
+
+                            >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" FontSize="15"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Margin="0 5" Text = "Appointment Slot" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                            <StackPanel Spacing="5">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <CalendarDatePicker Width="250"
+                                        SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}"
+                                        Padding="10" FontSize="15"
+                                        DisplayDateStart="{Binding Today}"
+                                    />  
+                                </StackPanel>
+                                <ComboBox Width="250"
+                                        Foreground="Black"
+                                        ItemsSource="{Binding AvailableTimeSlots}" 
+                                        SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
+                                        IsEnabled="{Binding SelectedAppointmentDate, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                        Padding="10" FontSize="15"
+                                        >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <TextBlock Text="{Binding ErrorMsgCreate}" IsVisible="{Binding ErrorMsgCreateVisible}" Foreground="red"/>
+
+                            <Button Content="Create Appointment" Command="{Binding OnCreateAppointment}" CornerRadius="10"
+                                        Padding="10"
+                                        FontSize="15"
+                                        Background="Green"
+                                        Foreground="White"/>
+                        </StackPanel>
+
+                        <TabControl>
+                            <TabItem Header="Vital Signs" FontSize="15" Foreground="#3E8DC0">
+                                
+                            </TabItem>
+                            <TabItem Header="Medical History" FontSize="15" Foreground="#3E8DC0">
+
+                            </TabItem>
+                            <TabItem Header="Lifestyle" FontSize="15" Foreground="#3E8DC0">
+
+                            </TabItem>
+                            <TabItem Header="Family History" FontSize="15" Foreground="#3E8DC0">
+
+                            </TabItem>
+                            <TabItem Header="Current Medications" FontSize="15" Foreground="#3E8DC0">
+
+                            </TabItem>
+                            <TabItem Header="Allergies" FontSize="15" Foreground="#3E8DC0">
+
+                            </TabItem>
+                            <TabItem Header="Immunization" FontSize="15" Foreground="#3E8DC0">
+
+                            </TabItem>
+                        </TabControl>
                     </StackPanel>
                 </Border>
             </TabItem>
         </TabControl>
     </Grid>
 </UserControl>
+
+

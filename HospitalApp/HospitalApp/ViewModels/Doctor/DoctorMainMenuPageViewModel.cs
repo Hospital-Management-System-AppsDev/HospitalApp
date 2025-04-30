@@ -6,6 +6,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+using Avalonia.Layout;
+using Avalonia.Controls.ApplicationLifetimes;
 
 namespace HospitalApp.ViewModels;
 
@@ -48,7 +51,6 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
     {
         Type t when t == typeof(DoctorDashboardPageViewModel) => new DoctorDashboardPageViewModel(_apiService, _signalRService, _mainViewModel),
         Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(_apiService, _signalRService),
-        Type t when t == typeof(PharmacyPageViewModel) => new PharmacyPageViewModel(),
         Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
         _ => null
     };
@@ -69,7 +71,6 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
     {
         new ListItemTemplate(typeof(DoctorDashboardPageViewModel), "Dashboard"),
         new ListItemTemplate(typeof(AppointmentsPageViewModel), "Appointments"),
-        new ListItemTemplate(typeof(PharmacyPageViewModel), "Pharmacy"),
         new ListItemTemplate(typeof(SettingsPageViewModel), "Settings"),
     };
 
@@ -80,9 +81,65 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
     }
     
     [RelayCommand]
-        private void Logout()
+    private async Task Logout()
     {
-        _mainViewModel.NavigateToLogin(); // Redirect to Login Page
+        Window messageWindow = new Window
+        {
+            Title = "Confirm Logout",
+            Width = 300,
+            Height = 150,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            CanResize = false
+        };
+
+        var yesButton = new Button
+        {
+            Content = "Yes",
+            Width = 80
+        };
+
+        var noButton = new Button
+        {
+            Content = "No",
+            Width = 80
+        };
+
+        yesButton.Command = new RelayCommand(() =>
+        {
+            messageWindow.Close();
+            _mainViewModel.NavigateToLogin();
+        });
+
+        noButton.Command = new RelayCommand(() => messageWindow.Close());
+
+        messageWindow.Content = new StackPanel
+        {
+            Margin = new Thickness(20),
+            Spacing = 15,
+            Children =
+            {
+                new TextBlock
+                {
+                    Text = "Are you sure you want to logout?",
+                    TextWrapping = TextWrapping.Wrap,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    FontSize = 16,
+                },
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Spacing = 20,
+                    Children = { yesButton, noButton }
+                }
+            }
+        };
+
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var parentWindow = desktop.MainWindow;
+            await messageWindow.ShowDialog(parentWindow);
+        }
     }
 }
 
