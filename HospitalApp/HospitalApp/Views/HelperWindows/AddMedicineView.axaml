@@ -56,10 +56,14 @@
             <TextBlock Text="Medicine Manufacturer"/>
             <TextBox Text="{Binding MedicineManufacturer}" Watermark="Enter manufacturer"/>
             
-            <TextBlock Text="Medicine Type e.g Pain Killer"/>
+            <TextBlock Text="Medicine Type e.g Tablet, Capsule, Syrup"/>
             <TextBox Text="{Binding MedicineType}" Watermark="Enter type"/>
-            <TextBlock Text="Dosage Form e.g Tablet / Capsule"/>
-            <TextBox Text="{Binding DosageForm}" Watermark="Enter type"/>
+            
+            <TextBlock Text="Dosage"/>
+            <TextBox Text="{Binding MedicineDosage}" Watermark="Enter dosage"/>
+            
+            <TextBlock Text="Unit"/>
+            <TextBox Text="{Binding MedicineUnit}" Watermark="Enter unit (e.g. mg, ml)"/>
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
                 <Button Content="Cancel" Command="{Binding CancelCommand}"/>
