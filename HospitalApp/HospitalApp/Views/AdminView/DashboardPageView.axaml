@@ -86,7 +86,7 @@
                 <Run Text="Hello,"/>
                 <Run Text="{Binding CurrentUser.Name}"/>
             </TextBlock>
-            <TextBlock Text="DashBoard" FontSize="48" FontWeight="Bold" Foreground="#3E8DC0" Margin="0 5"/>
+            <TextBlock Text="Dashboard" FontSize="48" FontWeight="Bold" Foreground="#3E8DC0" Margin="0 5"/>
         </StackPanel>
 
         <TabControl Grid.Row="1">
@@ -115,21 +115,21 @@
 
                             <Border Grid.Column="0" Padding="20" Background="#006EBB" CornerRadius="10" Margin="0,0,10,0">
                                 <StackPanel>
-                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="{Binding TotalDoctors}" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
                                     <TextBlock Text="Total Doctors" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
                                 </StackPanel>
                             </Border>
 
                             <Border Grid.Column="1" Padding="20" Background="#006EBB" CornerRadius="10" Margin="0,0,10,0">
                                 <StackPanel>
-                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="{Binding NewDoctors}" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
                                     <TextBlock Text="New Doctors" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
                                 </StackPanel>
                             </Border>
 
                             <Border Grid.Column="2" Padding="20" Background="#006EBB" CornerRadius="10">
                                 <StackPanel>
-                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="{Binding AvailableDoctors}" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
                                     <TextBlock Text="Available Doctors" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
                                 </StackPanel>
                             </Border>
@@ -235,8 +235,16 @@
                                         
                                         <!-- Responsive Information Fields with 2-Column Layout -->
                                         <UniformGrid Columns="2">
-                                            <!-- Name -->
+                                            <!-- Doctor ID -->
                                             <Border Margin="0,3,5,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Doctor ID: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedDoctor.Id}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Name -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="Name: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
                                                     <TextBlock Text="{Binding SelectedDoctor.Name}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
@@ -244,7 +252,7 @@
                                             </Border>
                                             
                                             <!-- Age -->
-                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                            <Border Margin="0,3,5,3" Padding="5,3">
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="Age: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
                                                     <TextBlock Text="{Binding SelectedDoctor.Age}" FontSize="16" Foreground="White" />
@@ -329,14 +337,14 @@
 
                             <Border Grid.Column="0" Padding="20" Background="#006EBB" CornerRadius="10" Margin="0,0,10,0">
                                 <StackPanel>
-                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="{Binding TotalPatients}" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
                                     <TextBlock Text="Total Patients" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
                                 </StackPanel>
                             </Border>
 
                             <Border Grid.Column="1" Padding="20" Background="#006EBB" CornerRadius="10" Margin="0,0,10,0">
                                 <StackPanel>
-                                    <TextBlock Text="20" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="{Binding NewPatients}" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"/>
                                     <TextBlock Text="New Patients" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
                                 </StackPanel>
                             </Border>
@@ -439,8 +447,16 @@
                                         
                                         <!-- Responsive Information Fields with 2-Column Layout -->
                                         <UniformGrid Columns="2">
-                                            <!-- Name -->
+                                            <!-- Patient ID -->
                                             <Border Margin="0,3,5,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Patient ID: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedPatient.PatientID}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Name -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="Name: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
                                                     <TextBlock Text="{Binding SelectedPatient.Name}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
@@ -448,7 +464,7 @@
                                             </Border>
                                             
                                             <!-- Age -->
-                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                            <Border Margin="0,3,5,3" Padding="5,3">
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="Age: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
                                                     <TextBlock Text="{Binding SelectedPatient.Age}" FontSize="16" Foreground="White" />

@@ -13,7 +13,9 @@ public class SignalRService
     public event Action<int, Appointment>? AppointmentUpdated;
     public event Action<Appointment>? AppointmentAdded;
     public event Action<Records>? RecordAdded; // 👈 new event for record
-
+    public event Action<Medicine>? MedicineAdded;
+    public event Action<Medicine>? MedicineUpdated;
+    public event Action<int>? MedicineDeleted;
 
     public SignalRService()
     {
@@ -45,6 +47,22 @@ public class SignalRService
         {
             RecordAdded?.Invoke(record);
         });
+
+        _hubConnection.On<Medicine>("MedicineAdded", medicine =>
+        {
+            MedicineAdded?.Invoke(medicine);
+        });
+
+        _hubConnection.On<Medicine>("MedicineUpdated", medicine =>
+        {
+            MedicineUpdated?.Invoke(medicine);
+        });
+
+        _hubConnection.On<int>("MedicineDeleted", id =>
+        {
+            MedicineDeleted?.Invoke(id);
+        });
+        
     }
 
     public async Task ConnectAsync()
