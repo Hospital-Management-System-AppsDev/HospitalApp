@@ -5,8 +5,13 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="HospitalApp.Views.PharmacyView"
              xmlns:vm="clr-namespace:HospitalApp.ViewModels"
+             xmlns:converters="clr-namespace:HospitalApp.Converters"
              x:DataType="vm:PharmacyViewModel"
              Background="#E8F2F9">
+
+    <UserControl.Resources>
+        <converters:IntToStringConverter x:Key="IntToStringConverter"/>
+    </UserControl.Resources>
 
   <UserControl.Styles>
       <!-- TextBox Style -->
@@ -173,21 +178,27 @@
                     <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                         <!-- Price -->
                         <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="Price:                ₱" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" 
-                                Text="{Binding SelectedMedicine.Price, Mode=TwoWay, StringFormat='0.00'}" 
+                        <NumericUpDown x:Name="priceInput"
+                                Grid.Row="0" Grid.Column="1" 
+                                Value="{Binding SelectedMedicine.Price, Mode=TwoWay, StringFormat='0.00'}" 
                                 Margin="0,0,0,5" 
                                 Classes="search"
                                 Foreground="Black"
-                                IsEnabled="{Binding IsEditing}"/>
+                                IsEnabled="{Binding IsEditing}" 
+                                ShowButtonSpinner="False"/>
+
+
 
                         <!-- In Stock -->
                         <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Black" Text="In Stock:" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" 
-                                Text="{Binding SelectedMedicine.Stocks, Mode=TwoWay}" 
-                                Margin="0,0,0,5" 
-                                Classes="search"
-                                Foreground="Black"
-                                IsEnabled="{Binding IsEditing}"/>
+                        <NumericUpDown Grid.Row="1" Grid.Column="1" 
+                                        Value="{Binding SelectedMedicine.Stocks, Mode=TwoWay, StringFormat='0'}" 
+                                        Margin="0,0,0,5" 
+                                        Classes="search"
+                                        Foreground="Black"
+                                        IsEnabled="{Binding IsEditing}"
+                                        Minimum="0"
+                                        ShowButtonSpinner="False"/>
 
                         <!-- Manufacturer -->
                         <TextBlock Grid.Row="2" Grid.Column="0" Foreground="Black" Text="Manufacturer:" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
@@ -219,28 +230,17 @@
                                     Foreground="Black"/>
                         </StackPanel>
                     </Grid>
-                    <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,Auto,*" IsVisible="{Binding !IsEditing}">
+                    <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,*" IsVisible="{Binding !IsEditing}">
                         <TextBlock Grid.Column="0" Text="Quantity:" VerticalAlignment="Center" Foreground="Black" FontWeight="SemiBold" Margin="0,0,10,0"/>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="5">
-                            <Button Command="{Binding DecrementQuantityCommand}" Classes="small">
-                                <TextBlock Text="-" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Button>
-                            <TextBox Grid.Row="1" Grid.Column="1"
-                                    Text="{Binding QToAdd, Mode=TwoWay}"
-                                    Margin="0,0,0,5"
-                                    Classes="search"
-                                    Foreground="Black"
-                                    IsEnabled="True"/>
-                            <Button Command="{Binding IncrementQuantityCommand}" Classes="small">
-                                <TextBlock Text="+" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Button>
-                        </StackPanel>
-                        <TextBlock Grid.Column="2" 
-                                 Text="{Binding ErrorMessage}" 
-                                 Foreground="Red" 
-                                 VerticalAlignment="Center"
-                                 Margin="10,0,0,0"
-                                 TextWrapping="Wrap"/>
+                        <NumericUpDown Grid.Row="1" Grid.Column="1"
+                                Value="{Binding QuantityToAdd, Mode=TwoWay, StringFormat='0'}"
+                                Margin="0,0,0,5"
+                                Classes="search"
+                                Foreground="Black"
+                                IsEnabled="True"
+                                Minimum="0"
+                                Increment="1"
+                                />
                     </Grid>
                 </StackPanel>
                 

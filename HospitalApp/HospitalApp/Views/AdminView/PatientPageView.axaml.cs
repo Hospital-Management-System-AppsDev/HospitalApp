@@ -9,5 +9,9 @@ namespace HospitalApp.Views{
         {
             InitializeComponent();
         }
+         private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
     }
 }

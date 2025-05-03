@@ -1,8 +1,9 @@
 ﻿using System;
+using Avalonia;
 
 namespace HospitalApp.ViewModels;
 
-public class PatientPageViewModel:ViewModelBase
+public partial class PatientPageViewModel:ViewModelBase
 {
     private readonly ApiService _apiService;
     private readonly SignalRService _signalRService;
