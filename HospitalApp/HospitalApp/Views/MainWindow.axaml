@@ -4,9 +4,9 @@
         xmlns:views="using:HospitalApp.Views"
         x:Class="HospitalApp.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="HospitalApp"
+        Icon="/Assets/logo.ico"
+        Title="CETA Medical Arts"
         MinWidth="1440" MinHeight="900">
 
-    <TransitioningContentControl Content="{Binding CurrentView}" />
+    <TransitioningContentControl Content="{Binding CurrentView}"/>
 </Window>
