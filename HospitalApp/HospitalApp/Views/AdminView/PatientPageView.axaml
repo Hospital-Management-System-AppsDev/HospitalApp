@@ -1,8 +1,215 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="HospitalApp.Views.PatientPageView">
-      Patient Page
+             x:Class="HospitalApp.Views.PatientPageView"
+             Background="#F5F9FC">
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+    <DockPanel LastChildFill="True" MinWidth="1024" MinHeight="600">
+
+      <!--Header-->
+      <Grid Margin="40,20,30,10" DockPanel.Dock="Top">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Patient Dashboard"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Foreground="#3e8dc0"
+                   VerticalAlignment="Center"
+                   Grid.Column="0" />
+
+        <Button Content="Add Patient"
+                Width="140" Height="40"
+                Background="#4169e1" Foreground="White"
+                FontSize="14" FontWeight="SemiBold"
+                BorderThickness="0" CornerRadius="8"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Grid.Column="1" />
+      </Grid>
+
+      <!--Main Content-->
+      <Grid Margin="30,0,30,30">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2.5*" />
+          <ColumnDefinition Width="3.5*" />
+        </Grid.ColumnDefinitions>
+
+        <!--Patient List Panel-->
+        <Border Background="White" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,20,0">
+          <StackPanel Spacing="15">
+            <TextBlock Text="Patient List" FontSize="20" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" />
+
+            <!--Search Box-->
+            <Border Background="#EFF3F7" CornerRadius="12" Padding="8" BorderBrush="#DCE4EC" BorderThickness="1">
+              <DockPanel VerticalAlignment="Center">
+                <TextBox Watermark="Search patient..."
+                         Background="Transparent"
+                         BorderThickness="0"
+                         FontSize="14"
+                         VerticalContentAlignment="Center"
+                         Margin="5,0" />
+              </DockPanel>
+            </Border>
+
+            <!--Patient List-->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="300">
+              <ListBox BorderThickness="0" Background="Transparent" Margin="0" Padding="0">
+                <ListBoxItem Padding="6" Margin="0">
+                  <Border  CornerRadius="0" Padding="10" Margin="0,2">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                      <Ellipse Width="10" Height="10" Fill="Green" VerticalAlignment="Center"/>
+                      <StackPanel>
+                        <TextBlock Text="Juan Dela Cruz" FontWeight="Bold" FontSize="13" Foreground="#1F2937"/>
+                        <TextBlock Text="Hypertension" FontSize="11" Foreground="#6B7280"/>
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+                </ListBoxItem>
+
+                <ListBoxItem Padding="6" Margin="0">
+                  <Border CornerRadius="0" Padding="10" Margin="0,2">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                      <Ellipse Width="10" Height="10" Fill="Green" VerticalAlignment="Center"/>
+                      <StackPanel>
+                        <TextBlock Text="Maria Santos" FontWeight="Bold" FontSize="13" Foreground="#1F2937"/>
+                        <TextBlock Text="Diabetes" FontSize="11" Foreground="#6B7280"/>
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+                </ListBoxItem>
+
+                <ListBoxItem Padding="6" Margin="0">
+                  <Border CornerRadius="0" Padding="6" Margin="0,2">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                      <Ellipse Width="10" Height="10" Fill="Green" VerticalAlignment="Center"/>
+                      <StackPanel>
+                        <TextBlock Text="Pedro Reyes" FontWeight="Bold" FontSize="13" Foreground="#1F2937"/>
+                        <TextBlock Text="Asthma" FontSize="11" Foreground="#6B7280"/>
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+                </ListBoxItem>
+              </ListBox>
+            </ScrollViewer>
+          </StackPanel>
+        </Border>
+
+        <!--Details Panel-->
+        <Border Grid.Column="1" Background="White" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="12" Padding="20">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--Personal Info-->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+              <TextBlock Text="Personal Info" FontSize="18" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,10" />
+              <Border Background="#F8FAFC" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="8" Padding="12">
+                <StackPanel>
+                  <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,0,0,10">
+                    <!--Profile-->
+                    <Border Width="80" Height="80" CornerRadius="40" ClipToBounds="True">
+                      <Image Source="avares://HospitalApp/Assets/profile_patient.png" Stretch="UniformToFill" />
+                    </Border>
+
+                    <TextBlock Text="Juan Dela Cruz" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
+                  </StackPanel>
+
+                  <UniformGrid Columns="2" Rows="0" Margin="0,0,0,0">
+                    <TextBlock Text="Sex: Male" FontSize="14" />
+                    <TextBlock Text="Age: 21" FontSize="14" />
+                    <TextBlock Text="Birthday: 1978-02-09" FontSize="14" />
+                    <TextBlock Text="Blood Type: O+" FontSize="14" />
+                    <TextBlock Text="Address: Cebu City" FontSize="14" />
+                    <TextBlock Text="Contact: 442-143-1432" FontSize="14" />
+                    <TextBlock Text="Email: juandela@gmail.com" FontSize="14" />
+                  </UniformGrid>
+                </StackPanel>
+              </Border>
+            </StackPanel>
+
+            <!--Medical Info-->
+            <Grid Grid.Row="1" Margin="0,0,0,20">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+
+              <TextBlock Grid.Row="0" Text="Medical Info" FontSize="18" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,10" />
+
+              <Border Grid.Row="1" Background="#F8FAFC" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="8" Padding="10">
+                <TabControl>
+                  <!--Lifestyle -->
+                  <TabItem>
+                    <TabItem.Header>
+                      <TextBlock Text="Lifestyle" FontSize="18" FontWeight="SemiBold" />
+                    </TabItem.Header>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                      <StackPanel Spacing="8">
+                        <TextBlock Text="Diet: Vegetarian" FontSize="16" Foreground="#2c3e50" />
+                        <TextBlock Text="Exercise: 3 times/week" FontSize="16" Foreground="#2c3e50" />
+                        <TextBlock Text="Sleep: 7 hours" FontSize="16" Foreground="#2c3e50" />
+                        <TextBlock Text="Smoker: Moderate" FontSize="16" Foreground="#2c3e50" />
+                        <TextBlock Text="Alcohol: Occasional" FontSize="16" Foreground="#2c3e50" />
+                      </StackPanel>
+                    </ScrollViewer>
+                  </TabItem>
+
+                  <!--Medication-->
+                  <TabItem>
+                    <TabItem.Header>
+                      <TextBlock Text="Medication" FontSize="18" FontWeight="SemiBold" />
+                    </TabItem.Header>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                      <StackPanel Spacing="8">
+                        <TextBlock Text="Guaifenesin" FontSize="16" Foreground="#2c3e50" />
+                        <TextBlock Text="Aspirin 81mg" FontSize="16" Foreground="#2c3e50" />
+                        <TextBlock Text="Calcium Docusate" FontSize="16" Foreground="#2c3e50" />
+                      </StackPanel>
+                    </ScrollViewer>
+                  </TabItem>
+
+                  <!--Allergies Tab-->
+                  <TabItem>
+                    <TabItem.Header>
+                      <TextBlock Text="Allergies" FontSize="18" FontWeight="SemiBold" />
+                    </TabItem.Header>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                      <StackPanel Spacing="8">
+                        <TextBlock Text="Cat and Dog" FontSize="16" Foreground="#2c3e50" />
+                        <TextBlock Text="Rodents" FontSize="16" Foreground="#2c3e50" />
+                        <TextBlock Text="Beans and nuts" FontSize="16" Foreground="#2c3e50" />
+                      </StackPanel>
+                    </ScrollViewer>
+                  </TabItem>
+                </TabControl>
+              </Border>
+            </Grid>
+
+            <!--Action Buttons-->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+              <Button Content="Save Changes"
+                      Width="140" Height="40"
+                      Background="#28A745" Foreground="White"
+                      FontSize="14" FontWeight="SemiBold"
+                      BorderThickness="0" CornerRadius="8"
+                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+
+              <Button Content="Delete Patient"
+                      Width="140" Height="40"
+                      Background="#860111" Foreground="White"
+                      FontSize="14" FontWeight="SemiBold"
+                      BorderThickness="0" CornerRadius="8"
+                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+            </StackPanel>
+          </Grid>
+        </Border>
+      </Grid>
+    </DockPanel>
+  </ScrollViewer>
 </UserControl>
