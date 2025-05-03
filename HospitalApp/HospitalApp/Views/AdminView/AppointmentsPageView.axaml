@@ -8,8 +8,8 @@
              xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              x:DataType="vm:AppointmentsPageViewModel"
              x:Name="Root"
-            
->
+             Background="#E8F2F9">
+
 
     <Grid Margin="50" Grid.RowDefinitions="Auto, *">
         <!-- Header Section -->
@@ -17,90 +17,90 @@
             <TextBlock Grid.Column="0" Text="Appointments" Foreground="#3E8DC0" FontSize="48" FontWeight="Bold" FontFamily="Rubik" Margin="20"/>
         </Grid>
         
+        <Border Grid.Row="1" Background="#FFFFFF" CornerRadius="20" Padding="20">
         <!-- Appointment List Section (To be added in Grid.Row 1) -->
-        <TabControl Margin="5" Grid.Row="1">
-            <TabItem Header="Upcoming Appointments" FontSize="20" Foreground="#3E8DC0">
-                
-                <Border Grid.Row="1" Margin="20">
-                    <StackPanel>
-                    <TextBox Watermark="Search..." Text="{Binding AppointmentSearchText, Mode=TwoWay}" Width="200" Margin="10"/>
-                        
-                    <DataGrid ItemsSource="{Binding FilteredAppointments}" 
-                            AutoGenerateColumns="False" IsReadOnly="True"
-                            GridLinesVisibility="All" BorderBrush="Gray">
-                        
-                        <!-- Header Styling -->
-                        <DataGrid.Styles>
-                            <!-- Style for the column headers -->
-                            <Style Selector="DataGridColumnHeader">
-                                <Setter Property="Background" Value="#3E8DC0"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="FontSize" Value="15"/>
-                                <Setter Property="Padding" Value="10"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            </Style>
+        <TabControl Margin="5"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="Upcoming Appointments" FontSize="20" Foreground="#3E8DC0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Border Margin="20" HorizontalAlignment="Stretch">
+                        <StackPanel>
+                        <TextBox Watermark="Search..." Text="{Binding AppointmentSearchText, Mode=TwoWay}" Margin="10" HorizontalAlignment="Stretch"/>
                             
-                            <!-- Style for the rows/cells -->
-                            <Style Selector="DataGridCell">
-                                <Setter Property="Background" Value="White"/>
-                                <Setter Property="Foreground" Value="#333333"/>
-                                <Setter Property="FontSize" Value="15"/>
-                                <Setter Property="Padding" Value="10"/>
-                            </Style>
+                        <DataGrid ItemsSource="{Binding FilteredAppointments}" 
+                                AutoGenerateColumns="False" IsReadOnly="True"
+                                GridLinesVisibility="All" BorderBrush="Gray">
                             
-                            <!-- Style for alternating rows if desired -->
-                            <Style Selector="DataGridRow:nth-child(2n)">
-                                <Setter Property="Background" Value="#F0F8FF"/>
-                            </Style>
+                            <!-- Header Styling -->
+                            <DataGrid.Styles>
+                                <!-- Style for the column headers -->
+                                <Style Selector="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#3E8DC0"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                                
+                                <!-- Style for the rows/cells -->
+                                <Style Selector="DataGridCell">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                </Style>
+                                
+                                <!-- Style for alternating rows if desired -->
+                                <Style Selector="DataGridRow:nth-child(2n)">
+                                    <Setter Property="Background" Value="#F0F8FF"/>
+                                </Style>
+                                
+                                <!-- Style for selected row -->
+                                <Style Selector="DataGridRow:selected">
+                                    <Setter Property="Background" Value="#B0E0E6"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+                            </DataGrid.Styles>
                             
-                            <!-- Style for selected row -->
-                            <Style Selector="DataGridRow:selected">
-                                <Setter Property="Background" Value="#B0E0E6"/>
-                                <Setter Property="Foreground" Value="Black"/>
-                            </Style>
-                        </DataGrid.Styles>
-                        
-                        <DataGrid.Columns>
-                                <DataGridTextColumn Header="AID" Binding="{Binding PkId}" Width="Auto"/>
-                                <DataGridTextColumn Header="PID" Binding="{Binding PatientID}" Width="Auto"/>
-                                <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
-                                <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
-                                <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="Auto"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
-                                <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="Auto"/>
+                            <DataGrid.Columns>
+                                    <DataGridTextColumn Header="AID" Binding="{Binding PkId}" Width="Auto"/>
+                                    <DataGridTextColumn Header="PID" Binding="{Binding PatientID}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="Auto"/>
 
-                            <DataGridTemplateColumn Header="Actions" Width="*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Spacing="5">
-                                            <Button Content="Edit"
-                                                    Command="{Binding $parent[DataGrid]((vm:AppointmentsPageViewModel)DataContext).OnEditCommand}"
-                                                    CommandParameter="{Binding}"
-                                                    Background="green"
-                                                    Foreground="white"
-                                                    Name="editbtn">
-                                            </Button>
-                                            <Button Content="Cancel"
-                                                    Command="{Binding $parent[DataGrid]((vm:AppointmentsPageViewModel)DataContext).OnCancelCommand}"
-                                                    CommandParameter="{Binding}"
-                                                    Background="red"
-                                                    Foreground="white">
-                                            </Button>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    </StackPanel>
-                </Border>
+                                <DataGridTemplateColumn Header="Actions" Width="*" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="5" HorizontalAlignment="Center">
+                                                <Button Content="Edit"
+                                                        Command="{Binding $parent[DataGrid]((vm:AppointmentsPageViewModel)DataContext).OnEditCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Background="green"
+                                                        Foreground="white"
+                                                        Name="editbtn">
+                                                </Button>
+                                                <Button Content="Cancel"
+                                                        Command="{Binding $parent[DataGrid]((vm:AppointmentsPageViewModel)DataContext).OnCancelCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Background="red"
+                                                        Foreground="white">
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Done Appointments" FontSize="20" Foreground="#3E8DC0">
-                <!-- Done Appointments -->
-                <ScrollViewer Grid.Row="2" Margin="20">
-                    <Border>
+            <TabItem Header="Done Appointments" FontSize="20" Foreground="#3E8DC0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Border Margin="20" HorizontalAlignment="Stretch">
                         <StackPanel>
 
                             <DataGrid ItemsSource="{Binding DoneAppointments}" 
@@ -145,7 +145,6 @@
                                     <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
                                     <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
                                     <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="*"/>
-                                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
                                     <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -154,98 +153,696 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Create Appointment" FontSize="20" Foreground="#3E8DC0">
-                <Border Background="#D4E6F1" CornerRadius="20">
-                    <StackPanel Orientation="Horizontal" Spacing="5">
-                        <StackPanel Spacing="5" Margin="35">
-                            <TextBlock Margin="0 5" Text = "Patient ID" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
-                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBox Text="{Binding PId, Mode=TwoWay}" Watermark="Patient ID" Padding="10" FontSize="15"/>
-                                <TextBlock Text="{Binding ErrorMsgFind}" IsVisible="{Binding ErrorMsgFindVisible}" Foreground="red"/>
+            <TabItem Header="Missed Appointments" FontSize="20" Foreground="#3E8DC0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Border Margin="20" HorizontalAlignment="Stretch">
+                        <StackPanel>
+                        <TextBox Watermark="Search..." Text="{Binding MissedAppointmentSearchText, Mode=TwoWay}" Margin="10" HorizontalAlignment="Stretch"/>
+                            
+                        <DataGrid ItemsSource="{Binding FilteredMissedAppointments}" 
+                                AutoGenerateColumns="False" IsReadOnly="True"
+                                GridLinesVisibility="All" BorderBrush="Gray">
+                            
+                            <!-- Header Styling -->
+                            <DataGrid.Styles>
+                                <!-- Style for the column headers -->
+                                <Style Selector="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#3E8DC0"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                                
+                                <!-- Style for the rows/cells -->
+                                <Style Selector="DataGridCell">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                </Style>
+                                
+                                <!-- Style for alternating rows if desired -->
+                                <Style Selector="DataGridRow:nth-child(2n)">
+                                    <Setter Property="Background" Value="#F0F8FF"/>
+                                </Style>
+                                
+                                <!-- Style for selected row -->
+                                <Style Selector="DataGridRow:selected">
+                                    <Setter Property="Background" Value="#B0E0E6"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+                            </DataGrid.Styles>
+                            
+                            <DataGrid.Columns>
+                                    <DataGridTextColumn Header="AID" Binding="{Binding PkId}" Width="Auto"/>
+                                    <DataGridTextColumn Header="PID" Binding="{Binding PatientID}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="Auto"/>
 
-                            </StackPanel>
+                                <DataGridTemplateColumn Header="Actions" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="5" HorizontalAlignment="Center">
+                                                <Button Content="Edit"
+                                                        Command="{Binding $parent[DataGrid]((vm:AppointmentsPageViewModel)DataContext).OnEditCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Background="green"
+                                                        Foreground="white"
+                                                        Name="editbtn">
+                                                </Button>
+                                                <Button Content="Cancel"
+                                                        Command="{Binding $parent[DataGrid]((vm:AppointmentsPageViewModel)DataContext).OnCancelCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Background="red"
+                                                        Foreground="white">
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+            </TabItem>
 
-                            <TextBlock Margin="0 5" Text="Patient Name" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
-                            <TextBox Watermark="Patient Name" Text="{Binding newPatient.Name}" Width="250" HorizontalAlignment="Left" IsReadOnly="True" Padding="10" FontSize="15"
-                            />
-                            <TextBlock Margin="0 5" Text = "Appointment Type" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
-                            <ComboBox ItemsSource="{Binding AppointmentTypes}"
-                                    SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}"
-                                    Width="250"
-                                    Padding="10" FontSize="15"
-                            />
-                            <TextBlock Margin="0 5" Text = "Assigned Doctor" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
-                            <ComboBox ItemsSource="{Binding DoctorsList}"
-                                    SelectedItem="{Binding Doc, Mode=TwoWay}"
-                                    Width="250"
-                                    Padding="10" FontSize="15"
+            <TabItem Header="Create Appointment" FontSize="20" Foreground="#3E8DC0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Border Background="#D4E6F1" CornerRadius="20" Margin="0" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="5" HorizontalAlignment="Stretch">
+                            <StackPanel Spacing="5" Margin="35" HorizontalAlignment="Stretch">
+                                <TextBlock Margin="0 5" Text = "Patient ID" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
+                                <StackPanel Spacing="5">
+                                    <TextBox Text="{Binding PId, Mode=TwoWay}" Watermark="Patient ID" Padding="10" FontSize="15" Width="250"/>
+                                    <TextBlock Text="{Binding ErrorMsgFind}" IsVisible="{Binding ErrorMsgFindVisible}" Foreground="red"/>
 
-                            >
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}" FontSize="15"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <TextBlock Margin="0 5" Text = "Appointment Slot" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
-                            <StackPanel Spacing="5">
-                                <StackPanel Orientation="Horizontal" Spacing="5">
-                                    <CalendarDatePicker Width="250"
-                                        SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}"
-                                        Padding="10" FontSize="15"
-                                        DisplayDateStart="{Binding Today}"
-                                    />  
                                 </StackPanel>
-                                <ComboBox Width="250"
-                                        Foreground="Black"
-                                        ItemsSource="{Binding AvailableTimeSlots}" 
-                                        SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
-                                        IsEnabled="{Binding SelectedAppointmentDate, Converter={x:Static ObjectConverters.IsNotNull}}"
+
+                                <TextBlock Margin="0 5" Text="Patient Name" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
+                                <TextBox Watermark="Patient Name" Text="{Binding newPatient.Name}" Width="250" HorizontalAlignment="Left" IsReadOnly="True" Padding="10" FontSize="15"
+                                />
+                                <TextBlock Margin="0 5" Text = "Appointment Type" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                                <ComboBox ItemsSource="{Binding AppointmentTypes}"
+                                        SelectedItem="{Binding SelectedAppointmentType, Mode=TwoWay}"
+                                        Width="250"
                                         Padding="10" FontSize="15"
-                                        >
+                                />
+                                <TextBlock Margin="0 5" Text = "Assigned Doctor" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                                <ComboBox ItemsSource="{Binding DoctorsList}"
+                                        SelectedItem="{Binding Doc, Mode=TwoWay}"
+                                        Width="250"
+                                        Padding="10" FontSize="15"
+
+                                >
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}"/>
+                                            <TextBlock Text="{Binding Name}" FontSize="15"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
+                                <TextBlock Margin="0 5" Text = "Appointment Slot" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5" ></TextBlock>
+                                <StackPanel Spacing="5">
+                                    <StackPanel Orientation="Horizontal" Spacing="5">
+                                        <CalendarDatePicker Width="250"
+                                            SelectedDate="{Binding SelectedAppointmentDate, Mode=TwoWay}"
+                                            Padding="10" FontSize="15"
+                                            DisplayDateStart="{Binding Today}"
+                                        />  
+                                    </StackPanel>
+                                    <ComboBox Width="250"
+                                            Foreground="Black"
+                                            ItemsSource="{Binding AvailableTimeSlots}" 
+                                            SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
+                                            IsEnabled="{Binding SelectedAppointmentDate, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                            Padding="10" FontSize="15"
+                                            >
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                                <TextBlock Text="{Binding ErrorMsgCreate}" IsVisible="{Binding ErrorMsgCreateVisible}" Foreground="red"/>
+
+                                <Button Content="Create Appointment" Command="{Binding OnCreateAppointment}" CornerRadius="10"
+                                            Padding="10"
+                                            FontSize="15"
+                                            Background="Green"
+                                            Foreground="White"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding ErrorMsgCreate}" IsVisible="{Binding ErrorMsgCreateVisible}" Foreground="red"/>
 
-                            <Button Content="Create Appointment" Command="{Binding OnCreateAppointment}" CornerRadius="10"
-                                        Padding="10"
-                                        FontSize="15"
-                                        Background="Green"
-                                        Foreground="White"/>
+                            <TabControl>
+                                <TabItem Header="Vital Signs" FontSize="15" Foreground="#3E8DC0">
+                                    <Border Background="#E6F7FF" 
+                                            BorderBrush="#A0CFEF" 
+                                            BorderThickness="2" 
+                                            CornerRadius="8" 
+                                            Padding="20" 
+                                            Margin="0,0,0,15"
+
+                                    >
+                                        <StackPanel Margin="0,0,0,15">
+                                            <!-- Title -->
+                                            <TextBlock Text="Current Vital" 
+                                                    FontWeight="Bold" 
+                                                    FontSize="20"
+                                                    Margin="0,0,0,20"/>
+                                            
+                                            <!-- First Row: Temperature and Pulse Rate -->
+                                            <Grid Margin="0,0,0,15">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- Temperature -->
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="Temperature" 
+                                                            Margin="0,0,0,5"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox Grid.Column="0" 
+                                                                Text="36.5" 
+                                                                Padding="5,3"/>
+                                                        <TextBlock Grid.Column="1" 
+                                                                Text="°C" 
+                                                                VerticalAlignment="Center" 
+                                                                Margin="5,0,0,0"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                                
+                                                <!-- Pulse Rate -->
+                                                <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                                                    <TextBlock Text="Pulse Rate" 
+                                                            Margin="0,0,0,5"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox Grid.Column="0" 
+                                                                Text="72" 
+                                                                Padding="5,3"/>
+                                                        <TextBlock Grid.Column="1" 
+                                                                Text="bpm" 
+                                                                VerticalAlignment="Center" 
+                                                                Margin="5,0,0,0"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Grid>
+                                            
+                                            <!-- Second Row: Weight and BMI -->
+                                            <Grid Margin="0,0,0,15">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- Weight -->
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="Weight" 
+                                                            Margin="0,0,0,5"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox Grid.Column="0" 
+                                                                Text="230" 
+                                                                Padding="5,3"/>
+                                                        <TextBlock Grid.Column="1" 
+                                                                Text="lbs" 
+                                                                VerticalAlignment="Center" 
+                                                                Margin="5,0,0,0"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                                
+                                                <!-- BMI -->
+                                                <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                                                    <TextBlock Text="BMI" 
+                                                            Margin="0,0,0,5"/>
+                                                    <TextBox Text="30.34" 
+                                                            Padding="5,3"/>
+                                                </StackPanel>
+                                            </Grid>
+                                            
+                                            <!-- Third Row: Blood Pressure and Sugar Level -->
+                                            <Grid Margin="0,0,0,15">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- Blood Pressure -->
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="Blood Pressure" 
+                                                            Margin="0,0,0,5"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox Grid.Column="0" 
+                                                                Text="120/80" 
+                                                                Padding="5,3"/>
+                                                        <TextBlock Grid.Column="1" 
+                                                                Text="mm hg" 
+                                                                VerticalAlignment="Center" 
+                                                                Margin="5,0,0,0"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                                
+                                                <!-- Sugar Level -->
+                                                <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                                                    <TextBlock Text="Sugar level" 
+                                                            Margin="0,0,0,5"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox Grid.Column="0" 
+                                                                Text="110" 
+                                                                Padding="5,3"/>
+                                                        <TextBlock Grid.Column="1" 
+                                                                Text="mg/dL" 
+                                                                VerticalAlignment="Center" 
+                                                                Margin="5,0,0,0"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Grid>
+                                            
+                                            <!-- Fourth Row: Height -->
+                                            <Grid Margin="0,0,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- Height -->
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="Height" 
+                                                            Margin="0,0,0,5"/>
+                                                    <TextBox Text="6'1" 
+                                                            Padding="5,3"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                    
+                                </TabItem>
+
+                                <TabItem Header="Chief Complaint" FontSize="15" Foreground="#3E8DC0">
+
+                                </TabItem>
+
+                                <TabItem Header="Medical History" FontSize="15" Foreground="#3E8DC0">
+
+                                </TabItem>
+                                <TabItem Header="Lifestyle" FontSize="15" Foreground="#3E8DC0">
+                                    <Border Background="#E6F7FF" 
+                                            BorderBrush="#A0CFEF" 
+                                            BorderThickness="2" 
+                                            CornerRadius="8" 
+                                            Padding="20" 
+                                            Margin="0,0,0,15"
+
+                                            >
+                                        <StackPanel>
+                                            <!-- Title -->
+                                            <TextBlock Text="Lifestyle" 
+                                                    FontWeight="Bold" 
+                                                    FontSize="20"
+                                                    Margin="0,0,0,20"/>
+                                            
+                                            <!-- Diet Section -->
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="70"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Grid.Column="0" 
+                                                        Text="Diet" 
+                                                        VerticalAlignment="Center"/>
+                                                
+                                                <ComboBox Grid.Column="1" 
+                                                        Width="190" 
+                                                        HorizontalAlignment="Left"
+                                                        SelectedIndex="0">
+                                                    <ComboBoxItem Content="Vegetarian"/>
+                                                    <ComboBoxItem Content="Vegan"/>
+                                                    <ComboBoxItem Content="Omnivore"/>
+                                                    <ComboBoxItem Content="Pescatarian"/>
+                                                    <ComboBoxItem Content="Keto"/>
+                                                    <ComboBoxItem Content="Paleo"/>
+                                                </ComboBox>
+                                            </Grid>
+                                            
+                                            <!-- Exercise Section -->
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="70"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Grid.Column="0" 
+                                                        Text="Exercise" 
+                                                        VerticalAlignment="Center"/>
+                                                
+                                                <ComboBox Grid.Column="1" 
+                                                        Width="190" 
+                                                        HorizontalAlignment="Left"
+                                                        SelectedIndex="0">
+                                                    <ComboBoxItem Content="3 times / week"/>
+                                                    <ComboBoxItem Content="Daily"/>
+                                                    <ComboBoxItem Content="Occasionally"/>
+                                                    <ComboBoxItem Content="Rarely"/>
+                                                    <ComboBoxItem Content="Never"/>
+                                                </ComboBox>
+                                            </Grid>
+                                            
+                                            <!-- Sleep Section -->
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="70"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Grid.Column="0" 
+                                                        Text="Sleep" 
+                                                        VerticalAlignment="Center"/>
+                                                
+                                                <ComboBox Grid.Column="1" 
+                                                        Width="190" 
+                                                        HorizontalAlignment="Left"
+                                                        SelectedIndex="0">
+                                                    <ComboBoxItem Content="7 hours"/>
+                                                    <ComboBoxItem Content="Less than 6 hours"/>
+                                                    <ComboBoxItem Content="6-7 hours"/>
+                                                    <ComboBoxItem Content="8+ hours"/>
+                                                </ComboBox>
+                                            </Grid>
+                                            
+                                            <!-- Smoking and Alcohol Section -->
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="70"/>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="70"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- Smoking -->
+                                                <TextBlock Grid.Column="0" 
+                                                        Text="Smoking" 
+                                                        VerticalAlignment="Center"/>
+                                                
+                                                <ComboBox Grid.Column="1" 
+                                                        Width="120" 
+                                                        HorizontalAlignment="Left"
+                                                        SelectedIndex="0">
+                                                    <ComboBoxItem Content="Yes"/>
+                                                    <ComboBoxItem Content="No"/>
+                                                    <ComboBoxItem Content="Former smoker"/>
+                                                </ComboBox>
+                                                
+                                                <!-- Alcohol -->
+                                                <TextBlock Grid.Column="2" 
+                                                        Text="Alcohol" 
+                                                        VerticalAlignment="Center"/>
+                                                
+                                                <ComboBox Grid.Column="3" 
+                                                        Width="120" 
+                                                        HorizontalAlignment="Left"
+                                                        SelectedIndex="0">
+                                                    <ComboBoxItem Content="Occasional"/>
+                                                    <ComboBoxItem Content="Daily"/>
+                                                    <ComboBoxItem Content="Weekly"/>
+                                                    <ComboBoxItem Content="Rarely"/>
+                                                    <ComboBoxItem Content="Never"/>
+                                                </ComboBox>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+
+                                </TabItem>
+                                <TabItem Header="Family History" FontSize="15" Foreground="#3E8DC0">
+
+                                </TabItem>
+                                <TabItem Header="Current Medications" FontSize="15" Foreground="#3E8DC0">
+                                    <Border Background="#E6F7FF" 
+                                            BorderBrush="#A0CFEF" 
+                                            BorderThickness="2" 
+                                            CornerRadius="8" 
+                                            Padding="20" 
+                                            Margin="0,0,0,15"
+                                    >
+                                        <StackPanel>
+                                            <!-- Title -->
+                                            <TextBlock Text="Medication" 
+                                                    FontWeight="Bold" 
+                                                    FontSize="20"
+                                                    Margin="0,0,0,15"/>
+                                            
+                                            <!-- Instructions -->
+                                            <TextBlock Text="List all medicines and supplements you take:"
+                                                    FontSize="14"
+                                                    Margin="0,0,0,15"/>
+                                            
+                                            <!-- Column Headers -->
+                                            <Grid Margin="0,0,0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Grid.Column="0" 
+                                                        Text="Medication and Supplements" 
+                                                        FontWeight="SemiBold"
+                                                        HorizontalAlignment="Center"/>
+                                                
+                                                <TextBlock Grid.Column="1" 
+                                                        Text="How Much?" 
+                                                        FontWeight="SemiBold"
+                                                        HorizontalAlignment="Center"/>
+                                                
+                                                <TextBlock Grid.Column="2" 
+                                                        Text="How Often?" 
+                                                        FontWeight="SemiBold"
+                                                        HorizontalAlignment="Center"/>
+                                            </Grid>
+                                            
+                                            <!-- Row 1 -->
+                                            <Grid Margin="0,0,0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBox Grid.Column="0" Margin="0,0,5,0" Height="25"/>
+                                                <TextBox Grid.Column="1" Margin="2,0,2,0" Height="25"/>
+                                                <TextBox Grid.Column="2" Margin="5,0,0,0" Height="25"/>
+                                            </Grid>
+                                            
+                                            <!-- Row 2 -->
+                                            <Grid Margin="0,0,0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBox Grid.Column="0" Margin="0,0,5,0" Height="25"/>
+                                                <TextBox Grid.Column="1" Margin="2,0,2,0" Height="25"/>
+                                                <TextBox Grid.Column="2" Margin="5,0,0,0" Height="25"/>
+                                            </Grid>
+                                            
+                                            <!-- Row 3 -->
+                                            <Grid Margin="0,0,0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBox Grid.Column="0" Margin="0,0,5,0" Height="25"/>
+                                                <TextBox Grid.Column="1" Margin="2,0,2,0" Height="25"/>
+                                                <TextBox Grid.Column="2" Margin="5,0,0,0" Height="25"/>
+                                            </Grid>
+                                            
+                                            <!-- Row 4 -->
+                                            <Grid Margin="0,0,0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBox Grid.Column="0" Margin="0,0,5,0" Height="25"/>
+                                                <TextBox Grid.Column="1" Margin="2,0,2,0" Height="25"/>
+                                                <TextBox Grid.Column="2" Margin="5,0,0,0" Height="25"/>
+                                            </Grid>
+                                            
+                                            <!-- Row 5 -->
+                                            <Grid Margin="0,0,0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBox Grid.Column="0" Margin="0,0,5,0" Height="25"/>
+                                                <TextBox Grid.Column="1" Margin="2,0,2,0" Height="25"/>
+                                                <TextBox Grid.Column="2" Margin="5,0,0,0" Height="25"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </TabItem>
+
+                                <TabItem Header="Allergies" FontSize="15" Foreground="#3E8DC0">
+                                    <Border Background="#E6F7FF" 
+                                            BorderBrush="#A0CFEF" 
+                                            BorderThickness="2" 
+                                            CornerRadius="8" 
+                                            Padding="20" 
+                                            Margin="0,0,0,15"
+                                    >
+                                        <StackPanel>
+                                            <!-- Title -->
+                                            <TextBlock Text="Allergies" 
+                                                    FontWeight="Bold" 
+                                                    FontSize="20"
+                                                    Margin="0,0,0,15"/>
+                                            
+                                            <!-- Medications -->
+                                            <StackPanel Margin="0,0,0,15">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <TextBlock Grid.Column="0" 
+                                                            Text="Are you allergic to any medications?" 
+                                                            VerticalAlignment="Center"/>
+                                                    
+                                                    <StackPanel Grid.Column="2" 
+                                                                Orientation="Horizontal" 
+                                                                HorizontalAlignment="Right">
+                                                        <RadioButton Content="Yes" GroupName="MedAllergy" Margin="0,0,10,0"/>
+                                                        <RadioButton Content="No" GroupName="MedAllergy" IsChecked="True"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                
+                                                <Grid Margin="0,5,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <TextBlock Grid.Column="0" 
+                                                            Text="Please list:" 
+                                                            VerticalAlignment="Center" 
+                                                            Margin="0,0,10,0"/>
+                                                    
+                                                    <TextBox Grid.Column="1"/>
+                                                </Grid>
+                                            </StackPanel>
+                                            
+                                            <!-- Latex -->
+                                            <StackPanel Margin="0,0,0,15">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <TextBlock Grid.Column="0" 
+                                                            Text="Are you allergic to latex?" 
+                                                            VerticalAlignment="Center"/>
+                                                    
+                                                    <StackPanel Grid.Column="2" 
+                                                                Orientation="Horizontal" 
+                                                                HorizontalAlignment="Right">
+                                                        <RadioButton Content="Yes" GroupName="LatexAllergy" Margin="0,0,10,0"/>
+                                                        <RadioButton Content="No" GroupName="LatexAllergy" IsChecked="True"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                
+                                                <Grid Margin="0,5,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <TextBlock Grid.Column="0" 
+                                                            Text="Please list:" 
+                                                            VerticalAlignment="Center" 
+                                                            Margin="0,0,10,0"/>
+                                                    
+                                                    <TextBox Grid.Column="1"/>
+                                                </Grid>
+                                            </StackPanel>
+                                            
+                                            <!-- Foods -->
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <TextBlock Grid.Column="0" 
+                                                            Text="Are you allergic to any foods?" 
+                                                            VerticalAlignment="Center"/>
+                                                    
+                                                    <StackPanel Grid.Column="2" 
+                                                                Orientation="Horizontal" 
+                                                                HorizontalAlignment="Right">
+                                                        <RadioButton Content="Yes" GroupName="FoodAllergy" Margin="0,0,10,0"/>
+                                                        <RadioButton Content="No" GroupName="FoodAllergy" IsChecked="True"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                
+                                                <Grid Margin="0,5,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <TextBlock Grid.Column="0" 
+                                                            Text="Please list:" 
+                                                            VerticalAlignment="Center" 
+                                                            Margin="0,0,10,0"/>
+                                                    
+                                                    <TextBox Grid.Column="1"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </TabItem>
+                            </TabControl>
                         </StackPanel>
-
-                        <TabControl>
-                            <TabItem Header="Vital Signs" FontSize="15" Foreground="#3E8DC0">
-                                
-                            </TabItem>
-                            <TabItem Header="Medical History" FontSize="15" Foreground="#3E8DC0">
-
-                            </TabItem>
-                            <TabItem Header="Lifestyle" FontSize="15" Foreground="#3E8DC0">
-
-                            </TabItem>
-                            <TabItem Header="Family History" FontSize="15" Foreground="#3E8DC0">
-
-                            </TabItem>
-                            <TabItem Header="Current Medications" FontSize="15" Foreground="#3E8DC0">
-
-                            </TabItem>
-                            <TabItem Header="Allergies" FontSize="15" Foreground="#3E8DC0">
-
-                            </TabItem>
-                            <TabItem Header="Immunization" FontSize="15" Foreground="#3E8DC0">
-
-                            </TabItem>
-                        </TabControl>
-                    </StackPanel>
-                </Border>
+                    </Border>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
+        </Border>
     </Grid>
 </UserControl>
 

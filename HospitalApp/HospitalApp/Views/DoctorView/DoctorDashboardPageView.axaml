@@ -10,6 +10,7 @@
              xmlns:viewmodels="using:HospitalApp.ViewModels"
              xmlns:i="using:Avalonia.Xaml.Interactivity"
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
              x:DataType="viewmodels:DoctorDashboardPageViewModel">
     
     <UserControl.Styles>
@@ -85,56 +86,89 @@
                     VerticalScrollBarVisibility="Disabled"
                     Background="Transparent">
             
-<ListBox ItemsSource="{Binding AppointmentsToday}"
-         SelectedItem="{Binding SelectedAppointment}"
-         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-         Background="Transparent"
-         Padding="10">
-    <ListBox.ItemsPanel>
-        <ItemsPanelTemplate>
-            <StackPanel Orientation="Horizontal"/>
-        </ItemsPanelTemplate>
-    </ListBox.ItemsPanel>
-    
-    <Interaction.Behaviors>
-        <EventTriggerBehavior EventName="SelectionChanged">
-            <InvokeCommandAction Command="{Binding AppointmentClickedCommand}" 
-                               CommandParameter="{Binding SelectedAppointment}"/>
-        </EventTriggerBehavior>
-    </Interaction.Behaviors>
-    
-    <ListBox.ItemTemplate>
-        <DataTemplate x:DataType="models:Appointment">
-            <Border Width="200" Height="145" Background="white" Margin="5" CornerRadius="10" Padding="10">
-                <StackPanel>
-                    <Border BorderBrush="#00738C" BorderThickness="2" CornerRadius="10" HorizontalAlignment="Right">
-                        <TextBlock Text="{Binding AppointmentTime}" Foreground="Black" Padding="10"/>
-                    </Border>
-                    
-                    <TextBlock Text="{Binding PatientName}" Foreground="Black" FontSize="15" FontWeight="SemiBold" Margin="0, 20, 0, 10"/>
-                    <TextBlock Text="{Binding AppointmentType}" Foreground="Black" Margin="0, 10, 0, 10"/>
-                </StackPanel>
-            </Border>
-        </DataTemplate>
-    </ListBox.ItemTemplate>
-</ListBox>
+            <ListBox ItemsSource="{Binding AppointmentsToday}"
+                    SelectedItem="{Binding SelectedAppointment}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    Background="Transparent"
+                    Padding="10">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                
+                <Interaction.Behaviors>
+                    <EventTriggerBehavior EventName="SelectionChanged">
+                        <InvokeCommandAction Command="{Binding AppointmentClickedCommand}" 
+                                        CommandParameter="{Binding SelectedAppointment}"/>
+                    </EventTriggerBehavior>
+                </Interaction.Behaviors>
+                
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="models:Appointment">
+                        <Border Width="200" Height="145" Background="white" Margin="5" CornerRadius="10" Padding="10">
+                            <StackPanel>
+                                <Border BorderBrush="#00738C" BorderThickness="2" CornerRadius="10" HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding AppointmentTime}" Foreground="Black" Padding="10"/>
+                                </Border>
+                                
+                                <TextBlock Text="{Binding PatientName}" Foreground="Black" FontSize="15" FontWeight="SemiBold" Margin="0, 20, 0, 10"/>
+                                <TextBlock Text="{Binding AppointmentType}" Foreground="Black" Margin="0, 10, 0, 10"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-          </ScrollViewer>
+            </ScrollViewer>
         </StackPanel>
       </Border>
+
       <Border Grid.Row ="2" Grid.Column="0" Background="#EAF2F8"
       CornerRadius="20"
       Margin="10"
       >
+        <lvc:CartesianChart Margin="20"
 
+            DataContext="{Binding DoctorChartAppointments}"
+            Series="{Binding Series}"
+            Title="{Binding Title}"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}"
+            AnimationsSpeed="00:00:01.000"
+        />
       </Border>
 
       <Border Grid.Row="2" Grid.Column="1" Background="#EAF2F8"
       CornerRadius="20"
       Margin="10"
-      Width="200"
+      Width="500"
       >
+          <Grid Margin="20">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock 
+                Grid.Row="0"
+                Text="{Binding DoctorChartAppointmentTypes.Title}" 
+                FontSize="20" 
+                FontWeight="Bold"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,10"/>
+            
+            <lvc:PieChart 
+                Grid.Row="1"
+                Series="{Binding DoctorChartAppointmentTypes.Series}" 
+                InitialRotation="-180"
+                AnimationsSpeed="00:00:01.000"
+                LegendPosition="Bottom"
+                LegendTextPaint="{Binding DoctorChartAppointmentTypes.LegendTextPaint}"
+                LegendTextSize="14"
+                />
+          </Grid>
 
       </Border>
 
