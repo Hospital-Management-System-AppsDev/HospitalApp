@@ -227,6 +227,24 @@ public class ApiService
         return data;
     }
 
+    public async Task<List<int>> GetNumAppointmentsByDoctor(int year, int month, int doctorId)
+    {
+        var response = await _httpClient.GetAsync($"appointments/by-doctor-count/{year}/{month}/{doctorId}");
+        if (!response.IsSuccessStatusCode) return new List<int>();
+
+        var data = await response.Content.ReadFromJsonAsync<List<int>>();
+        return data ?? new List<int>();
+    }
+
+    public async Task<Dictionary<string, int>> GetAppointmentsByType(int doctorId)
+    {
+        var response = await _httpClient.GetAsync($"appointments/by-type/{doctorId}");
+        if (!response.IsSuccessStatusCode) return new Dictionary<string, int>();
+
+        var data = await response.Content.ReadFromJsonAsync<Dictionary<string, int>>();
+        return data ?? new Dictionary<string, int>();
+    }
+
     public async Task<List<Medicines>> GetPharmacy()
     {
         try

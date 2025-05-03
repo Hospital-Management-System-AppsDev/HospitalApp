@@ -7,7 +7,7 @@ using Avalonia.Markup.Xaml;
 using HospitalApp.ViewModels;
 using HospitalApp.Views;
 using Avalonia.Styling;
-
+using Avalonia.Diagnostics;
 namespace HospitalApp;
 
 public partial class App : Application
@@ -15,6 +15,9 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        #if DEBUG
+this.AttachDevTools();
+#endif
     }
 
     public override void OnFrameworkInitializationCompleted()

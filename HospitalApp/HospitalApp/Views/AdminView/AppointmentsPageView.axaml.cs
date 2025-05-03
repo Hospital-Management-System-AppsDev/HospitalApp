@@ -10,10 +10,11 @@ namespace HospitalApp.Views;
 
 public partial class AppointmentsPageView : UserControl
 {
-    public AppointmentsPageView() { 
-        InitializeComponent(); 
-        
-        this.Loaded += (sender, args) => 
+    public AppointmentsPageView()
+    {
+        InitializeComponent();
+
+        this.Loaded += (sender, args) =>
         {
             if (DataContext is AppointmentsPageViewModel vm)
             {
@@ -25,14 +26,15 @@ public partial class AppointmentsPageView : UserControl
     public AppointmentsPageView(ApiService apiService, SignalRService signalRService)
     {
         InitializeComponent();
-        this.DataContext = new AppointmentsPageViewModel(apiService, signalRService);
-        this.Loaded += (sender, args) => 
+        var viewModel = new AppointmentsPageViewModel(apiService, signalRService);
+        this.DataContext = viewModel;
+        this.Loaded += (sender, args) =>
         {
             if (DataContext is AppointmentsPageViewModel vm)
             {
                 vm.ParentWindow = TopLevel.GetTopLevel(this) as Window;
+                _ = vm.LoadDataAsync(); // Load data when the view is loaded
             }
         };
-
     }
 }

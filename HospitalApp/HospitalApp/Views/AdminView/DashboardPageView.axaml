@@ -4,7 +4,8 @@
              xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              xmlns:models="clr-namespace:HospitalApp.Models"
              xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
-             x:DataType="vm:DashboardPageViewModel"> <!-- Add this -->
+             x:DataType="vm:DashboardPageViewModel"
+             Background="#E8F2F9"> <!-- Add this -->
 
              
 
@@ -135,7 +136,7 @@
                             </Border>
                         </Grid>
 
-                        <Border Background="#EAF2F8"
+                        <Border Background="#FFFFFF"
                                 VerticalAlignment="Stretch"  Margin="0 0 5 0"
                                 Padding="20" CornerRadius="10" Grid.Row="1">
                             
@@ -350,7 +351,7 @@
                             </Border>
                         </Grid>
 
-                        <Border Background="#EAF2F8"
+                        <Border Background="#FFFFFF"
                                 VerticalAlignment="Stretch"  Margin="0 0 5 0"
                                 Padding="20" CornerRadius="10" Grid.Row="1">
                             
