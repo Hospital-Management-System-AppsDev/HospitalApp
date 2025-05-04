@@ -160,7 +160,7 @@
                         <StackPanel Spacing="5" Margin="35">
                             <TextBlock Margin="0 5" Text = "Patient ID" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBox Text="{Binding PId, Mode=TwoWay}" Watermark="Patient ID" Padding="10" FontSize="15"/>
+                                <TextBox x:Name="PatientID" Text="{Binding PId, Mode=TwoWay}" Watermark="Patient ID" Padding="10" FontSize="15"/>
                                 <TextBlock Text="{Binding ErrorMsgFind}" IsVisible="{Binding ErrorMsgFindVisible}" Foreground="red"/>
 
                             </StackPanel>

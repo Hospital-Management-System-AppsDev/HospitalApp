@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using HospitalApp.Models;
 using HospitalApp.ViewModels; // ✅ Add this!
+using System;
 
 
 namespace HospitalApp.Views;
@@ -12,6 +13,12 @@ public partial class AppointmentsPageView : UserControl
 {
     public AppointmentsPageView() { 
         InitializeComponent(); 
+
+        var textBox = this.FindControl<TextBox>("PatientID");
+            textBox.KeyDown += (sender, e) =>
+            {
+                Console.WriteLine("Key: " + e.Key);
+            };
         
         this.Loaded += (sender, args) => 
         {
