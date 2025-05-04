@@ -220,7 +220,7 @@
                                 <!-- Profile Picture (Circular) -->
                                 <Ellipse Grid.Row="0" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,20">
                                     <Ellipse.Fill>
-                                        <ImageBrush Source="avares://HospitalApp/Assets/dr-default.png" Stretch="UniformToFill"/>
+                                        <ImageBrush Source="avares://HospitalApp/Assets/Doctor/Profile/test.png" Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                     <Ellipse.Stroke>
                                         <SolidColorBrush Color="White" />
