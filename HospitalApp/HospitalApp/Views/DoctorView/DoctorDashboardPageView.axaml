@@ -11,7 +11,8 @@
              xmlns:i="using:Avalonia.Xaml.Interactivity"
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
-             x:DataType="viewmodels:DoctorDashboardPageViewModel">
+             x:DataType="viewmodels:DoctorDashboardPageViewModel"
+             Background="#E8F2F9">
     
     <UserControl.Styles>
         <Styles>
@@ -78,7 +79,7 @@
         <TextBlock Text="Dashboard" FontSize="40" FontFamily="Rubik" Foreground="#3E8DC0" FontWeight="Bold"/>
       </Border>
 
-      <Border Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Background="#EAF2F8" CornerRadius="20" Height="275">
+      <Border Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Background="#ffffff" CornerRadius="20" Height="275">
         <StackPanel>
           <TextBlock Text="Today's Appointments" FontSize="20" Padding="20" Foreground="#00738C" FontWeight="Bold" HorizontalAlignment="Center"/>
           <TextBlock Text="No appointments yet for today" IsVisible="{Binding MsgIsVisible}" FontSize="20" Padding="20" Foreground="gray" FontWeight="Bold" HorizontalAlignment="Center" Opacity="50" VerticalAlignment="Center"/>
@@ -107,7 +108,7 @@
                 
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="models:Appointment">
-                        <Border Width="200" Height="145" Background="white" Margin="5" CornerRadius="10" Padding="10">
+                        <Border Width="200" Height="145" Background="#E8F2F9" Margin="5" CornerRadius="10" Padding="10">
                             <StackPanel>
                                 <Border BorderBrush="#00738C" BorderThickness="2" CornerRadius="10" HorizontalAlignment="Right">
                                     <TextBlock Text="{Binding AppointmentTime}" Foreground="Black" Padding="10"/>
@@ -125,7 +126,7 @@
         </StackPanel>
       </Border>
 
-      <Border Grid.Row ="2" Grid.Column="0" Background="#EAF2F8"
+      <Border Grid.Row ="2" Grid.Column="0" Background="#ffffff"
       CornerRadius="20"
       Margin="10"
       >
@@ -140,7 +141,7 @@
         />
       </Border>
 
-      <Border Grid.Row="2" Grid.Column="1" Background="#EAF2F8"
+      <Border Grid.Row="2" Grid.Column="1" Background="#ffffff"
       CornerRadius="20"
       Margin="10"
       Width="500"
