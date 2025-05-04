@@ -135,7 +135,6 @@ public partial class AppointmentDetailsViewModel : ViewModelBase
             PatientID = response.PatientID,
             Name = response.Name,
             Bday = response.Bday,
-            Age = response.Age,
             Sex = response.Sex,
             Address = response.Address,
             BloodType = response.BloodType,
