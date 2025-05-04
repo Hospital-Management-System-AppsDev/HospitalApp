@@ -13,20 +13,20 @@ namespace HospitalApp.Models
         private decimal _price;
         
         // This needs to be 'partial void' not 'public void'
-        partial void OnPriceChanging(decimal value)
-        {
-            // This gets called before the property changes
-            _price = value is decimal d ? d : Convert.ToDecimal(value);
-        }
+        // partial void OnPriceChanging(decimal value)
+        // {
+        //     // This gets called before the property changes
+        //     _price = value is decimal d ? d : Convert.ToDecimal(value);
+        // }
         
         [ObservableProperty]
         private int _stocks;
         
-        partial void OnStocksChanging(int value)
-        {
-            // This gets called before the property changes
-            _stocks = value is int i ? i : Convert.ToInt32(value);
-        }
+        // partial void OnStocksChanging(int value)
+        // {
+        //     // This gets called before the property changes
+        //     _stocks = value is int i ? i : Convert.ToInt32(value);
+        // }
         
         public string Manufacturer { get; set; }
         public string Type { get; set; }

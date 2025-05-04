@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+<<<<<<< HEAD
              mc:Ignorable="d"
              xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              x:Class="HospitalApp.Views.PatientPageView"
@@ -12,11 +13,24 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid MinWidth="1024" MinHeight="600" RowDefinitions="Auto,*" Margin="30">
             <!--Header-->
+=======
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HospitalApp.Views.PatientPageView"
+             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
+             x:DataType="vm:PatientPageViewModel"
+             Background="#E8F2F9">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid MinWidth="1024" MinHeight="600" RowDefinitions="Auto,*" Margin="30">
+            
+            <!--Header Section-->
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
             <Grid Margin="10" ColumnDefinitions="*,Auto" Grid.Row="0">
                 <TextBlock Text="Patient Dashboard"
                            FontSize="28"
                            FontWeight="Bold"
                            Foreground="#3e8dc0"
+<<<<<<< HEAD
                            Grid.Column="0"
                            VerticalAlignment="Center" />
                 
@@ -30,14 +44,39 @@
             <!--Main Content-->
             <Grid Grid.Row="1" ColumnDefinitions="2.5*,3.5*" Margin="0,0,0,30">
                 <!--Patient List-->
+=======
+                           VerticalAlignment="Center" />
+
+                <Button Content="Add Patient"
+                        Width="140" Height="40"
+                        Background="#4169e1" Foreground="White"
+                        FontSize="14" FontWeight="SemiBold"
+                        BorderThickness="0" CornerRadius="8"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Grid.Column="1"/>
+            </Grid>
+
+            <!--Main Content Section-->
+            <Grid Grid.Row="1" ColumnDefinitions="2.5*,3.5*" Margin="0,0,0,30">
+                
+                <!--Patient List Panel-->
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                 <Border Background="White" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,20,0">
                     <StackPanel Spacing="15">
                         <TextBlock Text="Patient List" FontSize="20" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" />
 
+<<<<<<< HEAD
                         <Border Background="#EFF3F7" CornerRadius="12" Padding="8" BorderBrush="#DCE4EC" BorderThickness="1">
                             <DockPanel VerticalAlignment="Center">
                                 <TextBox Watermark="Search patient..."
                                          Text="{Binding SearchText, Mode=TwoWay}"
+=======
+                        <!--Search Box-->
+                        <Border Background="#EFF3F7" CornerRadius="12" Padding="8" BorderBrush="#DCE4EC" BorderThickness="1">
+                            <DockPanel VerticalAlignment="Center">
+                                <TextBox Watermark="Search patient..."
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                                          Background="Transparent"
                                          BorderThickness="0"
                                          FontSize="14"
@@ -46,6 +85,7 @@
                             </DockPanel>
                         </Border>
 
+<<<<<<< HEAD
                         <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="300">
                             <ListBox ItemsSource="{Binding FilteredPatients}" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" BorderThickness="0" Background="Transparent" Margin="0" Padding="0">
                                 <ListBox.ItemTemplate>
@@ -61,16 +101,65 @@
                                         </Border>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
+=======
+                        <!--Patient List-->
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="300">
+                            <ListBox BorderThickness="0" Background="Transparent" Margin="0" Padding="0">
+                                <ListBoxItem Padding="6" Margin="5">
+                                    <Border CornerRadius="0" Padding="10" Margin="0,2">
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <Ellipse Width="10" Height="10" Fill="Green" VerticalAlignment="Center"/>
+                                            <StackPanel>
+                                                <TextBlock Text="Juan Dela Cruz" FontWeight="Bold" FontSize="13" Foreground="#1F2937"/>
+                                                <TextBlock Text="Hypertension" FontSize="11" Foreground="#6B7280"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </ListBoxItem>
+
+                                <ListBoxItem Padding="6" Margin="5">
+                                    <Border CornerRadius="0" Padding="10" Margin="0,2">
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <Ellipse Width="10" Height="10" Fill="Green" VerticalAlignment="Center"/>
+                                            <StackPanel>
+                                                <TextBlock Text="Maria Santos" FontWeight="Bold" FontSize="13" Foreground="#1F2937"/>
+                                                <TextBlock Text="Diabetes" FontSize="11" Foreground="#6B7280"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </ListBoxItem>
+
+                                <ListBoxItem Padding="6" Margin="5">
+                                    <Border CornerRadius="0" Padding="6" Margin="0,2">
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <Ellipse Width="10" Height="10" Fill="Green" VerticalAlignment="Center"/>
+                                            <StackPanel>
+                                                <TextBlock Text="Pedro Reyes" FontWeight="Bold" FontSize="13" Foreground="#1F2937"/>
+                                                <TextBlock Text="Asthma" FontSize="11" Foreground="#6B7280"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </ListBoxItem>
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                             </ListBox>
                         </ScrollViewer>
                     </StackPanel>
                 </Border>
 
+<<<<<<< HEAD
                 <!--Patient Details-->
                 <Border Grid.Column="1" Background="White" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="12" Padding="20">
                     <Grid RowDefinitions="Auto,*,Auto">
                         <!--Personal Info-->
                         <StackPanel Grid.Row="0" Margin="0,0,0,20" DataContext="{Binding SelectedPatient}">
+=======
+                <!--Details Panel-->
+                <Border Grid.Column="1" Background="White" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="12" Padding="20">
+                    <Grid RowDefinitions="Auto,*,Auto">
+                        
+                        <!--Personal Info-->
+                        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                             <TextBlock Text="Personal Info" FontSize="18" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,10" />
                             <Border Background="#F8FAFC" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="8" Padding="12">
                                 <StackPanel>
@@ -78,6 +167,7 @@
                                         <Border Width="80" Height="80" CornerRadius="40" ClipToBounds="True">
                                             <Image Source="avares://HospitalApp/Assets/patient-default.png" Stretch="UniformToFill" />
                                         </Border>
+<<<<<<< HEAD
                                         <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <UniformGrid Columns="2">
@@ -88,11 +178,24 @@
                                         <TextBlock Text="Address:" FontSize="14" /><TextBlock Text="{Binding Address}" FontSize="14" />
                                         <TextBlock Text="Contact:" FontSize="14" /><TextBlock Text="{Binding ContactNumber}" FontSize="14" />
                                         <TextBlock Text="Email:" FontSize="14" /><TextBlock Text="{Binding Email}" FontSize="14" />
+=======
+                                        <TextBlock Text="Juan Dela Cruz" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <UniformGrid Columns="2" Rows="0">
+                                        <TextBlock Text="Sex: Male" FontSize="14" />
+                                        <TextBlock Text="Age: 21" FontSize="14" />
+                                        <TextBlock Text="Birthday: 1978-02-09" FontSize="14" />
+                                        <TextBlock Text="Blood Type: O+" FontSize="14" />
+                                        <TextBlock Text="Address: Cebu City" FontSize="14" />
+                                        <TextBlock Text="Contact: 442-143-1432" FontSize="14" />
+                                        <TextBlock Text="Email: juandela@gmail.com" FontSize="14" />
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                                     </UniformGrid>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
 
+<<<<<<< HEAD
                         <!--Medical Info Tabs-->
                         <Grid Grid.Row="1" RowDefinitions="Auto,*" Margin="0,0,0,20" DataContext="{Binding SelectedPatient}">
                             <TextBlock Text="Medical Info" FontSize="18" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,10" />
@@ -106,10 +209,29 @@
                                                 <TextBlock Text="Sleep information not available" FontSize="16" Foreground="#2c3e50" />
                                                 <TextBlock Text="Smoking status not available" FontSize="16" Foreground="#2c3e50" />
                                                 <TextBlock Text="Alcohol consumption not available" FontSize="16" Foreground="#2c3e50" />
+=======
+                        <!--Medical Info-->
+                        <Grid Grid.Row="1" RowDefinitions="Auto,*" Margin="0,0,0,20">
+                            <TextBlock Text="Medical Info" FontSize="18" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,10" />
+                            <Border Grid.Row="1" Background="#F8FAFC" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="8" Padding="10">
+                                <TabControl>
+                                    <TabItem>
+                                        <TabItem.Header>
+                                            <TextBlock Text="Lifestyle" FontSize="18" FontWeight="SemiBold" />
+                                        </TabItem.Header>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="Diet: Vegetarian" FontSize="16" Foreground="#2c3e50" />
+                                                <TextBlock Text="Exercise: 3 times/week" FontSize="16" Foreground="#2c3e50" />
+                                                <TextBlock Text="Sleep: 7 hours" FontSize="16" Foreground="#2c3e50" />
+                                                <TextBlock Text="Smoker: Moderate" FontSize="16" Foreground="#2c3e50" />
+                                                <TextBlock Text="Alcohol: Occasional" FontSize="16" Foreground="#2c3e50" />
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                                             </StackPanel>
                                         </ScrollViewer>
                                     </TabItem>
 
+<<<<<<< HEAD
                                     <TabItem Header="Maintenance Medication">
                                         <ScrollViewer>
                                             <TextBlock Text="No medication information available" FontSize="16" Foreground="#2c3e50"/>
@@ -119,6 +241,31 @@
                                     <TabItem Header="Allergies">
                                         <ScrollViewer>
                                             <TextBlock Text="No allergy information available" FontSize="16" Foreground="#2c3e50"/>
+=======
+                                    <TabItem>
+                                        <TabItem.Header>
+                                            <TextBlock Text="Maintenance Medication" FontSize="18" FontWeight="SemiBold" />
+                                        </TabItem.Header>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="Guaifenesin" FontSize="16" Foreground="#2c3e50" />
+                                                <TextBlock Text="Aspirin 81mg" FontSize="16" Foreground="#2c3e50" />
+                                                <TextBlock Text="Calcium Docusate" FontSize="16" Foreground="#2c3e50" />
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </TabItem>
+
+                                    <TabItem>
+                                        <TabItem.Header>
+                                            <TextBlock Text="Allergies" FontSize="18" FontWeight="SemiBold" />
+                                        </TabItem.Header>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="Cat and Dog" FontSize="16" Foreground="#2c3e50" />
+                                                <TextBlock Text="Rodents" FontSize="16" Foreground="#2c3e50" />
+                                                <TextBlock Text="Beans and nuts" FontSize="16" Foreground="#2c3e50" />
+                                            </StackPanel>
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                                         </ScrollViewer>
                                     </TabItem>
                                 </TabControl>
@@ -130,16 +277,32 @@
                             <Button Content="Save Changes"
                                     Width="140" Height="40"
                                     Background="#28A745" Foreground="White"
+<<<<<<< HEAD
                                     Command="{Binding SaveChangesCommand}" />
+=======
+                                    FontSize="14" FontWeight="SemiBold"
+                                    BorderThickness="0" CornerRadius="8"
+                                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
 
                             <Button Content="Delete Patient"
                                     Width="140" Height="40"
                                     Background="#860111" Foreground="White"
+<<<<<<< HEAD
                                     Command="{Binding DeletePatientCommand}" />
+=======
+                                    FontSize="14" FontWeight="SemiBold"
+                                    BorderThickness="0" CornerRadius="8"
+                                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                         </StackPanel>
                     </Grid>
                 </Border>
             </Grid>
         </Grid>
     </ScrollViewer>
+<<<<<<< HEAD
 </UserControl>
+=======
+</UserControl>
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe

@@ -14,7 +14,6 @@ using Avalonia.Layout;
 using HospitalApp.Views;
 using Avalonia.Media;
 
-
 namespace HospitalApp.ViewModels
 {
     public partial class AppointmentsPageViewModel : ViewModelBase
@@ -27,12 +26,22 @@ namespace HospitalApp.ViewModels
 
         [ObservableProperty]
         private string appointmentSearchText;
+
+        [ObservableProperty]
+        private string missedAppointmentSearchText;
+
+        public ObservableCollection<Appointment> FilteredMissedAppointments { get; set; } = new();
+
+
         public ObservableCollection<Appointment> FilteredAppointments { get; set; } = new();
 
         private readonly ApiService _apiService;
         private readonly SignalRService _signalRService;
 
         public ObservableCollection<Appointment> UpcomingAppointments { get; set; } = new();
+
+        public ObservableCollection<Appointment> MissedAppointments { get; set; } = new();
+
         public ObservableCollection<Appointment> DoneAppointments { get; set; } = new();
 
         public ObservableCollection<Doctor> DoctorsList { get; set; } = new();
@@ -166,6 +175,13 @@ namespace HospitalApp.ViewModels
                     .OrderBy(a => a.AppointmentDateTime)
                     .ToList();
 
+                var missed = appointments
+                    .Where(a => a.Status == 0 && a.AppointmentDateTime < DateTime.Now)
+                    .OrderBy(a => a.AppointmentDateTime)
+                    .ToList();
+
+                
+
                 var done = appointments
                     .Where(a => a.Status == 1)
                     .OrderBy(a => a.AppointmentDateTime)
@@ -188,6 +204,17 @@ namespace HospitalApp.ViewModels
                     FilteredAppointments.Clear();
                     foreach (var apt in upcoming)
                         FilteredAppointments.Add(apt);
+                    
+                    MissedAppointments.Clear();
+                    foreach (var apt in missed)
+                    {
+                        MissedAppointments.Add(apt);
+                    }
+
+                    FilteredMissedAppointments.Clear();
+                    foreach (var apt in missed)
+                        FilteredMissedAppointments.Add(apt);
+                    
 
                 });
             }
@@ -665,9 +692,40 @@ namespace HospitalApp.ViewModels
                 FilteredAppointments.Add(apt);
         }
 
+        public void FilterMissedAppointments()
+        {
+            if (string.IsNullOrWhiteSpace(MissedAppointmentSearchText))
+            {
+                // No search input, show all upcoming appointments
+                FilteredMissedAppointments.Clear();
+                foreach (var apt in MissedAppointments)
+                    FilteredMissedAppointments.Add(apt);
+                return;
+            }
+
+            var searchText = MissedAppointmentSearchText.Trim().ToLower();
+
+            var filtered = MissedAppointments.Where(apt =>
+                apt.PatientName?.ToLower().Contains(searchText) == true ||
+                apt.AppointmentType?.ToLower().Contains(searchText) == true ||
+                apt.AssignedDoctor?.Name?.ToLower().Contains(searchText) == true
+            );
+
+            FilteredMissedAppointments.Clear();
+            foreach (var apt in filtered)
+                FilteredMissedAppointments.Add(apt);
+        }
+            
+        
+
         partial void OnAppointmentSearchTextChanged(string value)
         {
             FilterAppointments();
+        }
+
+        partial void OnMissedAppointmentSearchTextChanged(string value)
+        {
+            FilterMissedAppointments();
         }
 
     }
