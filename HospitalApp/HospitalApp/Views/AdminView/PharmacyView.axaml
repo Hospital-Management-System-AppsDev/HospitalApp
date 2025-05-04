@@ -178,15 +178,9 @@
                     <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                         <!-- Price -->
                         <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="Price:                ₱" FontWeight="SemiBold" Margin="0,0,10,5" VerticalAlignment="Center"/>
-<<<<<<< HEAD
-                        <TextBox Grid.Row="0" Grid.Column="1" 
-                                x:Name="TextBox"	
-                                Text="{Binding SelectedMedicine.Price, Mode=TwoWay, StringFormat='0.00'}" 
-=======
                         <NumericUpDown x:Name="priceInput"
                                 Grid.Row="0" Grid.Column="1" 
                                 Value="{Binding SelectedMedicine.Price, Mode=TwoWay, StringFormat='0.00'}" 
->>>>>>> 1236877854defc891fee64cb03163c541b675ffe
                                 Margin="0,0,0,5" 
                                 Classes="search"
                                 Foreground="Black"
