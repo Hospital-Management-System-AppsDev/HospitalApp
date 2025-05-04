@@ -153,16 +153,6 @@
                 </ScrollViewer>
             </TabItem>
 
-<<<<<<< HEAD
-            <TabItem Header="Create Appointment" FontSize="20" Foreground="#3E8DC0">
-                <Border Background="#D4E6F1" CornerRadius="20">
-                    <StackPanel Orientation="Horizontal" Spacing="5">
-                        <StackPanel Spacing="5" Margin="35">
-                            <TextBlock Margin="0 5" Text = "Patient ID" FontFamily="Rubik" FontSize="20" FontWeight="SemiBold" Foreground="#006CB5"/>
-                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBox x:Name="PatientID" Text="{Binding PId, Mode=TwoWay}" Watermark="Patient ID" Padding="10" FontSize="15"/>
-                                <TextBlock Text="{Binding ErrorMsgFind}" IsVisible="{Binding ErrorMsgFindVisible}" Foreground="red"/>
-=======
             <TabItem Header="Missed Appointments" FontSize="20" Foreground="#3E8DC0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <Border Margin="20" HorizontalAlignment="Stretch">
@@ -212,7 +202,6 @@
                                     <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
                                     <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="Auto"/>
                                     <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="Auto"/>
->>>>>>> 1236877854defc891fee64cb03163c541b675ffe
 
                                 <DataGridTemplateColumn Header="Actions" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
