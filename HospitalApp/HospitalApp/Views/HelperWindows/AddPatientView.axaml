@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="2000"
+             x:Class="HospitalApp.Views.HelperWindows.AddPatientView"
+             d:DataContext="{d:DesignInstance vm:AddPatientViewModel}"
+             x:DataType="vm:AddPatientViewModel">
+    
+    <UserControl.Styles>
+        <!-- TextBox Style -->
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#9BD8F6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#4CA6FF"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+        
+        <!-- TextBlock Style -->
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+        
+        <!-- Button Style -->
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#4CA6FF"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+    
+    <Border Background="#E6F2FF" Padding="20">
+        <StackPanel>
+            <TextBlock Text="Add New Patient" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+            <TextBlock Text="Patient Name"/>
+            <TextBox Text="{Binding PName}" Watermark="Enter Name"/>
+            
+            <TextBlock Text="Patient Sex"/>
+            <TextBox Text="{Binding PSex}" Watermark="Enter Sex"/>
+            
+            <TextBlock Text="Patient Address"/>
+            <TextBox Text="{Binding PAddress}" Watermark="Enter Address"/>
+            
+            <TextBlock Text="Patient Blood Type"/>
+            <TextBox Text="{Binding PBloodType}" Watermark="Enter type"/>
+
+            <TextBlock Text="Patient Email"/>
+            <TextBox Text="{Binding PEmail}" Watermark="Enter Email"/>
+
+            <TextBlock Text="Patient Contact Number"/>
+            <TextBox Text="{Binding PContactNumber}" Watermark="Enter Contact"/>
+
+            <TextBlock Text="Patient Birthday"/>
+            <CalendarDatePicker SelectedDate="{Binding PBday}" Watermark="Select Patient Birthday"/>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Cancel" Command="{Binding CancelCommand}"/>
+                <Button Content="Save Medicine" Command="{Binding SaveCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>
