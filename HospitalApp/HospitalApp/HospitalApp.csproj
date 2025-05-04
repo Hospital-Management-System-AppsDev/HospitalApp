@@ -6,6 +6,7 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <ApplicationIcon>Assets/logo.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,10 +24,8 @@
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.2.1">
-            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
-            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.2.6" />
+
         <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.6" />
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />

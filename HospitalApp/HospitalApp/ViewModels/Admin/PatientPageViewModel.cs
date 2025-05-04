@@ -1,4 +1,5 @@
 ﻿using System;
+<<<<<<< HEAD
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,13 @@ using CommunityToolkit.Mvvm.Input;
 using HospitalApp.Models;
 
 namespace HospitalApp.ViewModels
+=======
+using Avalonia;
+
+namespace HospitalApp.ViewModels;
+
+public partial class PatientPageViewModel:ViewModelBase
+>>>>>>> 1236877854defc891fee64cb03163c541b675ffe
 {
     public partial class PatientPageViewModel : ViewModelBase
     {

@@ -37,13 +37,7 @@ namespace HospitalApp.ViewModels
         private string searchText;
 
         [ObservableProperty]
-        private string qToAdd = "0";
-        private int _quantityToAdd = 0; // Change from 0 to 1 to match minimum
-        public int QuantityToAdd
-        {
-            get => _quantityToAdd;
-            set => SetProperty(ref _quantityToAdd, value);
-        }
+        private int quantityToAdd = 0;
 
         [ObservableProperty]
         private bool isEditing;
@@ -91,44 +85,6 @@ namespace HospitalApp.ViewModels
             var medicines = await _apiService.GetPharmacy();
             Medicines.Clear();
             Medicines = new ObservableCollection<Medicines>(medicines);
-        }
-
-        partial void OnQToAddChanged(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                ErrorMessage = "Error: Please enter a valid number";
-                return;
-            }
-
-            if (value.All(char.IsDigit))
-            {
-                int quantity = int.Parse(value);
-                if (SelectedMedicine != null)
-                {
-                    if (quantity > SelectedMedicine.Stocks)
-                    {
-                        ErrorMessage = $"Error: Quantity ({quantity}) exceeds available stock ({SelectedMedicine.Stocks})";
-                        QuantityToAdd = quantity;
-                    }
-                    else if (quantity <= 0)
-                    {
-                        ErrorMessage = "Error: Quantity must be greater than 0";
-                        QuantityToAdd = quantity;
-                    }
-                    else
-                    {
-                        ErrorMessage = string.Empty;
-                        QuantityToAdd = quantity;
-                    }
-                }
-            }
-            else
-            {
-                ErrorMessage = "Error: Please enter only numbers";
-                QToAdd = "0";
-                QuantityToAdd = 0;
-            }
         }
 
         public void FilterMedicines()
@@ -408,30 +364,24 @@ namespace HospitalApp.ViewModels
             }
         }
 
-        [RelayCommand]
-        public void DecrementQuantity()
+        private void HandleKeyDown(object sender, KeyEventArgs e)
         {
-            if (QuantityToAdd > 1)
-            {
-                QuantityToAdd--;
-                QToAdd = QuantityToAdd.ToString();
-            }
-        }
+            // Allow control keys (backspace, delete, etc.)
+            if (e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Left || e.Key == Key.Right)
+                return;
 
-        [RelayCommand]
-        public void IncrementQuantity()
-        {
-            if (QuantityToAdd < SelectedMedicine.Stocks)
+            // Allow decimal point only if there isn't already one in the text
+            if (e.Key == Key.Decimal || e.Key == Key.OemPeriod)
             {
-                QuantityToAdd++;
-                QToAdd = QuantityToAdd.ToString();
+                if (sender is TextBox textBox && textBox.Text.Contains('.'))
+                {
+                    e.Handled = true;
+                }
+                return;
             }
-        }
 
-        private void QuantityTextBox_KeyDown(object? sender, KeyEventArgs e)
-        {
-            // Example: allow digits and backspace only
-            if (!(e.Key >= Key.D0 && e.Key <= Key.D9 || e.Key == Key.Back || e.Key == Key.Decimal))
+            // Only allow digits
+            if (!(e.Key >= Key.D0 && e.Key <= Key.D9) && !(e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
             {
                 e.Handled = true;
             }

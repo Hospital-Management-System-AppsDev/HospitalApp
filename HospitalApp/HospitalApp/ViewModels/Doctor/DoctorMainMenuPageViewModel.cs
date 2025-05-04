@@ -47,23 +47,28 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
     }
     private async void LoadViewModelAsync(ListItemTemplate value)
     {
-    ViewModelBase? instance = value.ModelType switch
-    {
-        Type t when t == typeof(DoctorDashboardPageViewModel) => new DoctorDashboardPageViewModel(_apiService, _signalRService, _mainViewModel),
-        Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(_apiService, _signalRService),
-        Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
-        _ => null
-    };
+        ViewModelBase? instance = value.ModelType switch
+        {
+            Type t when t == typeof(DoctorDashboardPageViewModel) => new DoctorDashboardPageViewModel(_apiService, _signalRService, _mainViewModel),
+            Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(_apiService, _signalRService),
+            Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
+            _ => null
+        };
 
-    if (instance is AppointmentsPageViewModel apptVM)
-    {
-        await apptVM.LoadDataAsync();
-    }
+        if (instance is AppointmentsPageViewModel apptVM)
+        {
+            await apptVM.LoadDataAsync();
+        }
+        else if (instance is DoctorDashboardPageViewModel dashboardVM)
+        {
+            // If we're returning to the dashboard, refresh the charts
+            await dashboardVM.RefreshChartsAsync();
+        }
 
-    if (instance is not null)
-    {
-        CurrentPage = instance;
-    }
+        if (instance is not null)
+        {
+            CurrentPage = instance;
+        }
     }
 
 
@@ -79,7 +84,7 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
     {
         IsPaneOpen = !IsPaneOpen;
     }
-    
+
     [RelayCommand]
     private async Task Logout()
     {

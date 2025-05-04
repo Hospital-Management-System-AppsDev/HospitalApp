@@ -36,7 +36,7 @@
             <Setter Property="Background" Value="#4CA6FF"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
-
+        
         <Style Selector="TextBox:focus">
             <Setter Property="Background" Value="#009BFF"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -57,7 +57,7 @@
             <Setter Property="Background" Value="#9BD8F6"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
-
+        
         <!-- Card Container Style -->
         <Style Selector="Border.card">
             <Setter Property="Background" Value="White"/>
@@ -71,7 +71,7 @@
             <Setter Property="Padding" Value="10"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
-
+        
         <!-- Button Style for action buttons -->
         <Style Selector="Button.action">
             <Setter Property="Background" Value="#4CA6FF"/>
@@ -81,7 +81,7 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
-
+        
         <!-- Hover effect for action buttons -->
         <Style Selector="Button.action:pointerover">
             <Setter Property="Background" Value="#6BB8FF"/>
@@ -110,11 +110,11 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-
+            
             <TextBlock Grid.Column="0" 
                        Text="Doctors"
                        Classes="header"/>
-
+            
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 <!-- command bind -->
                 <Button Classes="action" Command="{Binding EditDoctorCommand}" IsEnabled="{Binding SelectedDoctor, Converter={x:Static ObjectConverters.IsNotNull}}">
@@ -132,7 +132,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
+            
             <!-- Left side - Doctor List -->
             <Border Grid.Column="0" 
                     Classes="card" 
@@ -142,7 +142,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-
+                    
                     <TextBox Grid.Row="0" 
                              Classes="search"
                              Watermark="Search Doctor"
@@ -165,7 +165,7 @@
                     </ListBox>
                 </Grid>
             </Border>
-
+            
             <!-- Right side - Doctor Details (Expanded) -->
             <Border Grid.Column="1" 
                     Classes="card" 
@@ -176,19 +176,19 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
+                    
                     <TextBlock Grid.Row="0" Text="Doctor Details" Foreground="Black" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
-
+                    
                     <!-- Doctor Details Content -->
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <TextBlock Text="{Binding SelectedDoctor.Name}" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Foreground="Black"/>
-
+                            
                             <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="0,0,0,20">
                                 <!-- ID -->
                                 <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="ID:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedDoctor.Id}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
-
+                                
                                 <!-- NAME -->
                                 <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Black" Text="Name:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedDoctor.Name}" IsEnabled="{Binding IsEditing}" Margin="0,0,0,15" Foreground="Black"/>
@@ -212,7 +212,7 @@
                                 <!-- Username -->
                                 <TextBlock Grid.Row="6" Grid.Column="0" Foreground="Black" Text="Username:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
                                 <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SelectedDoctor.Username}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
-a
+                                
                                 <!-- Sex -->
                                 <TextBlock Grid.Row="7" Grid.Column="0" Foreground="Black" Text="Sex:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
                                 <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding SelectedDoctor.Sex}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
@@ -220,7 +220,7 @@ a
                                 <!-- Age -->
                                 <TextBlock Grid.Row="8" Grid.Column="0" Foreground="Black" Text="Age:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
                                 <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding SelectedDoctor.Age}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
-
+                                
                                 <!-- Birthday -->
                                 <TextBlock Grid.Row="9" Grid.Column="0" Foreground="Black" Text="Birthday:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
                                 <CalendarDatePicker Grid.Row="9" Grid.Column="1" SelectedDate="{Binding SelectedDoctor.Birthday}" IsEnabled="{Binding IsEditing}" Margin="0,0,0,15"/>
