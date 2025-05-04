@@ -1,15 +1,11 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Avalonia.Input;
-using System.Text.RegularExpressions;
-using System;
 
-namespace HospitalApp.Views
+namespace HospitalApp.Views.HelperWindows
 {
-    public partial class PharmacyView : UserControl
+    public partial class AddPatientView : UserControl
     {
-        public PharmacyView()
+        public AddPatientView()
         {
             InitializeComponent();
         }
@@ -17,7 +13,6 @@ namespace HospitalApp.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            
         }
     }
 }
