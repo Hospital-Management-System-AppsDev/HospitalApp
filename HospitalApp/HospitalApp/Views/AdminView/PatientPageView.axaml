@@ -40,6 +40,7 @@
                               BorderThickness="0" CornerRadius="8"
                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                               HorizontalAlignment="Right"
+                              Command="{Binding AddPatientCommand}"
                         />
 
                   </StackPanel>
@@ -61,13 +62,14 @@
                                          BorderThickness="0"
                                          FontSize="14"
                                          VerticalContentAlignment="Center"
-                                         Margin="5,0"/>
+                                         Margin="5,0"
+                                         Text="{Binding SearchText, Mode=TwoWay}"/>
                             </DockPanel>
                         </Border>
 
                         <!--Patient List-->
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <ListBox BorderThickness="0" Background="Transparent" Margin="0" Padding="0" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" ItemsSource="{Binding Patients}">
+                            <ListBox BorderThickness="0" Background="Transparent" Margin="0" Padding="0" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" ItemsSource="{Binding FilteredPatients}">
                               <ListBox.Styles>
                                             <!-- Base Item Style -->
                                             <Style Selector="ListBoxItem">

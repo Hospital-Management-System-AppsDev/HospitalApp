@@ -2,9 +2,9 @@ using System;
 using System.Windows.Input;
 using Avalonia.Controls;
 using HospitalApp.Models;
-using Avalonia;
-using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+using HospitalApp.ViewModels.Helper;
 
 namespace HospitalApp.ViewModels
 {
@@ -99,8 +99,8 @@ namespace HospitalApp.ViewModels
         public AddDoctorViewModel()
         {
             _doctorBirthday = DateTime.Now;
-            SaveCommand = new RelayCommand(() => Save());
-            CancelCommand = new RelayCommand(() => Cancel());
+            SaveCommand = new AsyncRelayCommand(SaveAsync);
+            CancelCommand = new RelayCommand(Cancel);
         }
 
         public void SetWindow(Window window)
@@ -108,7 +108,7 @@ namespace HospitalApp.ViewModels
             _addDoctorWindow = window;
         }
 
-        private void Save()
+        private async Task SaveAsync()
         {
             if (string.IsNullOrEmpty(DoctorName) ||
                 string.IsNullOrEmpty(DoctorEmail) ||
@@ -118,27 +118,49 @@ namespace HospitalApp.ViewModels
                 string.IsNullOrEmpty(DoctorSpecialization) ||
                 _doctorBirthday == default)
             {
-                Console.WriteLine("All fields are required");
+                // Show error popup if fields are empty
+                await PopupWindow.ShowConfirmation(
+                    _addDoctorWindow,
+                    "Validation Error",
+                    "All fields are required. Please fill in all the information.",
+                    "OK",
+                    null); // Pass null to hide the cancel button
+                
                 return;
             }
 
-            var newDoctor = new Doctor
-            {
-                Name = DoctorName,
-                Email = DoctorEmail,
-                Username = DoctorUsername,
-                Sex = DoctorGender,
-                ContactNumber = DoctorContactNumber,
-                specialization = DoctorSpecialization,
-                is_available = 1,
-                Birthday = _doctorBirthday
-            };
+            // Show confirmation popup
+            bool result = await PopupWindow.ShowConfirmation(
+                _addDoctorWindow,
+                "Confirm Save",
+                $"Are you sure you want to save this doctor information for {DoctorName}?",
+                "Save",
+                "Cancel");
 
-            _addDoctorWindow?.Close(newDoctor);
+            if (result)
+            {
+                // User confirmed, create and save the doctor
+                var newDoctor = new Doctor
+                {
+                    Name = DoctorName,
+                    Email = DoctorEmail,
+                    Username = DoctorUsername,
+                    Sex = DoctorGender,
+                    ContactNumber = DoctorContactNumber,
+                    specialization = DoctorSpecialization,
+                    is_available = 1,
+                    Birthday = _doctorBirthday
+                };
+
+                _addDoctorWindow?.Close(newDoctor);
+            }
+            // If result is false, do nothing and let the user continue editing
         }
 
         private void Cancel()
         {
+            // Optionally, we could show a confirmation dialog here too
+            // But for simplicity, we'll just close the window
             _addDoctorWindow?.Close(null);
         }
     }
