@@ -2,10 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="2000"
              x:Class="HospitalApp.Views.HelperWindows.AddPatientView"
              d:DataContext="{d:DesignInstance vm:AddPatientViewModel}"
+             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              x:DataType="vm:AddPatientViewModel">
     
     <UserControl.Styles>
@@ -38,37 +38,198 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+        
+        <!-- ComboBox Style -->
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#9BD8F6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#4CA6FF"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <!-- CalendarDatePicker Style -->
+        <Style Selector="CalendarDatePicker">
+            <Setter Property="Background" Value="#9BD8F6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#4CA6FF"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
     </UserControl.Styles>
     
+    <!-- Main Border -->
     <Border Background="#E6F2FF" Padding="20">
-        <StackPanel>
-            <TextBlock Text="Add New Patient" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+        <Grid>
+            <!-- Patient Information Panel -->
+            <StackPanel IsVisible="{Binding IsPatientInfoPanelVisible}">
+                <TextBlock Text="Patient Information" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
                 
-            <TextBlock Text="Patient Name"/>
-            <TextBox Text="{Binding PName}" Watermark="Enter Name"/>
-            
-            <TextBlock Text="Patient Sex"/>
-            <TextBox Text="{Binding PSex}" Watermark="Enter Sex"/>
-            
-            <TextBlock Text="Patient Address"/>
-            <TextBox Text="{Binding PAddress}" Watermark="Enter Address"/>
-            
-            <TextBlock Text="Patient Blood Type"/>
-            <TextBox Text="{Binding PBloodType}" Watermark="Enter type"/>
-
-            <TextBlock Text="Patient Email"/>
-            <TextBox Text="{Binding PEmail}" Watermark="Enter Email"/>
-
-            <TextBlock Text="Patient Contact Number"/>
-            <TextBox Text="{Binding PContactNumber}" Watermark="Enter Contact"/>
-
-            <TextBlock Text="Patient Birthday"/>
-            <CalendarDatePicker SelectedDate="{Binding PBday}" Watermark="Select Patient Birthday"/>
-            
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                <Button Content="Cancel" Command="{Binding CancelCommand}"/>
-                <Button Content="Save Medicine" Command="{Binding SaveCommand}"/>
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="0,0,0,20">
+                    <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding PatientName}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Email:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PatientEmail}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Birthday:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <CalendarDatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding PatientBday}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Sex:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding SexOptions}" SelectedItem="{Binding PatientSex}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Address:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding PatientAddress}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Blood Type:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding BloodTypeOptions}" SelectedItem="{Binding PatientBloodType}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Contact Number:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding PatientContactNumber}" Width="300" HorizontalAlignment="Left"/>
+                </Grid>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5"/>
+                    <Button Content="Next" Command="{Binding NextPanelCommand}" Margin="5"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+            
+            <!-- Lifestyle Panel -->
+            <StackPanel IsVisible="{Binding IsLifestylePanelVisible}">
+                <TextBlock Text="Lifestyle Information" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="0,0,0,20">
+                    <TextBlock Text="Diet:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding DietOptions}" SelectedItem="{Binding Diet}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Exercise:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ExerciseOptions}" SelectedItem="{Binding Exercise}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Sleep:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding SleepOptions}" SelectedItem="{Binding Sleep}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Smoking:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding SmokingOptions}" SelectedItem="{Binding Smoking}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Alcohol:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding AlcoholOptions}" SelectedItem="{Binding Alcohol}" Width="300" HorizontalAlignment="Left"/>
+                </Grid>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Back" Command="{Binding PreviousPanelCommand}" Margin="5"/>
+                    <Button Content="Next" Command="{Binding NextPanelCommand}" Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+            
+            <!-- Medication Panel -->
+            <StackPanel IsVisible="{Binding IsMedicationPanelVisible}">
+                <TextBlock Text="Medication Information" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <TextBlock Text="List all medicines and supplements you take:"/>
+                
+                <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" Margin="0,10,0,10">
+                    <TextBlock Text="Medication Name" Grid.Column="0" FontWeight="SemiBold"/>
+                    <TextBlock Text="Dosage" Grid.Column="1" FontWeight="SemiBold"/>
+                    <TextBlock Text="Frequency" Grid.Column="2" FontWeight="SemiBold"/>
+                    
+                    <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding NewMedicationName}" Margin="0,5,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewMedicationDosage}" Margin="5,5,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding NewMedicationFrequency}" Margin="5,5,0,0"/>
+                </Grid>
+                
+                <Button Content="Add Medication" Command="{Binding AddMedicationCommand}" HorizontalAlignment="Right" Margin="0,0,0,10"/>
+                
+                <ListBox ItemsSource="{Binding Medications}" 
+                         SelectedItem="{Binding SelectedMedication}"
+                         Height="200" 
+                         Margin="0,0,0,10">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,*,*">
+                                <TextBlock Text="{Binding Name}" Grid.Column="0" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding Dosage}" Grid.Column="1" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding Frequency}" Grid.Column="2"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+                <Button Content="Remove Selected Medication" Command="{Binding RemoveMedicationCommand}" HorizontalAlignment="Right" Margin="0,0,0,20"/>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Back" Command="{Binding PreviousPanelCommand}" Margin="5"/>
+                    <Button Content="Next" Command="{Binding NextPanelCommand}" Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+            
+            <!-- Allergies Panel -->
+            <StackPanel IsVisible="{Binding IsAllergiesPanelVisible}">
+                <TextBlock Text="Allergies Information" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto" Margin="0,0,0,20">
+                    <!-- Medication Allergies -->
+                    <TextBlock Text="Are you allergic to any medications?" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                        <RadioButton Content="Yes" IsChecked="{Binding HasMedicationAllergies}" GroupName="MedAllergy" Margin="0,0,10,0"/>
+                        <RadioButton Content="No" IsChecked="{Binding !HasMedicationAllergies}" GroupName="MedAllergy"/>
+                    </StackPanel>
+                    
+                    <TextBox Text="{Binding MedicationAllergies}" 
+                             Watermark="Please list medication allergies"
+                             IsEnabled="{Binding HasMedicationAllergies}"
+                             Grid.Row="1" Grid.ColumnSpan="2" 
+                             Margin="0,0,0,20"/>
+                    
+                    <!-- Latex Allergies -->
+                    <TextBlock Text="Are you allergic to latex?" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+                        <RadioButton Content="Yes" IsChecked="{Binding HasLatexAllergy}" GroupName="LatexAllergy" Margin="0,0,10,0"/>
+                        <RadioButton Content="No" IsChecked="{Binding !HasLatexAllergy}" GroupName="LatexAllergy"/>
+                    </StackPanel>
+                    
+                    <!-- Food Allergies -->
+                    <TextBlock Text="Are you allergic to any foods?" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+                        <RadioButton Content="Yes" IsChecked="{Binding HasFoodAllergies}" GroupName="FoodAllergy" Margin="0,0,10,0"/>
+                        <RadioButton Content="No" IsChecked="{Binding !HasFoodAllergies}" GroupName="FoodAllergy"/>
+                    </StackPanel>
+                    
+                    <TextBox Text="{Binding FoodAllergies}" 
+                             Watermark="Please list food allergies"
+                             IsEnabled="{Binding HasFoodAllergies}"
+                             Grid.Row="5" Grid.ColumnSpan="2" 
+                             Margin="0,0,0,10"/>
+                </Grid>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Back" Command="{Binding PreviousPanelCommand}" Margin="5"/>
+                    <Button Content="Next" Command="{Binding NextPanelCommand}" Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+            
+            <!-- Conditions Panel -->
+            <StackPanel IsVisible="{Binding IsConditionPanelVisible}">
+                <TextBlock Text="Medical Conditions" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <TextBlock Text="Enter any medical conditions (separate multiple conditions with commas):"/>
+                <TextBox Text="{Binding Conditions}" 
+                         Watermark="Press enter for multiple conditions"
+                         Height="100"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Margin="0,0,0,20"/>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Back" Command="{Binding PreviousPanelCommand}" Margin="5"/>
+                    <Button Content="Finish" Command="{Binding FinishCommand}" Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
     </Border>
 </UserControl>

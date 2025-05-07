@@ -338,6 +338,37 @@ namespace HospitalApp.ViewModels
 
             try
             {
+                // Get the parent window
+                Window parentWindow = null;
+                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    parentWindow = desktop.MainWindow;
+                }
+
+                if (parentWindow == null)
+                {
+                    await ShowMessageDialog("Error", "Parent window not available");
+                    return;
+                }
+
+                // Create and show the CustomerEmailView dialog
+                var emailViewModel = new CustomerEmailViewModel();
+                var emailView = new CustomerEmailView
+                {
+                    DataContext = emailViewModel
+                };
+                emailViewModel.SetWindow(emailView);
+
+                // Show the dialog and wait for the result
+                var emailResult = await emailView.ShowDialog<string>(parentWindow);
+
+                // If the user cancels or doesn't provide an email, abort checkout
+                if (string.IsNullOrEmpty(emailResult))
+                {
+                    return;
+                }
+
+                // Proceed with existing checkout logic
                 foreach (var item in CartItems)
                 {
                     var success = await _apiService.UpdateMedicine(item.Medicine);
