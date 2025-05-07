@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:HospitalApp.ViewModels"
+        x:Class="HospitalApp.Views.HelperWindows.CustomerEmailView"
+        x:DataType="vm:CustomerEmailViewModel"
+        Title="Enter Customer Email" Height="200" Width="300"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="Customer Email:" FontSize="14" Margin="0,0,0,5"/>
+        
+        <TextBox Grid.Row="1" 
+                 Text="{Binding CustomerEmail}" 
+                 Watermark="Enter Customer Email" 
+                 FontSize="14" 
+                 Margin="0,0,0,5"/>
+        
+        <!-- Error message display -->
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding ErrorMessage}" 
+                   Foreground="Red"
+                   FontSize="12"
+                   IsVisible="{Binding HasErrors}"
+                   Margin="0,0,0,10"/>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+            <Button Content="Cancel" 
+                    Command="{Binding CancelCommand}" 
+                    Padding="15,10"/>
+            <Button Content="Submit" 
+                    Command="{Binding SubmitCommand}" 
+                    Padding="15,10"/>
+        </StackPanel>
+    </Grid>
+</Window>
