@@ -60,10 +60,9 @@ public partial class MainMenuViewModel : ViewModelBase
         {
             Type t when t == typeof(DashboardPageViewModel) => new DashboardPageViewModel(_apiService, _signalRService),
             Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(_apiService, _signalRService),
-            Type t when t == typeof(DoctorPageViewModel) => new DoctorPageViewModel(),
+            Type t when t == typeof(DoctorPageViewModel) => new DoctorPageViewModel(_apiService, _signalRService),
             Type t when t == typeof(PatientPageViewModel) => new PatientPageViewModel(_apiService, _signalRService),
             Type t when t == typeof(PharmacyViewModel) => new PharmacyViewModel(_apiService, _signalRService),
-            Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
             _ => null
         };
 
@@ -82,12 +81,11 @@ public partial class MainMenuViewModel : ViewModelBase
 
     public ObservableCollection<ListItemTemplate> Items { get; } = new()
     {
-        new ListItemTemplate(typeof(DashboardPageViewModel), "Dashboard"),
-        new ListItemTemplate(typeof(AppointmentsPageViewModel), "Appointments"),
-        new ListItemTemplate(typeof(DoctorPageViewModel), "Doctor"),
-        new ListItemTemplate(typeof(PatientPageViewModel), "Patient"),
-        new ListItemTemplate(typeof(PharmacyViewModel), "Pharmacy"),
-        new ListItemTemplate(typeof(SettingsPageViewModel), "Settings"),
+        new ListItemTemplate(typeof(DashboardPageViewModel), "Dashboard", "Dashboard"),
+        new ListItemTemplate(typeof(AppointmentsPageViewModel), "Appointments", "Appointments"),
+        new ListItemTemplate(typeof(DoctorPageViewModel), "Doctor", "Doctor"),
+        new ListItemTemplate(typeof(PatientPageViewModel), "Patient", "Patient"),
+        new ListItemTemplate(typeof(PharmacyViewModel), "Pharmacy", "Pharmacy"),
     };
 
     [RelayCommand]
@@ -161,10 +159,10 @@ public partial class MainMenuViewModel : ViewModelBase
 
 public class ListItemTemplate
 {
-    public ListItemTemplate(Type type, string iconKey)
+    public ListItemTemplate(Type type, string iconKey, string label)
     {
         ModelType = type;
-        Label = type.Name.Replace("PageViewModel", string.Empty);
+        Label = label;
 
         Application.Current!.TryFindResource(iconKey, out var res);
         ListItemIcon = (StreamGeometry)res!;

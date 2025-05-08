@@ -27,7 +27,7 @@ public partial class AppointmentDetailsViewModel : ViewModelBase
     private bool isLoading;
     public Window ParentWindow { get; set; }
 
-    public Appointment Appointment { get; }
+    public Appointment Appointment { get; set; }
 
     private readonly ApiService _apiService;
     private readonly SignalRService _signalRService;
@@ -139,7 +139,9 @@ public partial class AppointmentDetailsViewModel : ViewModelBase
             Address = response.Address,
             BloodType = response.BloodType,
             Email = response.Email,
-            ContactNumber = response.ContactNumber
+            ContactNumber = response.ContactNumber,
+            ProfilePicture = response.ProfilePicture,
+            PatientMedicalInfo = response.PatientMedicalInfo
         };
 
         Console.WriteLine("Patient Details:");
@@ -152,6 +154,12 @@ public partial class AppointmentDetailsViewModel : ViewModelBase
         Console.WriteLine($"Blood Type: {CurrentPatient.BloodType}");
         Console.WriteLine($"Email: {CurrentPatient.Email}");
         Console.WriteLine($"Contact Number: {CurrentPatient.ContactNumber}");
+        Console.WriteLine($"Medical Allergies: {CurrentPatient.PatientMedicalInfo.medicalAllergies}");
+        Console.WriteLine($"Latex Allergy: {CurrentPatient.PatientMedicalInfo.latexAllergy}");
+        Console.WriteLine($"Food Allergy: {CurrentPatient.PatientMedicalInfo.foodAllergy}");
+        Console.WriteLine($"Diet: {CurrentPatient.PatientMedicalInfo.diet}");
+        Console.WriteLine($"Exercise: {CurrentPatient.PatientMedicalInfo.exercise}");
+        
     }
 
     [RelayCommand]
@@ -220,6 +228,13 @@ public partial class AppointmentDetailsViewModel : ViewModelBase
                 diagnosisPath = diagnosis
             };
 
+            string jsonRecord = System.Text.Json.JsonSerializer.Serialize(record, new System.Text.Json.JsonSerializerOptions 
+            { 
+                WriteIndented = true 
+            });
+            Console.WriteLine("Sending record to API:");
+            Console.WriteLine(jsonRecord);
+            Console.WriteLine();
             await _apiService.AddRecordAsync(record);
             await _apiService.UpdateAppointmentStatus(Appointment.PkId);
             await EmailService.SendEmail(mc, prescription, Appointment, CurrentPatient);

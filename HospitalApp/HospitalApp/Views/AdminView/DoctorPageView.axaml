@@ -4,9 +4,14 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
             xmlns:models="clr-namespace:HospitalApp.Models"
+            xmlns:converters="clr-namespace:HospitalApp.Converters"
             mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
             x:Class="HospitalApp.Views.DoctorPageView"
             x:DataType="vm:DoctorPageViewModel">
+
+    <UserControl.Resources>
+        <converters:AvailabilityToColorConverter x:Key="AvailabilityToColorConverter"/>
+    </UserControl.Resources>
 
     <UserControl.Styles>
         <!-- TextBox Style -->
@@ -117,11 +122,11 @@
             
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 <!-- command bind -->
-                <Button Classes="action" Command="{Binding EditDoctorCommand}" IsEnabled="{Binding SelectedDoctor, Converter={x:Static ObjectConverters.IsNotNull}}">
-                    <TextBlock Text="Edit Doctor" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Classes="action" Command="{Binding EditDoctorCommand}" IsEnabled="{Binding SelectedDoctor, Converter={x:Static ObjectConverters.IsNotNull}}" IsVisible="{Binding !IsEditing}" Background="Green">
+                    <TextBlock Text="Edit Doctor" Foreground="White" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Button>
                 <Button Classes="action" Command="{Binding AddDoctorCommand}">
-                    <TextBlock Text="Add Doctor" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="Add Doctor" Foreground="White" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
         </Grid>
@@ -159,7 +164,12 @@
                              Foreground="Black">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="models:Doctor">
-                                <TextBlock Text="{Binding Name}" FontSize="14" Foreground="Black"/>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Ellipse Width="10" Height="10" 
+                                             Fill="{Binding is_available, Converter={StaticResource AvailabilityToColorConverter}}"
+                                             VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Name}" FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -187,11 +197,7 @@
                             <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="0,0,0,20">
                                 <!-- ID -->
                                 <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" Text="ID:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedDoctor.Id}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
-                                
-                                <!-- NAME -->
-                                <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Black" Text="Name:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedDoctor.Name}" IsEnabled="{Binding IsEditing}" Margin="0,0,0,15" Foreground="Black"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedDoctor.Id}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black" IsEnabled="False"/>
 
                                 <!-- Email -->
                                 <TextBlock Grid.Row="2" Grid.Column="0" Foreground="Black" Text="Email:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
@@ -203,23 +209,23 @@
 
                                 <!-- Specialization -->
                                 <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Black" Text="Specialization:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SelectedDoctor.specialization}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SelectedDoctor.specialization}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black" IsEnabled="False"/>
 
                                 <!-- Is Available -->
                                 <TextBlock Grid.Row="5" Grid.Column="0" Foreground="Black" Text="Is Available:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding SelectedDoctor.is_available}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
-
-                                <!-- Username -->
-                                <TextBlock Grid.Row="6" Grid.Column="0" Foreground="Black" Text="Username:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SelectedDoctor.Username}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
+                                <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Spacing="10" Margin="0,0,0,15">
+                                    <Ellipse Width="12" Height="12" 
+                                             Fill="{Binding SelectedDoctor.is_available, Converter={StaticResource AvailabilityToColorConverter}}"
+                                             VerticalAlignment="Center"/>
+                                </StackPanel>
                                 
                                 <!-- Sex -->
                                 <TextBlock Grid.Row="7" Grid.Column="0" Foreground="Black" Text="Sex:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding SelectedDoctor.Sex}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
+                                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding SelectedDoctor.Sex}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black" IsEnabled="False"/>
 
                                 <!-- Age -->
                                 <TextBlock Grid.Row="8" Grid.Column="0" Foreground="Black" Text="Age:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding SelectedDoctor.Age}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black"/>
+                                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding SelectedDoctor.Age}" IsReadOnly="True" Margin="0,0,0,15" Foreground="Black" IsEnabled="False"/>
                                 
                                 <!-- Birthday -->
                                 <TextBlock Grid.Row="9" Grid.Column="0" Foreground="Black" Text="Birthday:" FontWeight="SemiBold" Margin="0,0,15,15" VerticalAlignment="Center"/>
@@ -227,6 +233,15 @@
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Classes="action" Command="{Binding SaveDoctorCommand}" IsVisible="{Binding IsEditing}" Background="Green">
+                            <TextBlock Text="Save" Foreground="White" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                        <Button Classes="action" Command="{Binding DeleteDoctorCommand}" IsVisible="{Binding IsEditing}" Background="Red">
+                            <TextBlock Text="Delete" Foreground="White" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </Border>
         </Grid>

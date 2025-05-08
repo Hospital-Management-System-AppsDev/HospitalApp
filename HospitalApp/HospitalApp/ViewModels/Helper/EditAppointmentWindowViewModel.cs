@@ -5,13 +5,19 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HospitalApp.Models;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using System.Text.Json;
 
 namespace HospitalApp.ViewModels
 {
     public partial class EditAppointmentWindowViewModel : ObservableObject
     {
+
         [ObservableProperty]
         private Appointment appointment;
+
+        public Window Window { get; set; }
 
         public DateTime Today => DateTime.Now;
 
@@ -44,8 +50,9 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private string selectedAppointmentType;
 
-        public EditAppointmentWindowViewModel(Appointment appointmentToEdit, ObservableCollection<Doctor> doctors)
+        public EditAppointmentWindowViewModel(Appointment appointmentToEdit, ObservableCollection<Doctor> doctors, Window window)
         {
+            Window = window;
             Doctors = doctors;
 
             Appointment = new Appointment
@@ -56,13 +63,23 @@ namespace HospitalApp.ViewModels
                 AssignedDoctor = appointmentToEdit.AssignedDoctor,
                 AppointmentType = appointmentToEdit.AppointmentType,
                 Status = appointmentToEdit.Status,
-                AppointmentDateTime = appointmentToEdit.AppointmentDateTime
+                AppointmentDateTime = appointmentToEdit.AppointmentDateTime,
+                temperature = appointmentToEdit.temperature,
+                pulseRate = appointmentToEdit.pulseRate,
+                weight = appointmentToEdit.weight,
+                height = appointmentToEdit.height,
+                sugarLevel = appointmentToEdit.sugarLevel,
+                bloodPressure = appointmentToEdit.bloodPressure,
+                chiefComplaint = appointmentToEdit.chiefComplaint,
+                patientMedicalInfo = appointmentToEdit.patientMedicalInfo
             };
 
             // Find the matching doctor in the Doctors collection
             Doc = Doctors.FirstOrDefault(d => d.Id == appointmentToEdit.AssignedDoctor.Id);
             SelectedAppointmentType = appointmentToEdit.AppointmentType;
             SelectedAppointmentDate = appointmentToEdit.AppointmentDateTime;
+            SelectedAppointmentTime = appointmentToEdit.AppointmentDateTime.TimeOfDay;
+
 
             // Add the current time slot to available slots
             if (SelectedAppointmentTime != default)
@@ -200,13 +217,33 @@ namespace HospitalApp.ViewModels
 
         public void ApplySelectedChanges()
         {
-            if (SelectedAppointmentDate.HasValue)
+            try
             {
-                Appointment.AppointmentDateTime = SelectedAppointmentDate.Value.Date + SelectedAppointmentTime;
-            }
+                Console.WriteLine("[EditVM] Starting ApplySelectedChanges");
+                Console.WriteLine($"[EditVM] Before changes: {JsonSerializer.Serialize(Appointment)}");
+                
+                if (SelectedAppointmentDate.HasValue)
+                {
+                    var originalDateTime = Appointment.AppointmentDateTime;
+                    Appointment.AppointmentDateTime = SelectedAppointmentDate.Value.Date + SelectedAppointmentTime;
+                    Console.WriteLine($"[EditVM] Changed AppointmentDateTime from {originalDateTime} to {Appointment.AppointmentDateTime}");
+                }
 
-            Appointment.AppointmentType = SelectedAppointmentType;
-            Appointment.AssignedDoctor = Doc;
+                var originalType = Appointment.AppointmentType;
+                Appointment.AppointmentType = SelectedAppointmentType;
+                Console.WriteLine($"[EditVM] Changed AppointmentType from {originalType} to {Appointment.AppointmentType}");
+                
+                var originalDoctor = Appointment.AssignedDoctor?.Name ?? "null";
+                Appointment.AssignedDoctor = Doc;
+                Console.WriteLine($"[EditVM] Changed AssignedDoctor from {originalDoctor} to {Appointment.AssignedDoctor?.Name ?? "null"}");
+
+                Console.WriteLine($"[EditVM] After changes: {JsonSerializer.Serialize(Appointment)}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EditVM] Exception in ApplySelectedChanges: {ex.Message}");
+                Console.WriteLine($"[EditVM] Stack trace: {ex.StackTrace}");
+            }
         }
 
         partial void OnSelectedAppointmentDateChanged(DateTime? value)

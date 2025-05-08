@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using HospitalApp.Models;
 using Avalonia.Controls;
-using HospitalApp.Views.HelperWindows;
+using HospitalApp.Views;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia;
-
+using Email;
 namespace HospitalApp.ViewModels
 {
     public partial class PharmacyViewModel : ViewModelBase
@@ -338,6 +338,37 @@ namespace HospitalApp.ViewModels
 
             try
             {
+                // Get the parent window
+                Window parentWindow = null;
+                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    parentWindow = desktop.MainWindow;
+                }
+
+                if (parentWindow == null)
+                {
+                    await ShowMessageDialog("Error", "Parent window not available");
+                    return;
+                }
+
+                // Create and show the CustomerEmailView dialog
+                var emailViewModel = new CustomerEmailViewModel();
+                var emailView = new CustomerEmailView
+                {
+                    DataContext = emailViewModel
+                };
+                emailViewModel.SetWindow(emailView);
+
+                // Show the dialog and wait for the result
+                var emailResult = await emailView.ShowDialog<string>(parentWindow);
+
+                // If the user cancels or doesn't provide an email, abort checkout
+                if (string.IsNullOrEmpty(emailResult))
+                {
+                    return;
+                }
+
+                // Proceed with existing checkout logic
                 foreach (var item in CartItems)
                 {
                     var success = await _apiService.UpdateMedicine(item.Medicine);
@@ -347,11 +378,10 @@ namespace HospitalApp.ViewModels
                         return;
                     }
                 }
-
                 // Convert ObservableCollection to List for PDF generation
                 var cartItemsList = CartItems.ToList();
-                PdfServices.GeneratePharmacyReceipt(cartItemsList, TotalCartPrice, "Pharmacy Receipt");
-
+                var receiptPath = PdfServices.GeneratePharmacyReceipt(cartItemsList, TotalCartPrice);
+                await EmailService.SendPharmacyReceiptEmail(receiptPath, emailResult);
                 CartItems.Clear();
                 TotalCartPrice = 0;
                 await LoadMedicines();
@@ -471,6 +501,11 @@ namespace HospitalApp.ViewModels
             confirmationWindow.ShowDialog(_parentWindow);
 
             return tcs.Task;
+        }
+
+        partial void OnSelectedMedicineChanged(Medicines value)
+        {
+            IsEditing = false;
         }
     }
 }

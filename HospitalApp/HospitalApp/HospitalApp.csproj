@@ -10,11 +10,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\" />
-        <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Include="Assets\*.png" />
-
+        <Folder Include="Models/" />
+        <AvaloniaResource Include="Assets/**" />
+        <AvaloniaResource Include="Assets/*.png" />
+        <AvaloniaResource Include="Assets/Doctor/Profile/**" />
+        <AvaloniaResource Include="Assets/Doctor/Signatures/**" />
+        <AvaloniaResource Include="Assets/Patients/Profiles/**" />
     </ItemGroup>
+
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.2.7" />

@@ -14,5 +14,7 @@ namespace HospitalApp.Views
             InitializeComponent();
             DataContext = new DashboardPageViewModel(apiService, signalRService);
         }
+
+        
     }
 }

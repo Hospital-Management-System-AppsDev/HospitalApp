@@ -2,11 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="2000"
-             x:Class="HospitalApp.Views.HelperWindows.AddPatientView"
+             x:Class="HospitalApp.Views.AddPatientView"
              d:DataContext="{d:DesignInstance vm:AddPatientViewModel}"
-             x:DataType="vm:AddPatientViewModel">
+             xmlns:vm="clr-namespace:HospitalApp.ViewModels"
+             x:DataType="vm:AddPatientViewModel"
+             Height="650" Width="650">
     
     <UserControl.Styles>
         <!-- TextBox Style -->
@@ -38,37 +39,195 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+        
+        <!-- ComboBox Style -->
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#9BD8F6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#4CA6FF"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <!-- CalendarDatePicker Style -->
+        <Style Selector="CalendarDatePicker">
+            <Setter Property="Background" Value="#9BD8F6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#4CA6FF"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+        
+        <!-- Error Message Style -->
+        <Style Selector="TextBlock.error">
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
     </UserControl.Styles>
     
+    <!-- Main Border -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
     <Border Background="#E6F2FF" Padding="20">
-        <StackPanel>
-            <TextBlock Text="Add New Patient" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+        <Grid>                     
+            <!-- Patient Information Panel -->
+            <StackPanel IsVisible="{Binding IsPatientInfoPanelVisible}" Margin="0,25,0,0">
+                <TextBlock Text="Patient Information" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
                 
-            <TextBlock Text="Patient Name"/>
-            <TextBox Text="{Binding PName}" Watermark="Enter Name"/>
-            
-            <TextBlock Text="Patient Sex"/>
-            <TextBox Text="{Binding PSex}" Watermark="Enter Sex"/>
-            
-            <TextBlock Text="Patient Address"/>
-            <TextBox Text="{Binding PAddress}" Watermark="Enter Address"/>
-            
-            <TextBlock Text="Patient Blood Type"/>
-            <TextBox Text="{Binding PBloodType}" Watermark="Enter type"/>
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="0,0,0,20">
+                    <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding PatientName}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Email:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PatientEmail}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Birthday:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <CalendarDatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding PatientBday}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Sex:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding SexOptions}" SelectedItem="{Binding PatientSex}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Address:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding PatientAddress}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Blood Type:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding BloodTypeOptions}" SelectedItem="{Binding PatientBloodType}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Contact Number:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding PatientContactNumber}" Width="300" HorizontalAlignment="Left"/>
 
-            <TextBlock Text="Patient Email"/>
-            <TextBox Text="{Binding PEmail}" Watermark="Enter Email"/>
-
-            <TextBlock Text="Patient Contact Number"/>
-            <TextBox Text="{Binding PContactNumber}" Watermark="Enter Contact"/>
-
-            <TextBlock Text="Patient Birthday"/>
-            <CalendarDatePicker SelectedDate="{Binding PBday}" Watermark="Select Patient Birthday"/>
-            
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                <Button Content="Cancel" Command="{Binding CancelCommand}"/>
-                <Button Content="Save Medicine" Command="{Binding SaveCommand}"/>
+                    <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" Margin="0,20,0,0">
+                        <TextBlock Text="Patient Profile Picture" VerticalAlignment="Center"/>
+                        <Button Command="{Binding OpenFileProfilePictureCommand}">Open File</Button>
+                        <Image Source="{Binding ImagePreview}" Stretch="UniformToFill" Width="100" Height="100"/>
+                        <TextBlock Text="{Binding FileText}" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Grid>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5"/>
+                    <Button Content="Next" Command="{Binding NextPanelCommand}" Margin="5"/>
+                </StackPanel>
+                
+                <TextBlock Text="{Binding ErrorMessage}" 
+                        Classes="error"
+                        IsVisible="{Binding !!ErrorMessage}"
+                        HorizontalAlignment="Center"/>
             </StackPanel>
-        </StackPanel>
+            
+            <!-- Lifestyle Panel -->
+            <StackPanel IsVisible="{Binding IsLifestylePanelVisible}" Margin="0,25,0,0">
+                <TextBlock Text="Lifestyle Information" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="0,0,0,20">
+                    <TextBlock Text="Diet:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding DietOptions}" SelectedItem="{Binding PatientDiet}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Exercise:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ExerciseOptions}" SelectedItem="{Binding PatientExercise}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Sleep:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding SleepOptions}" SelectedItem="{Binding PatientSleep}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Smoking:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding SmokingOptions}" SelectedItem="{Binding PatientSmoking}" Width="300" HorizontalAlignment="Left"/>
+                    
+                    <TextBlock Text="Alcohol:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding AlcoholOptions}" SelectedItem="{Binding PatientAlcohol}" Width="300" HorizontalAlignment="Left"/>
+                </Grid>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Back" Command="{Binding PreviousPanelCommand}" Margin="5"/>
+                    <Button Content="Next" Command="{Binding NextPanelCommand}" Margin="5"/>
+                </StackPanel>
+                
+                <TextBlock Text="{Binding ErrorMessage}" 
+                        Classes="error"
+                        IsVisible="{Binding !!ErrorMessage}"
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
+            
+            <!-- Medication Panel -->
+            <StackPanel IsVisible="{Binding IsMedicationPanelVisible}" Margin="0,25,0,0">
+                <TextBlock Text="Medication Information" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <TextBlock Text="List all medicines and supplements you take:"/>
+                
+                <TextBox Text="{Binding PatientCurrentMedication}" 
+                         Watermark="Please list current medications(Separated by enter/return key)"
+                         Height="100"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Margin="0,0,0,20"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Back" Command="{Binding PreviousPanelCommand}" Margin="5"/>
+                    <Button Content="Next" Command="{Binding NextPanelCommand}" Margin="5"/>
+                </StackPanel>
+                
+                <TextBlock Text="{Binding ErrorMessage}" 
+                        Classes="error"
+                        IsVisible="{Binding !!ErrorMessage}"
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
+            
+            <!-- Allergies Panel -->
+            <StackPanel IsVisible="{Binding IsAllergiesPanelVisible}" Margin="0,25,0,0">
+                <TextBlock Text="Allergies Information" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto" Margin="0,0,0,20">
+                    <!-- Medication Allergies -->
+                    <TextBlock Text="Are you allergic to any medications?" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                        <RadioButton Content="Yes" IsChecked="{Binding Hasmedicationallergies}" GroupName="MedAllergy" Margin="0,0,10,0"/>
+                        <RadioButton Content="No" IsChecked="{Binding !Hasmedicationallergies}" GroupName="MedAllergy"/>
+                    </StackPanel>
+                    
+                    <TextBox Text="{Binding PatientMedicalAllergies}" 
+                             Watermark="Please list medication allergies(Separated by enter/return key)"
+                             IsEnabled="{Binding Hasmedicationallergies}"
+                             Grid.Row="1" Grid.ColumnSpan="2" 
+                             Margin="0,0,0,20"/>
+                    
+                    <!-- Latex Allergies -->
+                    <TextBlock Text="Are you allergic to latex?" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+                        <RadioButton Content="Yes" IsChecked="{Binding PatientLatexAllergy}" GroupName="LatexAllergy" Margin="0,0,10,0"/>
+                        <RadioButton Content="No" IsChecked="{Binding !PatientLatexAllergy}" GroupName="LatexAllergy"/>
+                    </StackPanel>
+                    
+                    <!-- Food Allergies -->
+                    <TextBlock Text="Are you allergic to any foods?" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+                        <RadioButton Content="Yes" IsChecked="{Binding Hasfoodallergies}" GroupName="FoodAllergy" Margin="0,0,10,0"/>
+                        <RadioButton Content="No" IsChecked="{Binding !Hasfoodallergies}" GroupName="FoodAllergy"/>
+                    </StackPanel>
+                    
+                    <TextBox Text="{Binding PatientFoodAllergies}" 
+                             Watermark="Please list food allergies(Separated by enter/return key)"
+                             IsEnabled="{Binding Hasfoodallergies}"
+                             Grid.Row="5" Grid.ColumnSpan="2" 
+                             Margin="0,0,0,10"/>
+                </Grid>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Back" Command="{Binding PreviousPanelCommand}" Margin="5"/>
+                    <Button Content="Submit" Command="{Binding FinishCommand}" Margin="5"/>
+                </StackPanel>
+                
+                <TextBlock Text="{Binding ErrorMessage}" 
+                        Classes="error"
+                        IsVisible="{Binding !!ErrorMessage}"
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
     </Border>
+    </ScrollViewer>
 </UserControl>

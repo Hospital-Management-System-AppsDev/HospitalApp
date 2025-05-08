@@ -1,0 +1,189 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HospitalApp.Views.DoctorAppointmentPageView"
+             x:DataType="vm:DoctorAppointmentPageViewModel"
+             xmlns:vm="using:HospitalApp.ViewModels"
+             xmlns:local="clr-namespace:HospitalApp.Views"
+             Background="#E8F2F9">
+  <Grid Margin="50" Grid.RowDefinitions="Auto, *">
+        <!-- Header Section -->
+        <Grid>
+            <TextBlock Grid.Column="0" Text="Appointments" Foreground="#3E8DC0" FontSize="48" FontWeight="Bold" FontFamily="Rubik" Margin="20"/>
+        </Grid>
+        
+        <Border Grid.Row="1" Background="#FFFFFF" CornerRadius="20" Padding="20">
+        <!-- Appointment List Section (To be added in Grid.Row 1) -->
+        <TabControl Margin="5"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="Upcoming Appointments" FontSize="20" Foreground="#3E8DC0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Border Margin="20" HorizontalAlignment="Stretch">
+                        <StackPanel>
+                        <TextBox Watermark="Search..." Text="{Binding AppointmentSearchText, Mode=TwoWay}" Margin="10" HorizontalAlignment="Stretch"/>
+                            
+                        <DataGrid ItemsSource="{Binding FilteredAppointments}" 
+                                AutoGenerateColumns="False" IsReadOnly="True"
+                                GridLinesVisibility="All" BorderBrush="Gray">
+                            
+                            <!-- Header Styling -->
+                            <DataGrid.Styles>
+                                <!-- Style for the column headers -->
+                                <Style Selector="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#3E8DC0"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                                
+                                <!-- Style for the rows/cells -->
+                                <Style Selector="DataGridCell">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                </Style>
+                                
+                                <!-- Style for alternating rows if desired -->
+                                <Style Selector="DataGridRow:nth-child(2n)">
+                                    <Setter Property="Background" Value="#F0F8FF"/>
+                                </Style>
+                                
+                                <!-- Style for selected row -->
+                                <Style Selector="DataGridRow:selected">
+                                    <Setter Property="Background" Value="#B0E0E6"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+                            </DataGrid.Styles>
+                            
+                            <DataGrid.Columns>
+                                    <DataGridTextColumn Header="AID" Binding="{Binding PkId}" Width="Auto"/>
+                                    <DataGridTextColumn Header="PID" Binding="{Binding PatientID}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="Auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Done Appointments" FontSize="20" Foreground="#3E8DC0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Border Margin="20" HorizontalAlignment="Stretch">
+                        <StackPanel>
+
+                            <DataGrid ItemsSource="{Binding DoneAppointments}" 
+                                    AutoGenerateColumns="False" IsReadOnly="True"
+                                    GridLinesVisibility="All" BorderBrush="Gray">
+                                
+                                <!-- Header Styling -->
+                                <DataGrid.Styles>
+                                    <!-- Style for the column headers -->
+                                    <Style Selector="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#3E8DC0"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="FontSize" Value="15"/>
+                                        <Setter Property="Padding" Value="10"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                    
+                                    <!-- Style for the rows/cells -->
+                                    <Style Selector="DataGridCell">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="Foreground" Value="#333333"/>
+                                        <Setter Property="FontSize" Value="15"/>
+                                        <Setter Property="Padding" Value="10"/>
+                                    </Style>
+                                    
+                                    <!-- Style for alternating rows if desired -->
+                                    <Style Selector="DataGridRow:nth-child(2n)">
+                                        <Setter Property="Background" Value="#F0F8FF"/>
+                                    </Style>
+                                    
+                                    <!-- Style for selected row -->
+                                    <Style Selector="DataGridRow:selected">
+                                        <Setter Property="Background" Value="#B0E0E6"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </Style>
+                                </DataGrid.Styles>
+                                
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="AID" Binding="{Binding PkId}" Width="Auto"/>
+                                    <DataGridTextColumn Header="PID" Binding="{Binding PatientID}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="*"/>
+                                    <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Missed Appointments" FontSize="20" Foreground="#3E8DC0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Border Margin="20" HorizontalAlignment="Stretch">
+                        <StackPanel>
+                        <TextBox Watermark="Search..." Text="{Binding MissedAppointmentSearchText, Mode=TwoWay}" Margin="10" HorizontalAlignment="Stretch"/>
+                            
+                        <DataGrid ItemsSource="{Binding FilteredMissedAppointments}" 
+                                AutoGenerateColumns="False" IsReadOnly="True"
+                                GridLinesVisibility="All" BorderBrush="Gray">
+                            
+                            <!-- Header Styling -->
+                            <DataGrid.Styles>
+                                <!-- Style for the column headers -->
+                                <Style Selector="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#3E8DC0"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                                
+                                <!-- Style for the rows/cells -->
+                                <Style Selector="DataGridCell">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                </Style>
+                                
+                                <!-- Style for alternating rows if desired -->
+                                <Style Selector="DataGridRow:nth-child(2n)">
+                                    <Setter Property="Background" Value="#F0F8FF"/>
+                                </Style>
+                                
+                                <!-- Style for selected row -->
+                                <Style Selector="DataGridRow:selected">
+                                    <Setter Property="Background" Value="#B0E0E6"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Style>
+                            </DataGrid.Styles>
+                            
+                            <DataGrid.Columns>
+                                    <DataGridTextColumn Header="AID" Binding="{Binding PkId}" Width="Auto"/>
+                                    <DataGridTextColumn Header="PID" Binding="{Binding PatientID}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" Width="*"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding AppointmentType}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Doctor" Binding="{Binding AssignedDoctor.Name}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Appontment Slot" Binding="{Binding AppointmentDateTime}" Width="Auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        </Border>
+    </Grid>
+</UserControl>

@@ -17,7 +17,7 @@ class PdfServices
 
         string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
         string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
-        string signature = Path.Combine("Resources", "ForPDF", "signature.png");
+        string signature = appointment.AssignedDoctor.signature;
         string fileName = Path.Combine("Records", "MedicalCertificates", $"MC_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>
@@ -86,7 +86,7 @@ class PdfServices
         string headerImagePath = Path.Combine("Resources", "ForPDF", "stet.webp");
         string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
         string rxlogo = Path.Combine("Resources", "ForPDF", "rx.png");
-        string signature = Path.Combine("Resources", "ForPDF", "signature.png");
+        string signature = appointment.AssignedDoctor.signature;
         string fileName = Path.Combine("Records", "Prescriptions", $"RX_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>
@@ -196,7 +196,7 @@ class PdfServices
 
         string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
         string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
-        string signature = Path.Combine("Resources", "ForPDF", "signature.png");
+        string signature = appointment.AssignedDoctor.signature;
         string fileName = Path.Combine("Records", "Diagnosis", $"D_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>
@@ -323,7 +323,7 @@ class PdfServices
         return fileName;
     }
 
-    public static string GeneratePharmacyReceipt(List<CartItems> items, decimal totalAmount, string transactionId)
+    public static string GeneratePharmacyReceipt(List<CartItems> items, decimal totalAmount)
     {
         QuestPDF.Settings.License = LicenseType.Community;
 
@@ -333,7 +333,7 @@ class PdfServices
 
         string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
         string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
-        string fileName = Path.Combine("Records", "PharmacyReceipts", $"PR_Receipt_{transactionId}_{DateTime.Now:yyyyMMddHHmmss}.pdf");
+        string fileName = Path.Combine("Records", "PharmacyReceipts", $"PR_Receipt_{DateTime.Now:yyyyMMddHHmmss}.pdf");
 
         Document.Create(container =>
         {
@@ -354,7 +354,6 @@ class PdfServices
                         grid.Columns(2);
                         grid.Item().Text($"Date: {date}").FontSize(8);
                         grid.Item().Text($"Time: {time}").FontSize(8).AlignRight();
-                        grid.Item().Text($"Transaction ID: {transactionId}").FontSize(8);
                     });
 
                     col.Item().PaddingVertical(5).LineHorizontal(1).LineColor(Colors.Black);
@@ -415,7 +414,7 @@ class PdfServices
 
         string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
         string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
-        string signature = Path.Combine("Resources", "ForPDF", "signature.png");
+        string signature = appointment.AssignedDoctor.signature;
         string fileName = Path.Combine("Records", "Receipts", $"MF_RECEIPT_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}.pdf");
 
         Document.Create(container =>

@@ -60,5 +60,57 @@ namespace Email
                 Console.WriteLine("Error: " + ex.Message);
             }
         }
+        public static async Task SendPharmacyReceiptEmail(string receiptPath, string email)
+        {
+            await SendPharmacyReceiptEmailAsync(receiptPath, email);
+        }
+        public static async Task<bool> SendPharmacyReceiptEmailAsync(string receiptPath, string email)
+        {
+            try
+            {
+                string receipt = @$"{receiptPath}";
+
+                using (MailMessage mail = new MailMessage())
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    mail.From = new MailAddress("cetamedicalarts@gmail.com");
+                    mail.To.Add(email);
+                    mail.Subject = "CETA Medical Arts - Pharmacy Receipt";
+                    mail.Body = @$"<p>Dear Valued Customer,</p>
+                                <p>Thank you for your recent purchase at CETA Medical Arts Pharmacy.</p>
+
+                                <p>Please find attached the receipt for your pharmacy purchase. This document serves as proof of purchase for your records.</p>
+
+                                <p>If you have any questions regarding your purchase or need assistance with your medications, please don't hesitate to contact our pharmacy team.</p>
+
+                                <p>We appreciate your business and trust in our services.</p>
+
+                                <p>Best regards,<br/>
+                                <strong>CETA Medical Arts Pharmacy</strong></p>
+
+                                <p><strong>Contact Information:</strong><br/>
+                                Gmail: cetamedicalarts@gmail.com<br/>
+                                Phone Number: +6395095748892<br/>
+                                Telephone: (746) 636-4575</p>";
+
+                    mail.IsBodyHtml = true;
+
+                    mail.Attachments.Add(new Attachment(receipt));
+
+                    smtp.Credentials = new NetworkCredential("cetamedicalarts@gmail.com", "nrtuobqzpyqukebd");
+                    smtp.EnableSsl = true;
+
+                    await smtp.SendMailAsync(mail);
+                    Console.WriteLine($"Pharmacy receipt email sent successfully to {email}!");
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error sending pharmacy receipt email: " + ex.Message);
+                return false;
+            }
+        }
+
     }
 }

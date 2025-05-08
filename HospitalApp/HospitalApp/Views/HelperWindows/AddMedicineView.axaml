@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:HospitalApp.ViewModels"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="2000"
-             x:Class="HospitalApp.Views.HelperWindows.AddMedicineView"
+             x:Class="HospitalApp.Views.AddMedicineView"
              d:DataContext="{d:DesignInstance vm:AddMedicineViewModel}"
              x:DataType="vm:AddMedicineViewModel">
     

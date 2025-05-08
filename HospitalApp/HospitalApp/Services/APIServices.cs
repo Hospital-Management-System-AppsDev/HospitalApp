@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using HospitalApp.Models; // Ensure this matches your project namespace
-
+using System.Text.Json;
 public class ApiService
 {
     private readonly HttpClient _httpClient;
@@ -24,6 +24,64 @@ public class ApiService
 
         var data = await response.Content.ReadFromJsonAsync<List<Doctor>>();
         return data ?? new List<Doctor>();
+    }
+
+    public async Task<Doctor> AddDoctorAsync(Doctor doctor)
+    {
+        try 
+        {
+            var response = await _httpClient.PostAsJsonAsync("doctors/add", doctor);
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error adding doctor: {error}");
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonAsync<Doctor>();
+            if (result != null)
+            {
+                Console.WriteLine($"Doctor added successfully: {result.Name}");
+                return result;
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception while adding doctor: {ex.Message}");
+            return null;
+        }
+    }
+
+    public async Task<bool> DeleteDoctorAsync(int id)
+    {
+        var response = await _httpClient.DeleteAsync($"doctors/delete/{id}");
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<Doctor> UpdateDoctorAsync(Doctor doctor)
+    {
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync($"doctors/update/{doctor.Id}", doctor);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<Doctor>();
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating doctor: {ex.Message}");
+            return null;
+        }
+    }
+
+    public async Task<bool> LogoutAsync(int id)
+    {
+        var response = await _httpClient.PatchAsJsonAsync($"doctors/{id}/availability", 0);
+        return response.IsSuccessStatusCode;
     }
 
 
@@ -47,6 +105,22 @@ public class ApiService
     public async Task<Patient> GetPatientAsync(int id)
     {
         return await _httpClient.GetFromJsonAsync<Patient>($"patients/{id}");
+    }
+
+    public async Task<Patient> AddPatientAsync(Patient patient)
+    {
+        var response = await _httpClient.PostAsJsonAsync("patients/add", patient);
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<Patient>();
+        }
+        return null;
+    }
+
+    public async Task<bool> DeletePatientAsync(int id)
+    {
+        var response = await _httpClient.DeleteAsync($"patients/delete/{id}");
+        return response.IsSuccessStatusCode;
     }
 
     public async Task<List<Patient>> GetPatientsAsync()
@@ -92,10 +166,45 @@ public class ApiService
         return null;
     }
 
-    public async Task<bool> UpdateAppointment(int appointmentID, Appointment appointment)
+    public async Task<bool> UpdateAppointment(int id, Appointment appointment)
     {
-        var response = await _httpClient.PutAsJsonAsync($"appointments/{appointmentID}", appointment);
-        return response.IsSuccessStatusCode;
+        try
+        {
+            Console.WriteLine($"[API] Sending PUT request to api/appointments/{id}");
+            Console.WriteLine($"[API] Request payload: {JsonSerializer.Serialize(appointment)}");
+            
+            var jsonSerializerOptions = new JsonSerializerOptions { 
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            
+            var json = JsonSerializer.Serialize(appointment, jsonSerializerOptions);
+            Console.WriteLine($"[API] Serialized appointment: {json}");
+            
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            
+            // Direct HttpClient approach to see raw request data
+            var response = await _httpClient.PutAsync($"appointments/{id}", content);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            
+            Console.WriteLine($"[API] Response status: {response.StatusCode}");
+            Console.WriteLine($"[API] Response body: {responseBody}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"[API] Appointment update successful for ID: {id}");
+                return true;
+            }
+            
+            Console.WriteLine($"[API] Error updating appointment: {responseBody}");
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[API] Exception in UpdateAppointment: {ex.Message}");
+            Console.WriteLine($"[API] Stack trace: {ex.StackTrace}");
+            throw;
+        }
     }
 
     public async Task<bool> CancelAppointment(int id)
@@ -171,6 +280,16 @@ public class ApiService
 
         var data = await response.Content.ReadFromJsonAsync<List<Records>>();
         return data ?? new List<Records>();
+    }
+
+    public async Task<PatientMedicalInfo> GetMedicalInfoAsync(int patientId)
+    {
+        var response = await _httpClient.GetAsync($"records/get-medical-info/{patientId}");
+        if (!response.IsSuccessStatusCode) return null;
+
+        var data = await response.Content.ReadFromJsonAsync<PatientMedicalInfo>();
+        return data;
+
     }
 
     public async Task<List<int>> GetNumAppointmentsAsyc(int year, int month)
@@ -313,6 +432,37 @@ public class ApiService
             Console.WriteLine($"Error deleting medicine: {ex.Message}");
             return false;
         }
+    }
+
+    public async Task<string> UpdatePatient(Patient patient)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"patients/update/{patient.PatientID}", patient);
+
+        if (response.IsSuccessStatusCode)
+            return "Success";
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        try
+        {
+            var json = JsonDocument.Parse(content);
+            var errors = json.RootElement.GetProperty("errors");
+
+            // Get the first error message from the dictionary
+            foreach (var prop in errors.EnumerateObject())
+            {
+                if (prop.Value.ValueKind == JsonValueKind.Array && prop.Value.GetArrayLength() > 0)
+                {
+                    return prop.Value[0].GetString(); // Return the first error message
+                }
+            }
+        }
+        catch
+        {
+            return "An error occurred while parsing the server response.";
+        }
+
+        return "Unknown error occurred.";
     }
 
 }

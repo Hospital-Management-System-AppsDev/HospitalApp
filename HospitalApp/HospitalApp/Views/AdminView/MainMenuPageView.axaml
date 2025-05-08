@@ -66,6 +66,10 @@
             <Style Selector="#mainMenuControl ListBoxItem:selected PathIcon">
                 <Setter Property="Foreground" Value="White"/>
             </Style>
+
+            <Style Selector="#mainMenuControl ListBoxItem:selected TextBlock">
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
         </Styles>
     </UserControl.Styles>
 

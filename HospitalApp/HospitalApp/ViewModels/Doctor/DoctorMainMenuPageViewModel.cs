@@ -9,11 +9,13 @@ using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
 using Avalonia.Layout;
 using Avalonia.Controls.ApplicationLifetimes;
+using HospitalApp.Services;
 
 namespace HospitalApp.ViewModels;
 
 public partial class DoctorMainMenuPageViewModel : ViewModelBase
 {
+    private readonly UserSessionService _session = UserSessionService.Instance;
     private readonly MainWindowViewModel _mainViewModel;
     private readonly ApiService _apiService = new();
     private readonly SignalRService _signalRService = new(); // Keep a single instance
@@ -50,8 +52,7 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
         ViewModelBase? instance = value.ModelType switch
         {
             Type t when t == typeof(DoctorDashboardPageViewModel) => new DoctorDashboardPageViewModel(_apiService, _signalRService, _mainViewModel),
-            Type t when t == typeof(AppointmentsPageViewModel) => new AppointmentsPageViewModel(_apiService, _signalRService),
-            Type t when t == typeof(SettingsPageViewModel) => new SettingsPageViewModel(),
+            Type t when t == typeof(DoctorAppointmentPageViewModel) => new DoctorAppointmentPageViewModel(_apiService, _signalRService),
             _ => null
         };
 
@@ -74,9 +75,8 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
 
     public ObservableCollection<ListItemTemplate> Items { get; } = new()
     {
-        new ListItemTemplate(typeof(DoctorDashboardPageViewModel), "Dashboard"),
-        new ListItemTemplate(typeof(AppointmentsPageViewModel), "Appointments"),
-        new ListItemTemplate(typeof(SettingsPageViewModel), "Settings"),
+        new ListItemTemplate(typeof(DoctorDashboardPageViewModel), "Dashboard", "Dashboard"),
+        new ListItemTemplate(typeof(DoctorAppointmentPageViewModel), "Appointments", "Appointments"),
     };
 
     [RelayCommand]
@@ -109,9 +109,10 @@ public partial class DoctorMainMenuPageViewModel : ViewModelBase
             Width = 80
         };
 
-        yesButton.Command = new RelayCommand(() =>
+        yesButton.Command = new RelayCommand(async () =>
         {
             messageWindow.Close();
+            await _apiService.LogoutAsync(_session.CurrentUser.Id);
             _mainViewModel.NavigateToLogin();
         });
 

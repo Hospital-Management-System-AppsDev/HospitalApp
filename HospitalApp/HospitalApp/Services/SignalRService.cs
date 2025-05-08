@@ -16,7 +16,10 @@ public class SignalRService
     public event Action<Medicine>? MedicineAdded;
     public event Action<Medicine>? MedicineUpdated;
     public event Action<int>? MedicineDeleted;
-
+    public event Action<Patient>? PatientUpdated;
+    public event Action<int>? DoctorDeleted;
+    public event Action<Doctor>? DoctorUpdated;
+    public event Action<int>? PatientDeleted;
     public SignalRService()
     {
         _hubConnection = new HubConnectionBuilder()
@@ -62,7 +65,26 @@ public class SignalRService
         {
             MedicineDeleted?.Invoke(id);
         });
-        
+
+        _hubConnection.On<Patient>("PatientUpdated", patient =>
+        {
+            PatientUpdated?.Invoke(patient);
+        });
+
+        _hubConnection.On<int>("DoctorDeleted", id =>
+        {
+            DoctorDeleted?.Invoke(id);
+        });
+
+        _hubConnection.On<Doctor>("DoctorUpdated", doctor =>
+        {
+            DoctorUpdated?.Invoke(doctor);
+        });
+
+        _hubConnection.On<int>("PatientDeleted", id =>
+        {
+            PatientDeleted?.Invoke(id);
+        });
     }
 
     public async Task ConnectAsync()

@@ -13,6 +13,7 @@ using Avalonia;
 using Avalonia.Layout;
 using HospitalApp.Views;
 using Avalonia.Media;
+using System.Text.Json;
 
 namespace HospitalApp.ViewModels
 {
@@ -23,6 +24,7 @@ namespace HospitalApp.ViewModels
         public Window ParentWindow { get; set; }
 
 
+        public Dictionary<int, Patient> Patients { get; set; } = new();
 
         [ObservableProperty]
         private string appointmentSearchText;
@@ -46,6 +48,12 @@ namespace HospitalApp.ViewModels
 
         public ObservableCollection<Doctor> DoctorsList { get; set; } = new();
         public ObservableCollection<string> AppointmentTypes { get; set; } = new() { "Check up", "Consultation", "Surgery" };
+
+        public ObservableCollection<string> DietOptions { get; set; } = new() { "Vegetarian", "Vegan", "Omnivore", "Pescatarian", "Keto", "Paleo" };
+        public ObservableCollection<string> ExerciseOptions { get; set; } = new() { "Daily", "Occasionally", "Rarely", "Never" };
+        public ObservableCollection<string> SleepOptions { get; set; } = new() { "7 hours", "less than 6 hours", "6-7 hours", "8+ hours" };
+        public ObservableCollection<string> SmokingOptions { get; set; } = new() { "Yes", "No", "Former smoker" };
+        public ObservableCollection<string> AlcoholOptions { get; set; } = new() { "Occasional", "Daily", "Weekly", "Rarely", "Never" };
         public ObservableCollection<int> StatusOptions { get; set; } = new() { 0, 1, 2 };
 
         public ObservableCollection<TimeSpan> AvailableTimeSlots { get; set; } = new();
@@ -80,6 +88,45 @@ namespace HospitalApp.ViewModels
             set => SetProperty(ref _doc, value);
         }
 
+        [ObservableProperty]
+        private decimal temperature = 0;
+
+        [ObservableProperty]
+        private int pulseRate = 0;
+
+        [ObservableProperty]
+        private decimal weight = 0;
+
+        [ObservableProperty]
+        private decimal height = 0;
+
+
+        public decimal Bmi{
+            get{
+                decimal heightInMeters = height / 100; // Convert height from cm to meters
+                return weight / (heightInMeters * heightInMeters);
+            }
+        }
+         partial void OnWeightChanged(decimal value)
+        {
+            OnPropertyChanged(nameof(Bmi));
+        }
+
+         partial void OnHeightChanged(decimal value)
+        {
+            OnPropertyChanged(nameof(Bmi));
+        }
+
+
+        [ObservableProperty]
+        private decimal sugarLevel = 0;
+
+        [ObservableProperty]
+        private string bloodPressure;
+
+        [ObservableProperty]
+        private string chiefComplaint;
+
 
         [ObservableProperty]
         private string selectedAppointmentType;
@@ -109,7 +156,7 @@ namespace HospitalApp.ViewModels
 
             _signalRService.AppointmentUpdated += OnAppointmentUpdated;
             _signalRService.AppointmentAdded += OnAppointmentAdded; // Add this line
-
+            Initialize();
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(SelectedAppointmentDate) && SelectedAppointmentDate != null)
@@ -122,6 +169,9 @@ namespace HospitalApp.ViewModels
             {
                 if (e.PropertyName == nameof(PId) && PId != null)
                 {
+                    if(newPatient != null){
+                        newPatient = null;
+                    }
                     _ = OnGetPatientByIdCommand();
                 }
             };
@@ -152,6 +202,9 @@ namespace HospitalApp.ViewModels
             await _signalRService.ConnectAsync();
         }
 
+        public async void Initialize(){
+            await LoadDataAsync();
+        }
         public async Task LoadDataAsync()
         {
             IsLoading = true;
@@ -217,6 +270,13 @@ namespace HospitalApp.ViewModels
                     
 
                 });
+
+                var patients = await _apiService.GetPatientsAsync();
+                Patients.Clear();
+                foreach (var patient in patients)
+                {
+                    Patients[patient.PatientID] = patient;
+                }
             }
             catch (Exception ex)
             {
@@ -234,22 +294,62 @@ namespace HospitalApp.ViewModels
         [RelayCommand]
         public async Task OnEditCommand(Appointment appointment)
         {
-            // Get the current window reference from somewhere accessible
-            var parentWindow = ParentWindow; // Assign the ParentWindow property or another valid window reference
             if (ParentWindow == null)
             {
-                Console.WriteLine("Error: Parent window not available");
+                Console.WriteLine("[VM] Error: Parent window not available");
                 return;
             }
 
-            var viewModel = new EditAppointmentWindowViewModel(appointment, DoctorsList);
-            var window = new EditAppointmentWindow(viewModel, _apiService);
-            var editedAppointment = await window.ShowDialog<Appointment>(parentWindow);
-
-            if (editedAppointment != null)
+            try
             {
-                bool success = await _apiService.UpdateAppointment(editedAppointment.pkId, editedAppointment);
-                if (success) await LoadDataAsync();
+                Console.WriteLine($"[VM] Editing appointment ID: {appointment.pkId}");
+                Console.WriteLine($"[VM] Original appointment: {JsonSerializer.Serialize(appointment)}");
+                
+                var viewModel = new EditAppointmentWindowViewModel(appointment, DoctorsList, ParentWindow);
+                var window = new EditAppointmentWindow(viewModel, _apiService);
+                
+                var editedAppointment = await window.ShowDialog<Appointment>(ParentWindow);
+
+                if (editedAppointment != null)
+                {
+                    try
+                    {
+                        Console.WriteLine($"[VM] Received edited appointment from dialog: {JsonSerializer.Serialize(editedAppointment)}");
+                        Console.WriteLine($"[VM] Sending to API service for update, ID: {editedAppointment.pkId}");
+                        
+                        bool success = await _apiService.UpdateAppointment(editedAppointment.pkId, editedAppointment);
+                        
+                        if (success)
+                        {
+                            Console.WriteLine("[VM] Appointment updated successfully");
+                            await LoadDataAsync(); // Refresh the data
+                        }
+                        else
+                        {
+                            Console.WriteLine("[VM] Update Failed: Failed to update the appointment. Please try again.");
+                            
+                            // Show user-visible error message (use your app's UI notification system)
+                            // Example: await ShowMessageBox("Update Failed", "Failed to update the appointment. Please try again.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[VM] Error updating appointment: {ex.Message}");
+                        Console.WriteLine($"[VM] Stack trace: {ex.StackTrace}");
+                        
+                        // Show user-visible error message
+                        // Example: await ShowMessageBox("Error", $"Error updating appointment: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("[VM] Edit dialog returned null appointment (likely cancelled)");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[VM] Exception in OnEditCommand: {ex.Message}");
+                Console.WriteLine($"[VM] Stack trace: {ex.StackTrace}");
             }
         }
 
@@ -348,7 +448,7 @@ namespace HospitalApp.ViewModels
             // Clear any previous error messages
             ErrorMsgFind = "";
             ErrorMsgFindVisible = false;
-
+            newPatient = null;
             if (string.IsNullOrWhiteSpace(pId))
             {
                 ErrorMsgFind = "Please enter a patient ID.";
@@ -367,7 +467,7 @@ namespace HospitalApp.ViewModels
             {
                 IsLoading = true;
                 PatientId = int.Parse(pId);
-                Patient patient = await _apiService.GetPatientAsync(PatientId);
+                Patient patient = Patients.GetValueOrDefault(PatientId);
 
                 if (patient == null)
                 {
@@ -510,6 +610,28 @@ namespace HospitalApp.ViewModels
                 return;
             }
 
+            // New field validations
+            if (temperature <= 0 || weight <= 0 || height <= 0 || sugarLevel <= 0 || pulseRate <= 0)
+            {
+                ErrorMsgCreate = "Error: Vitals must be greater than zero.";
+                ErrorMsgCreateVisible = true;
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(bloodPressure))
+            {
+                ErrorMsgCreate = "Error: Blood pressure cannot be empty.";
+                ErrorMsgCreateVisible = true;
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(chiefComplaint))
+            {
+                ErrorMsgCreate = "Error: Chief complaint cannot be empty.";
+                ErrorMsgCreateVisible = true;
+                return;
+            }
+
             ErrorMsgCreateVisible = false;
 
             newAppointment = new Appointment
@@ -519,41 +641,25 @@ namespace HospitalApp.ViewModels
                 AssignedDoctor = Doc,
                 AppointmentType = SelectedAppointmentType,
                 Status = 0,
-                AppointmentDateTime = SelectedAppointmentDate.Value.Date + SelectedAppointmentTime.Value
+                AppointmentDateTime = SelectedAppointmentDate.Value.Date + SelectedAppointmentTime.Value,
+                temperature = temperature,
+                pulseRate = pulseRate,
+                weight = weight,
+                height = height,
+                sugarLevel = sugarLevel,
+                bloodPressure = bloodPressure,
+                chiefComplaint = chiefComplaint,
+                patientMedicalInfo = newPatient.PatientMedicalInfo
+                
             };
 
             try
             {
-                // Send to the API
+                Console.WriteLine(JsonSerializer.Serialize(newAppointment));
                 var createdAppointment = await _apiService.AddAppointmentAsync(newAppointment);
-
-                if (createdAppointment != null)
-                {
-                    // Ensure we use the ID from the API response
-                    var appointmentToAdd = new Appointment
-                    {
-                        pkId = createdAppointment.pkId,
-                        PatientID = newPatient.PatientID,
-                        PatientName = newPatient.Name,
-                        AssignedDoctor = Doc,
-                        AppointmentType = SelectedAppointmentType,
-                        Status = 0,
-                        AppointmentDateTime = SelectedAppointmentDate.Value.Date + SelectedAppointmentTime.Value
-                    };
-
-                    Avalonia.Threading.Dispatcher.UIThread.Post(() =>
-                    {
-                        UpcomingAppointments.Add(appointmentToAdd);
-                        FilteredAppointments.Add(appointmentToAdd);
-                    });
                     await LoadDataAsync();
                     ClearAppointmentForm();
-                }
-                else
-                {
-                    ErrorMsgCreate = "Error creating appointment. Please try again.";
-                    ErrorMsgCreateVisible = true;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -561,6 +667,7 @@ namespace HospitalApp.ViewModels
                 ErrorMsgCreateVisible = true;
             }
         }
+
         private void ClearAppointmentForm()
         {
             // Reset form fields

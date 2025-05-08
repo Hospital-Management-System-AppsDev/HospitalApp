@@ -5,9 +5,12 @@
              xmlns:models="clr-namespace:HospitalApp.Models"
              xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
              x:DataType="vm:DashboardPageViewModel"
-             Background="#E8F2F9"> <!-- Add this -->
+             Background="#E8F2F9"
+             xmlns:converters="clr-namespace:HospitalApp.Converters"> <!-- Add this -->
 
-             
+    <UserControl.Resources>
+        <converters:BitmapConverter x:Key="BitmapConverter"/>
+    </UserControl.Resources>
 
     <UserControl.Styles>
         <Styles>
@@ -220,7 +223,7 @@
                                 <!-- Profile Picture (Circular) -->
                                 <Ellipse Grid.Row="0" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,20">
                                     <Ellipse.Fill>
-                                        <ImageBrush Source="avares://HospitalApp/Assets/Doctor/Profile/test.png" Stretch="UniformToFill"/>
+                                        <ImageBrush Source="{Binding SelectedDoctor.profile_picture, Converter={StaticResource BitmapConverter}}" Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                     <Ellipse.Stroke>
                                         <SolidColorBrush Color="White" />
@@ -257,6 +260,14 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="Age: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
                                                     <TextBlock Text="{Binding SelectedDoctor.Age}" FontSize="16" Foreground="White" />
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <!-- Birthday - NEWLY ADDED -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Birthday: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedDoctor.Birthday, StringFormat={}{0:yyyy-MM-dd}}}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
                                                 </StackPanel>
                                             </Border>
                                             
@@ -297,7 +308,6 @@
                             </Grid>
                         </Grid>
                     </Border>
-
 
                     <!-- Chart Section -->
                     <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Background="#D4E6F1" Margin="5 10 5 0" CornerRadius="10">
@@ -414,7 +424,7 @@
                         </Border>
                     </Grid>
 
-                    <!-- Doctor Information Panel - Responsive Implementation with 2-Column Layout -->
+                    <!-- Patient Information Panel - Responsive Implementation with 2-Column Layout -->
                     <Border Grid.Row="0" Grid.Column="2" Background="#006CB5" Margin="5 0 5 0" CornerRadius="10" Grid.ColumnSpan="2" Padding="20">
                         <Grid>
                             <TextBlock Text="Please select a patient to view their information" 
@@ -432,7 +442,7 @@
                                 <!-- Profile Picture (Circular) -->
                                 <Ellipse Grid.Row="0" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,20">
                                     <Ellipse.Fill>
-                                        <ImageBrush Source="avares://HospitalApp/Assets/patient-default.png" Stretch="UniformToFill"/>
+                                        <ImageBrush Source="{Binding SelectedPatient.ProfilePicture, Converter={StaticResource BitmapConverter}}" Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                     <Ellipse.Stroke>
                                         <SolidColorBrush Color="White" />
@@ -472,6 +482,14 @@
                                                 </StackPanel>
                                             </Border>
                                             
+                                            <!-- Birthday - NEWLY ADDED -->
+                                            <Border Margin="5,3,0,3" Padding="5,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Birthday: " FontSize="16" Foreground="White" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding SelectedPatient.Bday, StringFormat={}{0:yyyy-MM-dd}}}" FontSize="16" Foreground="White" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
+                                            
                                             <!-- Sex -->
                                             <Border Margin="0,3,5,3" Padding="5,3">
                                                 <StackPanel Orientation="Horizontal">
@@ -488,7 +506,7 @@
                                                 </StackPanel>
                                             </Border>
                                             
-                                            <!-- Specialization -->
+                                            <!-- Blood Type -->
                                             <Border Margin="0,3,5,3" Padding="5,3">
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="Blood Type: " FontSize="16" Foreground="White" FontWeight="SemiBold" />

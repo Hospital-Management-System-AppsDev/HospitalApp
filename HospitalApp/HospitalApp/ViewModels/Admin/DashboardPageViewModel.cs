@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using HospitalApp.Models;
 using HospitalApp.Services;
+using HospitalApp.Helpers;
+using Avalonia.Media.Imaging;
 
 namespace HospitalApp.ViewModels
 {
     public partial class DashboardPageViewModel : ViewModelBase
     {
+        public Bitmap? DoctorImage { get; set; }
+        public Bitmap? PatientImage { get; set; }
         private readonly ApiService _apiService;
         private readonly SignalRService _signalRService;
 
@@ -61,6 +65,12 @@ namespace HospitalApp.ViewModels
 
         [ObservableProperty]
         private int newPatients;
+
+        [ObservableProperty]
+        private string doctorImagePath;
+
+        [ObservableProperty]
+        private string patientImagePath;
 
         public AdminDashChartDocViewModel AdminChart {get;} = new();  
         public AdminDashChartPatientsViewModel AdminChartPatients {get;} = new();  
@@ -169,11 +179,15 @@ namespace HospitalApp.ViewModels
         partial void OnSelectedDoctorChanged(Doctor? value)
         {
             ShowDoctor = value != null;
+            Console.WriteLine($"SelectedDoctor: {value.profile_picture}");
+            DoctorImage = ImageHelper.LoadFromResource(new Uri(value.profile_picture));
         }
 
         partial void OnSelectedPatientChanged(Patient? value)
         {
             ShowPatient = value != null;
+            Console.WriteLine($"SelectedPatient: {value.ProfilePicture}");
+            PatientImage = ImageHelper.LoadFromResource(new Uri(value.ProfilePicture));
         }
 
         private void FilterPatients()
