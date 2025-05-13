@@ -127,7 +127,7 @@ namespace HospitalApp.ViewModels
                     Title = "Add New Medicine",
                     Content = new AddMedicineView { DataContext = addMedicineViewModel },
                     Width = 400,
-                    Height = 500,
+                    Height = 700,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 };
 

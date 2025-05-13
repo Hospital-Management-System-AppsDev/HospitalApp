@@ -159,6 +159,12 @@ namespace HospitalApp.ViewModels
                     ErrorMessage = "Please enter patient contact number.";
                     return;
                 }
+
+                if (!Regex.IsMatch(PatientContactNumber, @"^\d{11}$"))
+                {
+                    ErrorMessage = "Please enter a valid 11-digit contact number.";
+                    return;
+                }
                 
                 // Additional validation for date of birth
                 if (PatientBday > DateTime.Today)

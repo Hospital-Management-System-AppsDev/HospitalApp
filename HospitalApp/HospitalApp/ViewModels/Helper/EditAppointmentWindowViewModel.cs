@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HospitalApp.Models;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using System.Text.Json;
 
@@ -13,7 +12,6 @@ namespace HospitalApp.ViewModels
 {
     public partial class EditAppointmentWindowViewModel : ObservableObject
     {
-
         [ObservableProperty]
         private Appointment appointment;
 
@@ -29,6 +27,7 @@ namespace HospitalApp.ViewModels
         [ObservableProperty]
         private DateTime? selectedAppointmentDate;
 
+        // Will be initialized in constructor with appointment's time
         [ObservableProperty]
         private TimeSpan selectedAppointmentTime;
 
@@ -78,22 +77,43 @@ namespace HospitalApp.ViewModels
             Doc = Doctors.FirstOrDefault(d => d.Id == appointmentToEdit.AssignedDoctor.Id);
             SelectedAppointmentType = appointmentToEdit.AppointmentType;
             SelectedAppointmentDate = appointmentToEdit.AppointmentDateTime;
-            SelectedAppointmentTime = appointmentToEdit.AppointmentDateTime.TimeOfDay;
 
-
-            // Add the current time slot to available slots
-            if (SelectedAppointmentTime != default)
+            // Initialize TimeSpan from the appointment's DateTime value
+            try
             {
-                AvailableTimeSlots.Add(SelectedAppointmentTime);
+                // Extract the time portion from the appointment's DateTime
+                SelectedAppointmentTime = appointmentToEdit.AppointmentDateTime.TimeOfDay;
+                Console.WriteLine($"Set SelectedAppointmentTime to: {SelectedAppointmentTime}");
+                
+                // If we get a default TimeSpan (00:00:00), use 8:00 AM as fallback
+                if (SelectedAppointmentTime == default)
+                {
+                    SelectedAppointmentTime = TimeSpan.FromHours(8);
+                    Console.WriteLine($"Using default time 8:00 AM since appointment time was default: {SelectedAppointmentTime}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // If there's any error, set a default time of 8:00 AM
+                SelectedAppointmentTime = TimeSpan.FromHours(8);
+                Console.WriteLine($"Error setting appointment time: {ex.Message}. Using default 8:00 AM");
             }
 
-            // Load initial time slots
+            // Add the current time slot to available slots first
+            if (SelectedAppointmentTime != default)
+            {
+                // Ensure we're using the exact TimeSpan from the appointment
+                AvailableTimeSlots.Add(SelectedAppointmentTime);
+                Console.WriteLine($"Added original appointment time to slots: {SelectedAppointmentTime}");
+            }
+
+            // Load initial time slots - this will happen asynchronously
             if (SelectedAppointmentDate.HasValue && Doc != null && !string.IsNullOrEmpty(SelectedAppointmentType))
             {
                 _ = LoadInitialTimeSlots();
             }
 
-            // Add property change handlers
+            // Property change handlers
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(SelectedAppointmentDate) && SelectedAppointmentDate != null)
@@ -123,6 +143,10 @@ namespace HospitalApp.ViewModels
         {
             try
             {
+                // Save the original time so we can maintain it
+                var originalTime = SelectedAppointmentTime;
+                Console.WriteLine($"[LoadInitialTimeSlots] Original time: {originalTime}");
+
                 var doctorId = Doc.Id;
                 var date = SelectedAppointmentDate.Value;
                 var type = SelectedAppointmentType.ToLower();
@@ -132,6 +156,11 @@ namespace HospitalApp.ViewModels
                 if (availableSlots != null && availableSlots.Any())
                 {
                     AvailableTimeSlots.Clear();
+                    
+                    // Always ensure the original appointment time is in the list first
+                    AvailableTimeSlots.Add(originalTime);
+                    Console.WriteLine($"[LoadInitialTimeSlots] Added original time to slots: {originalTime}");
+
                     foreach (var dt in availableSlots)
                     {
                         // Only add slots that are after current time
@@ -148,11 +177,17 @@ namespace HospitalApp.ViewModels
                         }
                     }
 
-                    // Ensure current time slot is in the list
-                    if (SelectedAppointmentTime != default && !AvailableTimeSlots.Contains(SelectedAppointmentTime))
+                    // Sort the time slots
+                    var sortedSlots = AvailableTimeSlots.OrderBy(t => t).ToList();
+                    AvailableTimeSlots.Clear();
+                    foreach (var slot in sortedSlots)
                     {
-                        AvailableTimeSlots.Add(SelectedAppointmentTime);
+                        AvailableTimeSlots.Add(slot);
                     }
+
+                    // Make sure the selected time is still the original appointment time
+                    SelectedAppointmentTime = originalTime;
+                    Console.WriteLine($"[LoadInitialTimeSlots] Reset selected time to: {SelectedAppointmentTime}");
                 }
             }
             catch (Exception ex)
@@ -164,7 +199,15 @@ namespace HospitalApp.ViewModels
         [RelayCommand]
         public async Task OnGetAvailableSlotsCommand()
         {
+            // Store the current selected time before clearing
+            var currentSelectedTime = SelectedAppointmentTime;
+            Console.WriteLine($"[GetSlots] Current selected time before fetching: {currentSelectedTime}");
+
             AvailableTimeSlots.Clear();
+
+            // Always add the original appointment time first
+            AvailableTimeSlots.Add(currentSelectedTime);
+            Console.WriteLine($"[GetSlots] Added original time to slots: {currentSelectedTime}");
 
             if (Doc == null || !SelectedAppointmentDate.HasValue || string.IsNullOrEmpty(SelectedAppointmentType))
             {
@@ -186,27 +229,32 @@ namespace HospitalApp.ViewModels
 
                 if (availableSlots != null && availableSlots.Any())
                 {
-                    // Only show slots after current time for today's date
+                    // Add available slots, filtering by today if needed
                     foreach (var dt in availableSlots)
                     {
-                        if (SelectedAppointmentDate.Value.Date == Today.Date)
+                        if (SelectedAppointmentDate.Value.Date == Today.Date && dt.TimeOfDay <= Today.TimeOfDay)
                         {
-                            if (dt.TimeOfDay > Today.TimeOfDay)
-                            {
-                                AvailableTimeSlots.Add(dt.TimeOfDay);
-                            }
+                            continue; // Skip past time slots for today
                         }
-                        else
+                        
+                        // Avoid duplicates - only add if not already added
+                        if (!AvailableTimeSlots.Any(t => Math.Abs((t - dt.TimeOfDay).TotalMinutes) < 1))
                         {
                             AvailableTimeSlots.Add(dt.TimeOfDay);
                         }
                     }
 
-                    // Ensure current time slot is in the list
-                    if (SelectedAppointmentTime != default && !AvailableTimeSlots.Contains(SelectedAppointmentTime))
+                    // Sort the time slots
+                    var sortedSlots = AvailableTimeSlots.OrderBy(t => t).ToList();
+                    AvailableTimeSlots.Clear();
+                    foreach (var slot in sortedSlots)
                     {
-                        AvailableTimeSlots.Add(SelectedAppointmentTime);
+                        AvailableTimeSlots.Add(slot);
                     }
+
+                    // Reset the selected time to maintain it through the refresh
+                    SelectedAppointmentTime = currentSelectedTime;
+                    Console.WriteLine($"[GetSlots] Reset selected time to: {SelectedAppointmentTime}");
                 }
             }
             catch (Exception ex)
@@ -251,7 +299,12 @@ namespace HospitalApp.ViewModels
             if (value == null)
             {
                 AvailableTimeSlots.Clear();
-                SelectedAppointmentTime = default;
+                // Keep the existing SelectedAppointmentTime to avoid binding issues
+            }
+            else
+            {
+                // Trigger slot refresh when date changes
+                _ = OnGetAvailableSlotsCommand();
             }
         }
     }

@@ -85,14 +85,33 @@ public partial class PatientPageViewModel : ViewModelBase
     private async Task SaveChanges()
     {   
         try{
-            string status = await _apiService.UpdatePatient(selectedPatient);
-            if(status == "Success"){
-                await LoadDataAsync();
+            bool conn = await PopupWindow.ShowConfirmation(
+                    owner: App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desk ? desk.MainWindow : null,
+                    title: "Confirm Deletion",
+                    message: $"Are you sure you want to save these changes?",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No"
+                );
+            
+            if(conn){
+                string status = await _apiService.UpdatePatient(selectedPatient);
+                if(status == "Success"){
+                    bool con = await PopupWindow.ShowConfirmation(
+                    owner: App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop ? desktop.MainWindow : null,
+                    title: "Confirm Deletion",
+                    message: $"Saved changes for {selectedPatient.Name}.",
+                    confirmButtonText: "Okay",
+                    cancelButtonText: ""
+                );
+                    await LoadDataAsync();
+                    IsEditing = false;
+                    ErrorMessage = "";
+                }
+                else{
+                    ErrorMessage = status;
+                }
+            }else{
                 IsEditing = false;
-                ErrorMessage = "";
-            }
-            else{
-                ErrorMessage = status;
             }
         }
         catch (Exception ex)
@@ -105,12 +124,33 @@ public partial class PatientPageViewModel : ViewModelBase
     [RelayCommand]
     private async Task DeletePatient()
     {
-        if(SelectedPatient != null){
-            await _apiService.DeletePatientAsync(SelectedPatient.PatientID);
-            await LoadDataAsync();
-        }
-        else{
-            ErrorMessage = "Patient not found";
+        bool confirm = await PopupWindow.ShowConfirmation(
+                    owner: App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop ? desktop.MainWindow : null,
+                    title: "Confirm Deletion",
+                    message: $"Are you sure you want to save these changes?",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No"
+                );
+            
+        if(confirm){
+            if(SelectedPatient != null){
+                bool res = await _apiService.DeletePatientAsync(SelectedPatient.PatientID);
+
+                if(res){
+                    bool conf = await PopupWindow.ShowConfirmation(
+                    owner: App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desk ? desk.MainWindow : null,
+                    title: "Confirm Deletion",
+                    message: $"Deleted Successfully",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: ""
+                );
+                await LoadDataAsync();
+                }
+
+            }
+            else{
+                ErrorMessage = "Patient not found";
+            }
         }
         IsEditing = false;
     }

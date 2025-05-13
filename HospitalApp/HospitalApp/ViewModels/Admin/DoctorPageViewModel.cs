@@ -180,15 +180,36 @@ namespace HospitalApp.ViewModels
         {
             if (SelectedDoctor != null)
             {
-                var result = await _apiService.DeleteDoctorAsync(SelectedDoctor.Id);
-                if (result)
+                // Show confirmation popup
+                bool confirm = await PopupWindow.ShowConfirmation(
+                    owner: App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop ? desktop.MainWindow : null,
+                    title: "Confirm Deletion",
+                    message: $"Are you sure you want to delete Dr. {SelectedDoctor.Name}?",
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel"
+                );
+
+                if (confirm)
                 {
-                    Doctors.Remove(SelectedDoctor);
-                    LoadDoctors();
+                    var result = await _apiService.DeleteDoctorAsync(SelectedDoctor.Id);
+                    if (result)
+                    {
+                        bool conf = await PopupWindow.ShowConfirmation(
+                            owner: App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desk ? desk.MainWindow : null,
+                            title: "Success",
+                            message: $"Successfully Deleted: {SelectedDoctor.Name}",
+                            confirmButtonText: "Okay",
+                            cancelButtonText: ""
+                        );
+                        Doctors.Remove(SelectedDoctor);
+                        LoadDoctors();
+                    }
                 }
+
+                IsEditing = false;
             }
-            IsEditing = false;
         }
+
 
         [RelayCommand]
         private async Task SaveDoctor()

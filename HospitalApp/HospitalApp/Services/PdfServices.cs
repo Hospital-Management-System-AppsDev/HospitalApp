@@ -17,7 +17,7 @@ class PdfServices
 
         string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
         string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
-        string signature = appointment.AssignedDoctor.signature;
+        string signature = Path.Combine(Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName, "Assets", "Doctor", "Signatures", appointment.AssignedDoctor.signature);
         string fileName = Path.Combine("Records", "MedicalCertificates", $"MC_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>
@@ -86,7 +86,7 @@ class PdfServices
         string headerImagePath = Path.Combine("Resources", "ForPDF", "stet.webp");
         string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
         string rxlogo = Path.Combine("Resources", "ForPDF", "rx.png");
-        string signature = appointment.AssignedDoctor.signature;
+        string signature = Path.Combine(Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName, "Assets", "Doctor", "Signatures", appointment.AssignedDoctor.signature);
         string fileName = Path.Combine("Records", "Prescriptions", $"RX_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>
@@ -196,7 +196,7 @@ class PdfServices
 
         string headerImagePath = Path.Combine("Resources", "ForPDF", "mcheader.png");
         string footerImagePath = Path.Combine("Resources", "ForPDF", "mcfooter.png");
-        string signature = appointment.AssignedDoctor.signature;
+        string signature = Path.Combine(Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName, "Assets", "Doctor", "Signatures", appointment.AssignedDoctor.signature);
         string fileName = Path.Combine("Records", "Diagnosis", $"D_{appointment.PkId}_{DateTime.Now:yyyyMMdd}_{patient.PatientID}_{patient.Name}.pdf");
 
         Document.Create(container =>

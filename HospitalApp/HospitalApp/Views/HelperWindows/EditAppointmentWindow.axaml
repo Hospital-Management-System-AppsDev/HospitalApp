@@ -3,7 +3,7 @@
         xmlns:vm="clr-namespace:HospitalApp.ViewModels"
         x:Class="HospitalApp.Views.EditAppointmentWindow"
         x:DataType="vm:EditAppointmentWindowViewModel"
-        Width="500" Height="500"
+        Width="500" Height="600"
         Title="Edit Appointment"
 >
     <ScrollViewer>
@@ -43,11 +43,11 @@
                     ItemsSource="{Binding AvailableTimeSlots}" 
                     SelectedItem="{Binding SelectedAppointmentTime, Mode=TwoWay}"
                     IsEnabled="{Binding SelectedAppointmentDate, Converter={x:Static ObjectConverters.IsNotNull}}"
-                    Padding="10" 
-                    FontSize="15">
+                    Padding="10" FontSize="15"
+                    >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="15"/>
+                        <TextBlock Text="{Binding}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>

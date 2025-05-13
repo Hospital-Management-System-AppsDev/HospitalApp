@@ -102,7 +102,7 @@ namespace HospitalApp.ViewModels
                 is_available = 1,
                 Birthday = _doctorBirthday,
                 profile_picture = _originalFileName != null ? $"avares://HospitalApp/Assets/Doctor/Profile/drp_{_originalFileName}" : null,
-                signature = FileTextSignaturePath
+                signature = $"dsg_{_originalFileNameSignature}"
             };
 
             Console.WriteLine($"Profile picture: {newDoctor.profile_picture}");
